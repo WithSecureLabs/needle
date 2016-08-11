@@ -21,7 +21,7 @@ class Constants(object):
     GLOBAL_USERNAME = 'root'
     GLOBAL_PASSWORD = 'alpine'
     GLOBAL_DEBUG = False
-    GLOBAL_VERBOSE = False
+    GLOBAL_VERBOSE = True
     GLOBAL_SETUP_DEVICE = True
 
     # LOCAL TOOLS
