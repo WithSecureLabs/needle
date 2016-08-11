@@ -11,9 +11,7 @@ Assessing the security of an iOS application typically requires a plethora of to
 
 Needle is an open source modular framework which aims to streamline the entire process of conducting security assessments of iOS applications, and acts as a central point from which to do so. Given its modular approach, Needle is easily extensible and new modules can be added in the form of python scripts. Needle is intended to be useful not only for security professionals, but also for developers looking to secure their code. A few examples of testing areas covered by Needle include: data storage, inter-process communication, network communications, static code analysis, hooking and binary protections.​ The only requirement in order to run Needle effectively is a jailbroken device.
 
-
-
-needle is open source software, maintained by [MWR InfoSecurity](https://www.mwrinfosecurity.com/), and can be downloaded from:
+Needle is open source software, maintained by [MWR InfoSecurity](https://www.mwrinfosecurity.com/), and can be downloaded from:
 
 * [mwr.to/needle](https://mwr.to/needle)
 
@@ -21,9 +19,9 @@ needle is open source software, maintained by [MWR InfoSecurity](https://www.mwr
 
 # Installation
 
-See the `Installation Guide` in the WIKI for details.
+See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide) in the WIKI for details.
 
 
 # License
 
-needle is released under a 3-clause BSD License. See the `LICENSE` file for full details.
+Needle is released under a 3-clause BSD License. See the `LICENSE` file for full details.
