@@ -19,8 +19,12 @@ Needle is open source software, maintained by [MWR InfoSecurity](https://www.mwr
 
 # Installation
 
-See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide) in the WIKI for details.
+See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide) in the project Wiki for details.
 
+
+# Usage
+
+Usage instructions (for both standard users and contributors) can be found on the [project Wiki](https://github.com/mwrlabs/needle/wiki).
 
 # License
 
