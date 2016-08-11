@@ -26,6 +26,13 @@ See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation
 
 Usage instructions (for both standard users and contributors) can be found in the [project Wiki](https://github.com/mwrlabs/needle/wiki).
 
+
 # License
 
 Needle is released under a 3-clause BSD License. See the `LICENSE` file for full details.
+
+
+# Supported Platforms
+
+* Workstation: Needle has been successfully tested on both Kali and OSX.
+* Device: iOS8 is currently supported (testing on iOS9 is currently in progress)
