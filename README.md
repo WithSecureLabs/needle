@@ -24,7 +24,7 @@ See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation
 
 # Usage
 
-Usage instructions (for both standard users and contributors) can be found on the [project Wiki](https://github.com/mwrlabs/needle/wiki).
+Usage instructions (for both standard users and contributors) can be found in the [project Wiki](https://github.com/mwrlabs/needle/wiki).
 
 # License
 
