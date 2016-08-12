@@ -10,6 +10,8 @@ class Module(BaseModule):
             ('dump_interfaces', False, True, 'Set to True to dump each interface in its own file'),
             ('output', "", False, 'Full path of the output file, or to the folder where to save the interfaces'),
         ),
+        'comments': ['This might not work on 64bit binaries. In such cases, "cycript" or "hooking/frida/script_enum-all-methods" are recommended',
+                     ]
     }
 
     # ==================================================================================================================
@@ -46,8 +48,12 @@ class Module(BaseModule):
             # Save to file
             outfile = self.options['output'] if self.options['output'] else None
             # Print to console
-            self.printer.notify("The following content has been dumped: ")
-            self.print_cmd_output(out, outfile)
+            if out:
+                self.printer.notify("The following content has been dumped: ")
+                self.print_cmd_output(out, outfile)
+            else:
+                self.printer.warning("It was not possible to dump interfaces.")
+                self.printer.warning("This might happen if this is 64bit binary. In such case, 'cycript' or 'hooking/frida/script_enum-all-methods' are recommended")
 
     # ==================================================================================================================
     # RUN
