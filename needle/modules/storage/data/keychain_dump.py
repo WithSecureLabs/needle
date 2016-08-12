@@ -29,16 +29,23 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         # Composing the command string
-        cmd = '{} --action dump'.format(self.device.DEVICE_TOOLS['KEYCHAINEDITOR'])
+        cmd = '{}'.format(self.device.DEVICE_TOOLS['KEYCHAINDUMPER'])
         msg = "Dumping the keychain"
         if self.options['filter']:
-            cmd += ' --find {}'.format(self.options['filter'])
+            cmd += ' | grep "{}" -A 3 -B2'.format(self.options['filter'])
             msg += ' with filter: %s' % self.options['filter']
         # Dump Keychain
         self.printer.info(msg)
         out = self.device.remote_op.command_blocking(cmd)
-        if out:
+
+        # Check output
+        if out and filter(lambda x: "README" not in x, out):
             # Save to file
             outfile = self.options['output'] if self.options['output'] else None
             # Print to console
             self.print_cmd_output(out, outfile)
+        else:
+            if self.options['filter']:
+                self.printer.warning('No content matches the filter. Ensure the screen is unlocked before dumping the keychain')
+            else:
+                self.printer.warning('No content found. Ensure the screen is unlocked before dumping the keychain')
