@@ -171,7 +171,7 @@ class Device(object):
         """List all the 3rd party apps installed on the device."""
 
         def list_iOS7():
-            raise Exception('Currently only iOS8 is supported (testing on iOS9 is currently in progress)')
+            raise Exception('Support for iOS < 8 not yet implemented')
 
         def list_iOS8():
             # Refresh UICache in case an app was installed after the last reboot

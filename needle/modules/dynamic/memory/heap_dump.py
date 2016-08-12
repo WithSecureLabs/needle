@@ -55,6 +55,14 @@ class Module(BaseModule):
         cmd = 'gdb --pid="%s" --batch --command=%s &>>/dev/null' % (pid, fname_ranges)
         self.device.remote_op.command_blocking(cmd)
 
+        # Check if we have dumps
+        self.printer.verbose("Checking if we have dumps...")
+        file_list = self.device.remote_op.dir_list_recursive(dir_dumps)
+        failure = filter(lambda x: 'total 0' in x, file_list)
+        if failure:
+            self.printer.error('It was not possible to attach to the process (known issue in iOS9. A Fix is coming soon)')
+            return
+
         # Extract strings
         self.printer.info("Extracting strings...")
         cmd = 'strings {}/* 2>/dev/null | grep -i "{}"'.format(dir_dumps, self.options['filter'])

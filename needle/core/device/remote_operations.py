@@ -73,7 +73,7 @@ class RemoteOperations(object):
     def dir_list_recursive(self, path):
         path = Utils.escape_path(path)
         cmd = 'ls -alR %s' % path
-        self.command_blocking(cmd)
+        return self.command_blocking(cmd)
 
     # ==================================================================================================================
     # COMMANDS
