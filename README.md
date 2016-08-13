@@ -33,4 +33,4 @@ Needle is released under a 3-clause BSD License. See the `LICENSE` file for full
 # Supported Platforms
 
 * Workstation: Needle has been successfully tested on both Kali and OSX.
-* Device: both iOS 8 ands 9 are currently supported
+* Device: both iOS 8 and 9 are currently supported
