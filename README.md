@@ -14,10 +14,14 @@ Needle is an open source modular framework which aims to streamline the entire p
 Needle is open source software, maintained by [MWR InfoSecurity](https://www.mwrinfosecurity.com/).
 
 
-
 # Installation
 
 See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation-Guide) in the project Wiki for details.
+
+#### Supported Platforms
+
+* _Workstation_: Needle has been successfully tested on both Kali and OSX
+* _Device_: both iOS 8 and 9 are currently supported 
 
 
 # Usage
@@ -30,7 +34,6 @@ Usage instructions (for both standard users and contributors) can be found in th
 Needle is released under a 3-clause BSD License. See the `LICENSE` file for full details.
 
 
-# Supported Platforms
+# Contact
 
-* Workstation: Needle has been successfully tested on both Kali and OSX.
-* Device: both iOS 8 and 9 are currently supported
+Feel free to submit issues or ping us on Twitter - [@lancinimarco](https://twitter.com/lancinimarco)
