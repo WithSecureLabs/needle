@@ -177,30 +177,22 @@ class Device(object):
     def _list_apps(self):
         """List all the 3rd party apps installed on the device."""
 
-        def list_iOS7():
+        def list_iOS_7():
             raise Exception('Support for iOS < 8 not yet implemented')
 
-        def list_iOS8():
+        def list_iOS_89(applist):
             # Refresh UICache in case an app was installed after the last reboot
             self.printer.verbose("Refreshing list of installed apps...")
             self.remote_op.command_blocking('/bin/su mobile -c /usr/bin/uicache', internal=True)
             # Parse plist file
-            pl = self.remote_op.parse_plist(Constants.DEVICE_PATH_APPLIST_iOS8)
-            self._applist = pl["User"]
-
-        def list_iOS9():
-            # Refresh UICache in case an app was installed after the last reboot
-            self.printer.verbose("Refreshing list of installed apps...")
-            self.remote_op.command_blocking('/bin/su mobile -c /usr/bin/uicache', internal=True)
-            # Parse plist file
-            pl = self.remote_op.parse_plist(Constants.DEVICE_PATH_APPLIST_iOS9)
+            pl = self.remote_op.parse_plist(applist)
             self._applist = pl["User"]
 
         # Dispatch
         self._detect_ios_version()
-        if self._is_iOS8: list_iOS8()
-        elif self._is_iOS9: list_iOS9()
-        else: list_iOS7()
+        if self._is_iOS8: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS8)
+        elif self._is_iOS9: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS9)
+        else: list_iOS_7()
 
     def select_target_app(self):
         """List all 3rd party apps installed and let the user choose which one to target"""
