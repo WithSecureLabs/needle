@@ -47,9 +47,12 @@ class Constants(object):
     DEVICE_PATH_TEMP_FOLDER  = '/var/root/needle/'
     DEVICE_PATH_APPLIST_iOS7 = '/var/mobile/Library/Caches/com.apple.mobile.installation.plist'
     DEVICE_PATH_APPLIST_iOS8 = '/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist'
+    DEVICE_PATH_APPLIST_iOS9 = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
     DEVICE_PATH_BUNDLE_iOS7  = '/private/var/mobile/Applications/'
     DEVICE_PATH_BUNDLE_iOS8  = '/private/var/mobile/Containers/Bundle/Application/'
+    DEVICE_PATH_BUNDLE_iOS9  = '/private/var/containers/Bundle/Application/'
     DEVICE_PATH_DATA_iOS8    = '/private/var/mobile/Containers/Data/Application/'
+    DEVICE_PATH_DATA_iOS9    = '/private/var/mobile/Containers/Data/Application/'
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
     DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
 
