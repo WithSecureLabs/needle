@@ -48,10 +48,9 @@ class CLI(Framework):
     # ==================================================================================================================
     def _init_global_options(self):
         self.register_option('ip', Constants.GLOBAL_IP, True, 'IP address of the testing device (set to localhost to use USB)')
-        self.register_option('port', Constants.GLOBAL_PORT, False, 'Port of the SSH agent on the testing device (needs to be != 22 to use USB)')
+        self.register_option('port', Constants.GLOBAL_PORT, True, 'Port of the SSH agent on the testing device (needs to be != 22 to use USB)')
         self.register_option('username', Constants.GLOBAL_USERNAME, True, 'SSH Username of the testing device')
         self.register_option('password', Constants.GLOBAL_PASSWORD, True, 'SSH Password of the testing device')
-        self.register_option('app', None, False, 'Application to analyze')
         self.register_option('proxy', None, False, 'Proxy server (address:port)')
         self.register_option('debug', Constants.GLOBAL_DEBUG, True, 'Enable debugging output')
         self.register_option('verbose', Constants.GLOBAL_VERBOSE, True, 'Enable verbose output')
