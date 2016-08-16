@@ -48,7 +48,6 @@ class Installer(object):
             if pk in self._packagelist:
                 self._device.printer.debug('[INSTALL] Already installed: %s.' % toolname)
             else:
-
                 self._device.printer.debug('[INSTALL] Installing %s via apt-get.' % toolname)
                 if repo: self.__apt_add_repo(repo)
                 self.__apt_install(pk)
@@ -127,7 +126,9 @@ class Installer(object):
             return False
 
         # Installing coreutils
+        self.__apt_update()
         self._configure_tool('COREUTILS')
+
         # Refresh package list
         self._refresh_package_list()
         # Parse cydia.list
