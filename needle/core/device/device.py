@@ -29,6 +29,8 @@ class Device(object):
     _debug_server = None
     # App specific
     _is_iOS8 = False
+    _is_iOS9 = False
+    _is_iOS7_or_less = False
     _applist = None
     _device_ready = False
     # On-Device Paths
@@ -165,7 +167,12 @@ class Device(object):
     # ==================================================================================================================
     def _detect_ios_version(self):
         """Detect the iOS version running on the device."""
-        self._is_iOS8 = self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS8)
+        if self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS8):
+            self._is_iOS8 = True
+        elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
+            self._is_iOS9 = True
+        else: self._is_iOS7_or_less = True
+
 
     def _list_apps(self):
         """List all the 3rd party apps installed on the device."""
@@ -181,9 +188,18 @@ class Device(object):
             pl = self.remote_op.parse_plist(Constants.DEVICE_PATH_APPLIST_iOS8)
             self._applist = pl["User"]
 
+        def list_iOS9():
+            # Refresh UICache in case an app was installed after the last reboot
+            self.printer.verbose("Refreshing list of installed apps...")
+            self.remote_op.command_blocking('/bin/su mobile -c /usr/bin/uicache', internal=True)
+            # Parse plist file
+            pl = self.remote_op.parse_plist(Constants.DEVICE_PATH_APPLIST_iOS9)
+            self._applist = pl["User"]
+
         # Dispatch
         self._detect_ios_version()
         if self._is_iOS8: list_iOS8()
+        elif self._is_iOS9: list_iOS9()
         else: list_iOS7()
 
     def select_target_app(self):
