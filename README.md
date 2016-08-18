@@ -28,6 +28,8 @@ See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation
 
 Usage instructions (for both standard users and contributors) can be found in the [project Wiki](https://github.com/mwrlabs/needle/wiki).
 
+A complete walkthrough on how to quickly get up to speed with Needle can be found on the MWR Labs website: [https://labs.mwrinfosecurity.com/blog/needle-how-to/](https://labs.mwrinfosecurity.com/blog/needle-how-to/)
+
 
 # License
 
