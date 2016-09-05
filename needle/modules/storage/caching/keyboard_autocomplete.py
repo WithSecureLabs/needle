@@ -1,14 +1,11 @@
 from core.framework.module import BaseModule
-from core.utils.utils import Utils
-import os
-import time
 
 
 class Module(BaseModule):
     meta = {
         'name': 'Keyboard Autocomplete Caching',
         'author': '@zakmaples (@MWRLabs)',
-        'description': "This module dumps the content of the keyboard's autocomplete databases in order to help "
+        'description': "Dump the content of the keyboard's autocomplete databases in order to help "
                        "identify if sensitive information input into the application could be cached.",
         'options': (
             ('output', True, False, 'Full path of the output file'),

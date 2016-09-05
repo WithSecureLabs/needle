@@ -21,7 +21,7 @@ class Module(BaseModule):
     # ==================================================================================================================
     def _monitor_fs_start(self):
         # Remote output file
-        self.fsmon_out = self.device.remote_op.build_temp_path_for_file("fsmon")
+        self.fsmon_out = self.device.remote_op.build_temp_path_for_file("reportcrash")
         # Run command in a thread
         cmd = '{app} -j -a {watchtime} -P "ReportCrash" {flt} &> {fname} & echo $!'.format(app=self.device.DEVICE_TOOLS['FSMON'],
                                                                                            watchtime=self.WATCH_TIME,
@@ -45,10 +45,14 @@ class Module(BaseModule):
         if self.crashes:
             self.printer.notify('The following crash files has been identified')
             map(self.printer.notify, self.crashes)
+            self.EXIT = False
         else:
             self.printer.warning('No crashes identified. It is possible that jailbreak detection might be applied at a later stage in the app.')
             self.EXIT = True
 
+    # ==================================================================================================================
+    # CRASHES
+    # ==================================================================================================================
     def detect_crash_files(self):
         # Monitor filesystem for a crash
         self.printer.info("Monitoring the filesystem for a crash...")
