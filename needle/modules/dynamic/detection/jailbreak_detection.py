@@ -8,9 +8,10 @@ class Module(BaseModule):
     meta = {
         'name': 'Jailbreak Detection',
         'author': '@LanciniMarco (@MWRLabs)',
-        'description': 'Verify that the app cannot be run on a jailbroken device. Currently detects if the app applies jailbreak detection at startup. Note: Make sure that the device is unlocked before you run this module.',
+        'description': 'Verify that the app cannot be run on a jailbroken device. Currently detects if the app applies jailbreak detection at startup.',
         'options': (
         ),
+	'comments': ['Make sure that the device is unlocked before you run this module.']
     }
     PID = None
     WATCH_TIME = 10
