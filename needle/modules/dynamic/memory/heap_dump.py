@@ -11,6 +11,7 @@ class Module(BaseModule):
             ('output', True, False, 'Full path of the output file')
         ),
         'comments': [
+            'Make sure that the device is unlocked before you run this module',
             'Based on the process outlined in heapdump-ios: https://github.com/NetSPI/heapdump-ios'
         ]
     }
