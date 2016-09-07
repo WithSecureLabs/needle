@@ -10,6 +10,7 @@ class Module(BackgroundModule):
             ('sleep', 5, True, 'Sampling frequency: sleep time, in seconds, between different samples (must be > 1)'),
             ('output', True, False, 'Full path of the output file')
         ),
+	'comments': ['This module may not function under iOS 8 or iOS 9']
     }
     PID = None
 
