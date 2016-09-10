@@ -12,7 +12,8 @@ class Module(BaseModule):
         'options': (
         ),
         'comments': [
-             'Make sure that the device is unlocked before you run this module',]
+             'Make sure that the device is unlocked before you run this module',
+        ]
     }
     PID = None
     WATCH_TIME = 10
