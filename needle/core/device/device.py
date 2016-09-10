@@ -89,7 +89,9 @@ class Device(object):
             self.printer.verbose('Setting up SSH connection...')
             self.conn = paramiko.SSHClient()
             self.conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conn.connect(self._ip, port=self._port, username=self._username, password=self._password)
+            self.conn.connect(self._ip, port=self._port,
+                              username=self._username, password=self._password,
+                              allow_agent=False, look_for_keys=False)
         except paramiko.AuthenticationException as e:
             raise Exception('Authentication failed when connecting to %s. %s: %s' % (self._ip, type(e).__name__, e.message))
         except paramiko.SSHException as e:
@@ -172,7 +174,6 @@ class Device(object):
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
             self._is_iOS9 = True
         else: self._is_iOS7_or_less = True
-
 
     def _list_apps(self):
         """List all the 3rd party apps installed on the device."""

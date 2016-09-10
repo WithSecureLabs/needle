@@ -25,8 +25,8 @@ class Module(BaseModule):
     def analyze_strings(self, str_list):
         self.printer.info('Analyzing strings (press any key to continue)...')
         test_cases = [
-            {'name': 'HTTP URI', 'test': 'http://'},
-            {'name': 'HTTPS URI', 'test': 'https://'},
+            {'name': 'HTTP_URI', 'test': 'http://'},
+            {'name': 'HTTPS_URI', 'test': 'https://'},
             {'name': 'ViewControllers', 'test': 'ViewController'},
         ]
         for tc in test_cases:
@@ -46,7 +46,10 @@ class Module(BaseModule):
 
         # Extract strings
         self.printer.verbose("Analyzing binary...")
-        query = self.options['filter'].strip('''"''''') if self.options['filter'] else ''
+        if self.options['filter']:
+            query = str(self.options['filter']).strip('''"''''')
+        else:
+            query = ''
         cmd = '''{bin} "{app}" | awk 'length > {length}' | sort -u | grep -E '{query}' '''.format(bin=self.device.DEVICE_TOOLS['STRINGS'],
                                                                                                   app=self.fname_binary,
                                                                                                   length=self.options['length'],
