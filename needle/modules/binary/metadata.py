@@ -48,3 +48,19 @@ class Module(BaseModule):
                 self.printer.notify('\t\t %s' % h)
         else:
             self.printer.info('URL Handlers not found')
+
+        # Apple Transport Security Settings
+        ats_settings = self.APP_METADATA['ats_settings']
+        if ats_settings:
+            self.printer.notify('{:<20}'.format('Apple Transport Security Settings',))
+            for k,v in ats_settings.items():
+                if "NSExceptionDomains" in k:
+                    self.printer.notify('\t\t NSExceptionDomains')
+                    vals = v.items()
+                    for k,v in vals:
+                        self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
+                else:
+                    self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
+        else:
+            self.printer.info('Apple Transport Security Settings not found')
+
