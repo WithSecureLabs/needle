@@ -37,7 +37,12 @@ class App(object):
         # Content of the app's local Info.plist
         path_local = Utils.escape_path('%s/Info.plist' % plist_global['Path'])
         plist_local = self._device.remote_op.parse_plist(path_local)
-        platform_version = plist_local['DTPlatformVersion']
+        print(plist_local)
+        try:
+            platform_version = plist_local['DTPlatformVersion']
+        except:
+            platform_version = None
+
         sdk_version = plist_local['DTSDKName']
         minimum_os = plist_local['MinimumOSVersion']
         app_version_long  = plist_local['CFBundleVersion']
@@ -48,12 +53,17 @@ class App(object):
         except:
             url_handlers = None
 
+        try:
+            ats_settings = plist_local['NSAppTransportSecurity']
+        except:
+            ats_settings = None 
+
         # Compose binary path
         binary_folder = binary_directory
         binary_name = os.path.splitext(binary_folder.rsplit('/', 1)[-1])[0]
         binary_path = Utils.escape_path(os.path.join(binary_folder, binary_name))
 
-        # Detect architectures
+        # Detect architecture
         architectures = self._detect_architectures(binary_path)
 
         # Pack into a dict
@@ -72,6 +82,7 @@ class App(object):
             'sdk_version': sdk_version,
             'minimum_os': minimum_os,
             'url_handlers': url_handlers,
+            'ats_settings' : ats_settings,
             'architectures': architectures,
         }
         return metadata
