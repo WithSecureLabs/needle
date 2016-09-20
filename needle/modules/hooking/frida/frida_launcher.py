@@ -25,11 +25,13 @@ class Module(FridaScript):
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        # Run the payload
+        # Parse the payload
         payload = self.options['payload']
         self.printer.info("Parsing payload: %s" % payload)
         hook = open(payload, "r")
         script = self.session.create_script(hook.read())
+
+        # Load the payload
         script.on('message', self.on_message)
         script.load()
         self.printer.notify("Payload loaded. You can continue to use the app now...")
