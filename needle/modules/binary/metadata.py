@@ -6,7 +6,7 @@ class Module(BaseModule):
         'name': 'App Metadata',
         'author': '@LanciniMarco (@MWRLabs)',
         'description': "Display the app's metadata: UUID, app name/version, bundle name/ID, bundle/data/binary directory, "
-                       "binary path/name, entitlements, URL handlers, architectures, platform/SDK/OS version",
+                       "binary path/name, entitlements, URL handlers, architectures, platform/SDK/OS version, ATS settings",
         'options': (
         ),
     }
@@ -53,14 +53,13 @@ class Module(BaseModule):
         ats_settings = self.APP_METADATA['ats_settings']
         if ats_settings:
             self.printer.notify('{:<20}'.format('Apple Transport Security Settings',))
-            for k,v in ats_settings.items():
+            for k, v in ats_settings.items():
                 if "NSExceptionDomains" in k:
                     self.printer.notify('\t\t NSExceptionDomains')
                     vals = v.items()
-                    for k,v in vals:
-                        self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
+                    for x, y in vals:
+                        self.printer.notify('\t\t\t {:<40}: {:<20}'.format(x, y))
                 else:
                     self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
         else:
             self.printer.info('Apple Transport Security Settings not found')
-
