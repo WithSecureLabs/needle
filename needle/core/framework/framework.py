@@ -429,9 +429,10 @@ class Framework(cmd.Cmd):
                 self.device.disconnect()
         except Exception as e:
             self.printer.warning("Problem while cleaning up temp folders, ignoring: %s - %s " % (type(e).__name__, e.message))
-        # Exit
-        self._exit = 1
-        return True
+        finally:
+            # Exit
+            self._exit = 1
+            return True
 
     def do_back(self, params):
         """Exits the current context."""
