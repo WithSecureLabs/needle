@@ -22,7 +22,8 @@ class Constants(object):
     GLOBAL_PASSWORD = 'alpine'
     GLOBAL_DEBUG = False
     GLOBAL_VERBOSE = True
-    GLOBAL_SETUP_DEVICE = True
+    GLOBAL_SETUP_DEVICE = False
+    GLOBAL_PUB_KEY_AUTH = True
 
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
