@@ -64,16 +64,18 @@ class RemoteOperations(object):
         def delete(path):
             cmd = 'rm -rf %s 2> /dev/null' % path
             self.command_blocking(cmd)
-        if force:
-            delete(path)
-        elif self.dir_exist(path):
-            path = Utils.escape_path(path)
-            delete(path)
+        path = Utils.escape_path(path)
+        if force: delete(path)
+        elif self.dir_exist(path): delete(path)
 
     def dir_list_recursive(self, path):
         path = Utils.escape_path(path)
         cmd = 'ls -alR %s' % path
         return self.command_blocking(cmd)
+
+    def dir_reset(self, path):
+        if self.dir_exist(path): self.dir_delete(path)
+        self.dir_create(path)
 
     # ==================================================================================================================
     # COMMANDS
@@ -219,3 +221,8 @@ class RemoteOperations(object):
         """Given a filename, prints its content on screen."""
         cmd = 'cat {fname}'.format(fname=fname)
         return self.command_blocking(cmd, internal=True)
+
+    def write_file(self, fname, body):
+        """Given a filename, write body into it"""
+        cmd = "echo \"{content}\" > {dst}".format(content=body, dst=fname)
+        self.command_blocking(cmd)

@@ -44,7 +44,7 @@ class Module(BaseModule):
             option = choose_from_list_data_protection(retrieved_files)
             # Pull file
             fname = Utils.extract_filename_from_path(option)
-            temp_file = self.local_op.build_temp_path_for_file(self, fname)
+            temp_file = self.local_op.build_output_path_for_file(self, fname)
             self.device.pull(option, temp_file)
             # Analyze it with SQLite
             self.printer.info("Spawning SQLite3 console...")

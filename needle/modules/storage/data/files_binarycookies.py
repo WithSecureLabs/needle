@@ -41,7 +41,7 @@ class Module(BaseModule):
             option = choose_from_list_data_protection(retrieved_files)
             # Pull file
             fname = Utils.extract_filename_from_path(option)
-            temp_file = self.local_op.build_temp_path_for_file(self, fname)
+            temp_file = self.local_op.build_output_path_for_file(self, fname)
             self.device.pull(option, temp_file)
             # Analyze it with BinaryCookieReader
             cmd = 'python {bin} {temp_file}'.format(bin=self.TOOLS_LOCAL['BINARYCOOKIEREADER'], temp_file=temp_file)

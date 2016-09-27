@@ -15,6 +15,11 @@ class Constants(object):
     NAME_FOLDER = '.needle'
     NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)
 
+    # PATHS
+    FOLDER_HOME = os.path.join(os.path.expanduser('~'), NAME_FOLDER)
+    FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')
+    FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')
+
     # GLOBAL OPTIONS
     GLOBAL_IP = '127.0.0.1'
     GLOBAL_PORT = '2222'
@@ -23,6 +28,7 @@ class Constants(object):
     GLOBAL_DEBUG = False
     GLOBAL_VERBOSE = True
     GLOBAL_SETUP_DEVICE = True
+    GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
 
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
