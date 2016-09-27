@@ -56,6 +56,7 @@ class CLI(Framework):
         self.register_option('verbose', Constants.GLOBAL_VERBOSE, True, 'Enable verbose output')
         self.register_option('app', '', False, 'Bundle ID of the target application (e.g., com.example.app). Leave empty to launch wizard')
         self.register_option('setup_device', Constants.GLOBAL_SETUP_DEVICE, True, 'Set to true to enable auto-configuration of the device (installation of all the tools needed)')
+        self.register_option('pub_key_auth', Constants.GLOBAL_PUB_KEY_AUTH, True, 'Use public key auth. Key must be present in the ssh-agent if a passphrase is used')
 
     def _init_global_vars(self):
         # Setup Printer
