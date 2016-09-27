@@ -1,4 +1,4 @@
-# needle
+![Needle](https://labs.mwrinfosecurity.com/assets/needle-logo-blue.jpg)
 
 [![Black Hat Arsenal](https://www.toolswatch.org/badges/arsenal/2016.svg)](https://www.blackhat.com/us-16/arsenal.html#needle)
 
@@ -38,4 +38,4 @@ Needle is released under a 3-clause BSD License. See the `LICENSE` file for full
 
 # Contact
 
-Feel free to submit issues or ping us on Twitter - [@lancinimarco](https://twitter.com/lancinimarco)
+Feel free to submit issues or ping us on Twitter - [@mwrneedle](https://twitter.com/mwrneedle), [@lancinimarco](https://twitter.com/lancinimarco)

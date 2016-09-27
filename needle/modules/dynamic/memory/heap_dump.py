@@ -22,7 +22,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "heap_dump.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "heap_dump.txt")
 
     # ==================================================================================================================
     # RUN
@@ -37,7 +37,7 @@ class Module(BaseModule):
         dir_dumps = self.device.remote_op.build_temp_path_for_file("gdb_dumps")
         fname_mach = self.device.remote_op.build_temp_path_for_file("gdb_mach")
         fname_ranges = self.device.remote_op.build_temp_path_for_file("gdb_ranges")
-        self.device.remote_op.command_blocking('echo "info mach-regions" > {fname}'.format(fname=fname_mach))
+        self.device.remote_op.write_file(fname_mach, "info mach-regions")
         if self.device.remote_op.dir_exist(dir_dumps): self.device.remote_op.dir_delete(dir_dumps)
         self.device.remote_op.dir_create(dir_dumps)
 

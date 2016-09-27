@@ -18,11 +18,14 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "keychain-dump.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "keychain_dump.txt")
         # Setting default filter
         if self.APP_METADATA:
             self.printer.info('Setting filter to: %s (you can change it in options)' % self.APP_METADATA['binary_name'])
             self.options['filter'] = self.APP_METADATA['binary_name']
+
+    def module_pre(self):
+        return BaseModule.module_pre(self, bypass_app=True)
 
     # ==================================================================================================================
     # RUN
@@ -32,7 +35,7 @@ class Module(BaseModule):
         cmd = '{}'.format(self.device.DEVICE_TOOLS['KEYCHAINDUMPER'])
         msg = "Dumping the keychain"
         if self.options['filter']:
-            cmd += ' | grep "{}" -A 3 -B2'.format(self.options['filter'])
+            cmd += ' | grep -i "{}" -A 3 -B2'.format(self.options['filter'])
             msg += ' with filter: %s' % self.options['filter']
         # Dump Keychain
         self.printer.info(msg)

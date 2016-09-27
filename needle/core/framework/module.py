@@ -121,7 +121,12 @@ class BaseModule(Framework):
 
     def module_pre(self, bypass_app=False):
         """Execute before module_run"""
-        # If it's a StaticModule, bypass the checks
+        # Setup local output folder
+        if not self._local_ready:
+            self.printer.debug("Setup local output folder: {}".format(self._global_options['output_folder']))
+            self.local_op.output_folder_setup(self)
+            self._local_ready = Framework._local_ready = True
+        # If it's a StaticModule, bypass any other check
         if isinstance(self, StaticModule):
             self.printer.verbose("Static Module, connection not needed...")
             return 1
@@ -256,9 +261,13 @@ class FridaScript(FridaModule):
             self.printer.debug("Connected over Wi-Fi")
             device = frida.get_device_manager().enumerate_devices()[1]
 
-        # Spawn app
+        # Launching the app
         self.printer.info("Launching the app...")
-        pid = device.spawn([self.APP_METADATA['bundle_id']])
+        self.device.app.open(self.APP_METADATA['bundle_id'])
+        pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+
+        # Attaching to the process
+        self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
         return 1
 
