@@ -256,9 +256,13 @@ class FridaScript(FridaModule):
             self.printer.debug("Connected over Wi-Fi")
             device = frida.get_device_manager().enumerate_devices()[1]
 
-        # Spawn app
+        # Launching the app
         self.printer.info("Launching the app...")
-        pid = device.spawn([self.APP_METADATA['bundle_id']])
+        self.device.app.open(self.APP_METADATA['bundle_id'])
+        pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+
+        # Attaching to the process
+        self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
         return 1
 

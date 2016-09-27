@@ -32,6 +32,7 @@ class Module(FridaScript):
         script = self.session.create_script(hook.read())
         script.on('message', self.on_message)
         script.load()
+        self.printer.notify("Payload loaded. You can continue to use the app now...")
 
         # Save to file
         self.print_cmd_output(self.output, self.options['output'], silent=True)
