@@ -8,7 +8,7 @@ class Module(BackgroundModule):
         'description': 'Monitor the app data folder and keep track of modified files',
         'options': (
             ('output', True, False, 'Full path of the output file'),
-            ('folder', "", False, 'The folder to monitor (leave empty to use the app Data directory)'),
+            ('folder', "", True, 'The folder to monitor (leave empty to use the app Data directory)'),
         ),
     }
     PID = None
@@ -19,7 +19,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting defaults
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "modifiedfiles.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "modified_files.txt")
 
     # ==================================================================================================================
     # RUN
@@ -48,7 +48,7 @@ class Module(BackgroundModule):
 
         # Pull output file
         self.printer.info("Retrieving output file...")
-        outfile = self.options['output'] if self.options['output'] else self.local_op.build_temp_path_for_file(self, "modified-files.txt")
+        outfile = self.options['output']
         self.device.pull(self.fname, outfile)
 
         # Show output

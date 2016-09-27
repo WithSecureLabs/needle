@@ -1,5 +1,6 @@
 from core.framework.module import BaseModule
 from core.utils.menu import choose_from_list_data_protection
+from core.utils.utils import Utils
 
 
 class Module(BaseModule):
@@ -20,7 +21,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "plist.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "plist")
 
     # ==================================================================================================================
     # RUN
@@ -52,7 +53,9 @@ class Module(BaseModule):
             pl = self.device.remote_op.parse_plist(option)
             pl = dict(pl)
             # Print & Save to file
-            outfile = self.options['output'] if self.options['output'] else None
+            plist_name = Utils.extract_filename_from_path(option)
+            plist_path = '{}_{}.txt'.format(self.options['output'], plist_name)
+            outfile =  plist_path if self.options['output'] else None
             self.print_cmd_output(pl, outfile)
         else:
             # Only list files, do not prompt the user

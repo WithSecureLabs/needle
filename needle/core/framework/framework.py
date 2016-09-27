@@ -34,6 +34,7 @@ class Framework(cmd.Cmd):
     _jobs = []
     _record = None
     _device_ready = False
+    _local_ready = False
     # Mode Flags
     _script = 0
     _load = 0
@@ -404,7 +405,7 @@ class Framework(cmd.Cmd):
     # COMMAND METHODS
     # ==================================================================================================================
     def do_exit(self, params):
-        """Stop background jobs, cleanup temp folder (local&remote), close connection, then exits the Framework."""
+        """Stop background jobs, cleanup temp folders (local&remote), close connection, then exits the Framework."""
         # Stop background jobs
         for i in xrange(len(self._jobs)):
             self.do_kill(i)
@@ -461,6 +462,11 @@ class Framework(cmd.Cmd):
                 if self.options['verbose'] is False:
                     self.options['debug'] = False
                     self.printer.set_debug(self.options['debug'])
+            # Reset output folder
+            if name == 'output_folder':
+                self.printer.debug("Output folder changed, reloading modules")
+                self._local_ready = Framework._local_ready = False
+                self.do_reload(None)
             # TODO: support for config file
             #self._save_config(name)
         else:

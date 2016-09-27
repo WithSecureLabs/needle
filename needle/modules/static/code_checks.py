@@ -53,8 +53,10 @@ class Module(StaticModule):
             ['SQL', 'sqlite', 'table', 'cursor', 'sqlite3_prepare(', 'sqlcipher'],
         'file_storage':
             ['NSUserDefaults', 'NSDataWritingFileProtectionNone', 'NSDataWritingFileProtectionComplete',
-             'NSDataWritingFileProtectionCompleteUnlessOpen', 'NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication',
-             'NSFileProtectionKey', 'NSFileProtectionNone', 'NSFileProtectionComplete', 'NSFileProtectionCompleteUnlessOpen',
+             'NSDataWritingFileProtectionCompleteUnlessOpen',
+             'NSDataWritingFileProtectionCompleteUntilFirstUserAuthentication',
+             'NSFileProtectionKey', 'NSFileProtectionNone', 'NSFileProtectionComplete',
+             'NSFileProtectionCompleteUnlessOpen',
              'NSFileProtectionCompleteUntilFirstUserAuthentication'],
         'keychain_storage':
             ['SecItemAdd', 'SecItemUpdate', 'SecItemCopyMatching', 'kSecASttr', 'SFHFKkey'],
@@ -69,7 +71,8 @@ class Module(StaticModule):
         'pasteboard':
             ['UIPasteboardNameGeneral', 'UIPasteboardNameFind', 'pasteboardWithName', 'pasteboardWithUniqueName'],
         'webviews':
-            ['UIWebView', 'loadRequest', 'loadHTMLString', 'shouldStartLoadWithRequest', 'stringByEvaluatingJavaScriptFromString', 'baseURL'],
+            ['UIWebView', 'loadRequest', 'loadHTMLString', 'shouldStartLoadWithRequest',
+             'stringByEvaluatingJavaScriptFromString', 'baseURL'],
         'xml':
             ['foundExternalEntityDeclarationWithName', 'foundAttributeDeclarationWithName',
              'foundElementDeclarationWithName', 'foundInternalEntityDeclarationWithName',
@@ -85,7 +88,7 @@ class Module(StaticModule):
         self.diffs = None
         self.findings = {}
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "code-checks.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "code_checks.txt")
 
     # ==================================================================================================================
     # UTILS
