@@ -196,7 +196,7 @@ class LocalOperations(object):
         import socket
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         try:
-            s.connect(('8.8.8.8', 0))
+            s.connect(('8.8.8.8', 53))
             IP = s.getsockname()[0]
         except:
             IP = '127.0.0.1'
