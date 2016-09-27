@@ -24,8 +24,7 @@ class Module(BaseModule):
         fname = "hook.cy"
         hook = "@import com.saurik.substrate.MS; var oldm = {}; MS.hookMessage(LAContext, @selector(evaluatePolicy:localizedReason:reply:), function(self, reason, block) { block(YES, nil); }, oldm);"
         dst = self.device.remote_op.build_temp_path_for_file(fname)
-        cmd = "echo \"{content}\" > {dst}".format(content=hook, dst=dst)
-        self.device.remote_op.command_blocking(cmd)
+        self.device.remote_op.write_file(dst, hook)
 
         # Launch Cycript shell
         self.printer.info("Spawning a Cycript shell...")
