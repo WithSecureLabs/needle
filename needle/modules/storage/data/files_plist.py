@@ -8,8 +8,8 @@ class Module(BaseModule):
         'name': 'Plist Files',
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'List plist files contained in the app folders, alongside with their Data Protection Class. '
-                       'Plus, offers the chance to inspect them with Plutil.'
-                       'Alternatively, convert and dump all of the plist files for local analysis.',
+                       'Plus, offers the chance to inspect them with Plutil. '
+                       'Alternatively, you can convert and dump all of the plist files for local analysis.',
         'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze (ignored if "DUMP_ALL" is True)'),
             ('dump_all', False, True, 'Convert and save all plist files'),
