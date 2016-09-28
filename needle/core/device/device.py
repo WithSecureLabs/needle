@@ -47,12 +47,13 @@ class Device(object):
     # ==================================================================================================================
     # INIT
     # ==================================================================================================================
-    def __init__(self, ip, port, username, password, tools):
+    def __init__(self, ip, port, username, password, pub_key_auth, tools):
         # Setup params
         self._ip = ip
         self._port = port
         self._username = username
         self._password = password
+        self._pub_key_auth = bool(pub_key_auth)
         self._tools_local = tools
         # Init related objects
         self.app = App(self)
@@ -60,7 +61,6 @@ class Device(object):
         self.local_op = LocalOperations()
         self.remote_op = RemoteOperations(self)
         self.printer = Printer()
-        self.connect()
 
     # ==================================================================================================================
     # UTILS - USB
@@ -89,9 +89,9 @@ class Device(object):
             self.printer.verbose('Setting up SSH connection...')
             self.conn = paramiko.SSHClient()
             self.conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conn.connect(self._ip, port=self._port,
-                              username=self._username, password=self._password,
-                              allow_agent=False, look_for_keys=False)
+            self.conn.connect(self._ip, port=self._port, username=self._username, password=self._password,
+                              allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
+
         except paramiko.AuthenticationException as e:
             raise Exception('Authentication failed when connecting to %s. %s: %s' % (self._ip, type(e).__name__, e.message))
         except paramiko.SSHException as e:
