@@ -627,21 +627,24 @@ class Framework(cmd.Cmd):
         PORT = self._global_options['port']
         USERNAME = self._global_options['username']
         PASSWORD = self._global_options['password']
-        return IP, PORT, USERNAME, PASSWORD
+        PUB_KEY_AUTH = self._global_options['pub_key_auth']
+        return IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
 
     def _spawn_device(self):
         """Instantiate a new Device object, and open a connection."""
-        IP, PORT, USERNAME, PASSWORD = self._parse_device_options()
-        self.device = Framework.device = Device(IP, PORT, USERNAME, PASSWORD, self.TOOLS_LOCAL)
+        IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH = self._parse_device_options()
+        self.device = Framework.device = Device(IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH, self.TOOLS_LOCAL)
 
     def _connection_new(self):
-        """Try to instaurate a new connection with the device."""
+        """Try to instantiate a new connection with the device."""
         try:
             self._spawn_device()
+            self.device.connect()
             self.printer.notify("Connected to: %s" % self._global_options['ip'])
         except Exception as e:
             self.printer.error("Problem establishing connection: %s - %s " % (type(e).__name__, e.message))
             self.print_exception()
+            self.device.disconnect()
             self.device = Framework.device = None
             return None
         return self.device
@@ -653,9 +656,14 @@ class Framework(cmd.Cmd):
             self.printer.verbose('Connection not present, creating a new instance')
             return self._connection_new()
         else:
-            # Check connection we have is with the current chosen IP
-            if self._global_options['ip'] != self.device._ip:
-                self.printer.verbose('IP changed in global options. Establishing a new connection')
+            # Check connection we have is with the current chosen IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
+            if self._global_options['ip'] != self.device._ip or \
+               self._global_options['port'] != self.device._port or \
+               self._global_options['username'] != self.device._username or \
+               self._global_options['password'] != self.device._password or \
+               self._global_options['pub_key_auth'] != self.device._pub_key_auth:
+
+                self.printer.verbose('Settings changed in global options. Establishing a new connection')
                 self.device = Framework.device = None
                 return self._connection_new()
             else:
