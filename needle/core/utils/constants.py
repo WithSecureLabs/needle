@@ -29,6 +29,7 @@ class Constants(object):
     GLOBAL_VERBOSE = True
     GLOBAL_SETUP_DEVICE = True
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
+    GLOBAL_PUB_KEY_AUTH = True
 
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
