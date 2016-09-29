@@ -7,7 +7,7 @@ from core.utils.printer import Colors
 class Module(BaseModule):
     meta = {
         'name': 'MDM dump',
-        'author': 'Oliver Simonnet (@mwrlabs)',
+        'author': 'Oliver Simonnet (@mwr)',
         'description': 'Locate and dump MDM configuration files',
         'options': (
             ('bulk', False, False, 'Dump all configuration files in a selected directory.'),
