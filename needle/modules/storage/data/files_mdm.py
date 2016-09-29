@@ -27,10 +27,8 @@ class Module(BaseModule):
     # Prompt user to select a directory, and return directory string
     def select_dir(self, directories):
         option = choose_from_list(directories)
-        if option is 'All': dirs_str =  ' '.join(directories[:-1]) 
-        else: dirs_str = option
-        self.printer.info("Selecting files from: [%s]" % dirs_str.replace(" ", "]\n\t\t["))
-        return dirs_str
+        self.printer.info("Selecting files from: [%s]" % option)
+        return option
 
     # Compose cmd string, and return cmd output
     def get_files(self, dir_str):
@@ -41,7 +39,6 @@ class Module(BaseModule):
     # Filter out duplicate directories, and return list
     def filter_dirs(self, dirs):
         directories = list(set([Utils.extract_directory_from_path(x) for x in dirs]))
-        if not self.options['dump_all']: directories.append('All')
         return directories
 
      # Run standard mode
