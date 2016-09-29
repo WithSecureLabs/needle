@@ -180,3 +180,18 @@ class App(object):
             cl = res[0].rsplit(None, 1)[-1]
             computed.append((fname, cl))
         return computed
+
+    def convert_path_to_filename(self, fname, app_metadata):
+        """Convert a path to a file name, stripping the path of the bundle/data."""
+        # Path manipulation
+        stripped = fname.strip()
+
+        # Remove bundle/data path from the file name
+        shortname = stripped.replace(app_metadata['bundle_directory'], '')
+        shortname = shortname.replace(app_metadata['data_directory'], '')
+
+        # Remove extraneous ' symbols
+        shortname = shortname.replace('\'', '')
+
+        # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
+        return shortname.replace('/', '_')

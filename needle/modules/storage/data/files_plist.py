@@ -8,11 +8,16 @@ class Module(BaseModule):
         'name': 'Plist Files',
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'List plist files contained in the app folders, alongside with their Data Protection Class. '
-                       'Plus, offers the chance to inspect them with Plutil',
+                       'Plus, offers the chance to inspect them with Plutil or to dump them all for local analysis.',
         'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
-            ('output', True, False, 'Full path of the output file')
+            ('dump_all', False, True, 'Retrieve all plist files and convert them to XML'),
+            ('silent', True, True, 'Silent mode. Will not print file contents to screen when dumping all files'),
+            ('output', True, False, 'Full path of the output folder')
         ),
+        'comments': [
+            '"DUMP_ALL" will build file names based on each file\'s path (changing the / symbol to the _ symbol)',
+            'It will overwrite any existing files in the output directory']
     }
 
     # ==================================================================================================================
@@ -21,7 +26,19 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "plist")
+        self.options['output'] = self._global_options['output_folder']
+
+    def save_file(self, remote_name, local_name, silent):
+        """Convert the plist file to XML and save it locally"""
+        # Run plutil
+        self.printer.debug("Dumping content of the file: {}".format(remote_name))
+        pl = self.device.remote_op.parse_plist(remote_name)
+        # Prepare path
+        local_name = 'plist_{}'.format(local_name)
+        plist_path = self.local_op.build_output_path_for_file(self, local_name)
+        # Print & Save to file
+        outfile = str(plist_path) if self.options['output'] else None
+        self.print_cmd_output(pl, outfile, silent)
 
     # ==================================================================================================================
     # RUN
@@ -37,26 +54,31 @@ class Module(BaseModule):
 
         # No files found
         if not out:
-            self.printer.info("No Plist files found")
+            self.printer.error("No Plist files found")
             return
 
         # Add data protection class
         self.printer.info("Retrieving data protection classes...")
         retrieved_files = self.device.app.get_dataprotection(out)
 
-        # Show Menu
+        # Analysis
         self.printer.info("The following Plist files have been found:")
         if self.options['analyze']:
-            option = choose_from_list_data_protection(retrieved_files)
-            # Run plutil
-            self.printer.info("Dumping content of the file")
-            pl = self.device.remote_op.parse_plist(option)
-            pl = dict(pl)
-            # Print & Save to file
-            plist_name = Utils.extract_filename_from_path(option)
-            plist_path = '{}_{}.txt'.format(self.options['output'], plist_name)
-            outfile =  plist_path if self.options['output'] else None
-            self.print_cmd_output(pl, outfile)
+            # Show Menu
+            remote_name = choose_from_list_data_protection(retrieved_files)
+            local_name = self.device.app.convert_path_to_filename(remote_name, self.APP_METADATA)
+            # Convert the plist and save it locally
+            self.save_file(remote_name, local_name, False)
         else:
             # Only list files, do not prompt the user
             choose_from_list_data_protection(retrieved_files, choose=False)
+
+        # Dump all
+        if self.options['dump_all']:
+            self.printer.notify('Dumping all plist files...')
+            for fname in out:
+                remote_name = Utils.escape_path(fname)
+                # Convert the plist path to a valid filename
+                local_name = self.device.app.convert_path_to_filename(fname, self.APP_METADATA)
+                # Convert the plist and save it locally
+                self.save_file(remote_name, local_name, self.options['silent'])
