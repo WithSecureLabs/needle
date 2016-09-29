@@ -217,13 +217,9 @@ class RemoteOperations(object):
         pl = plistlib.readPlistFromString(out)
         return pl
 
-    def read_file(self, fname, grep_args=''):
+    def read_file(self, fname):
         """Given a filename, prints its content on screen."""
-        if (grep_args != ''):
-            cmd = 'cat {fname} | grep {grep_args}'.format(fname=fname,grep_args=grep_args)
-        else:
-            cmd = 'cat {fname}'.format(fname=fname)
-
+        cmd = 'cat {fname}'.format(fname=fname)
         return self.command_blocking(cmd, internal=True)
 
     def write_file(self, fname, body):
