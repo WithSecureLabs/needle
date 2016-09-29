@@ -8,7 +8,7 @@ class Module(BackgroundModule):
         'description': 'Monitor the OS Pasteboard and dump its content',
         'options': (
             ('sleep', 5, True, 'Sampling frequency: sleep time, in seconds, between different samples (must be > 1)'),
-            ('output', True, False, 'Full path of the output file')
+            ('output', "", True, 'Full path of the output file')
         ),
         'comments': ['This module may not function under iOS 8 or iOS 9']
     }
@@ -20,7 +20,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "pasteboard.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file(self, "pasteboard.txt")
 
     # ==================================================================================================================
     # RUN
@@ -33,7 +33,7 @@ class Module(BackgroundModule):
             return
 
         # Remote output file
-        self.fname = self.device.remote_op.build_temp_path_for_file("pbwatcher")
+        self.fname = self.device.remote_op.build_temp_path_for_file("pasteboard")
 
         # Run command in a thread
         cmd = '{app} {sleep} &> {fname} & echo $!'.format(app=self.device.DEVICE_TOOLS['PBWATCHER'],
@@ -48,8 +48,7 @@ class Module(BackgroundModule):
 
         # Pull output file
         self.printer.info("Retrieving output file...")
-        src = self.fname
-        outfile = self.options['output'] if self.options['output'] else self.local_op.build_temp_path_for_file(self, "pbwatcher")
+        outfile = self.options['output']
         self.device.pull(self.fname, outfile)
 
         # Show output
