@@ -13,6 +13,7 @@ class Utils(object):
     def escape_path(path):
         """Escape the given path."""
         import pipes
+        path = path.strip()          # strip
         path = path.strip(''''"''')  # strip occasional single/double quotes from both sides
         return pipes.quote(path)
 
