@@ -43,11 +43,6 @@ class RemoteOperations(object):
         cmd = "cp {} {}".format(src, dst)
         self.command_blocking(cmd)
 
-    def file_read(self, fname):
-        """Given a filename, prints content."""
-        cmd = 'cat {fname}'.format(fname=fname)
-        return self.command_blocking(cmd, internal=True)
-
     # ==================================================================================================================
     # DIRECTORIES
     # ==================================================================================================================

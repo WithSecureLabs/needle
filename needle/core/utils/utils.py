@@ -41,9 +41,9 @@ class Utils(object):
         return None, None
 
     @staticmethod
-    def get_file_path(file_str):
+    def extract_directory_from_path(fullpath):
         # Returns the irectory of a given full file path.
-        return '/'.join(file_str.split('/')[:-1])
+        return os.path.dirname(fullpath)
 
     # ==================================================================================================================
     # UNICODE STRINGS UTILS
