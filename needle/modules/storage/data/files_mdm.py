@@ -30,7 +30,7 @@ class Module(BaseModule):
         if option is 'All': dirs_str =  ' '.join(directories[:-1]) 
         else: dirs_str = option
 
-        self.printer.info("Selecting files from: %s" % dirs_str.replace(" ", "\n\t"))
+        self.printer.info("Selecting files from: [%s%s%s]" % (Colors.B, dirs_str.replace(" ", "\n\t"), Colors.N))
         return dirs_str
 
     # Compose cmd string, and return cmd output
