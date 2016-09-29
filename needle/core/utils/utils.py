@@ -39,6 +39,11 @@ class Utils(object):
         # Error
         return None, None
 
+    @staticmethod
+    def get_file_path(file_str):
+        # Returns the irectory of a given full file path.
+        return '/'.join(file_str.split('/')[:-1])
+
     # ==================================================================================================================
     # UNICODE STRINGS UTILS
     # ==================================================================================================================
