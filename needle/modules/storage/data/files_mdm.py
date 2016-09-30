@@ -11,7 +11,7 @@ class Module(BaseModule):
         'options': (
             ('dump_all', False, False, 'DUMP_ALL mode. Dump all configuration files in a selected directory'),
             ('autosave', False, False, 'Automatically save files. (Recomended with DUMP_ALL mode)'),
-            ('silent', True, True, 'Silent mode. Will not print file contents to screen.'),
+            ('silent', False, False, 'Silent mode. Will not print file contents to screen.'),
             ('output', True, True, 'Ful,l path of the output folder')
         ),
     }
@@ -27,12 +27,13 @@ class Module(BaseModule):
 
     # Prompt user to select a directory, and return directory string
     def select_dir(self, directories):
+        self.printer.info("Configuration file locations:")
         option = choose_from_list(directories)
-        self.printer.info("Selecting files from: [%s]" % option)
         return option
 
     # Compose cmd string, and return cmd output
     def get_files(self, dir_str):
+        self.printer.verbose("Identifying plist files within [%s]" % dir_str)
         cmd = '{bin} {dirs_str} -maxdepth 1 -type f -name "*.plist"'.format(bin=self.device.DEVICE_TOOLS['FIND'], dirs_str=dir_str)
         out = self.device.remote_op.command_blocking(cmd)
         return out
@@ -42,11 +43,13 @@ class Module(BaseModule):
         directories = list(set([Utils.extract_directory_from_path(x) for x in dirs if "needle" not in x]))
         return directories
 
+    # Format output filename
     def set_output_name(self, remote_file):
         fileName = Utils.extract_filename_from_path(remote_file)
         fileName = 'mdm_export_{}'.format(fileName)
         return self.local_op.build_output_path_for_file(self, fileName)
 
+    # Save file
     def save_file(self, remote_file, local_file):
         if self.options['autosave']:
             self.device.pull(remote_file, local_file)
@@ -56,26 +59,31 @@ class Module(BaseModule):
 
      # Run standard mode
     def individual_mode(self, directories):
-        dirs_str = self.select_dir(directories)
-        retrieved_files = self.get_files(dirs_str)
-
-        # Begin "individualual file" user interactivity loop
         while self.running:
-            option = choose_from_list(retrieved_files) 
+            dirs_str = self.select_dir(directories)
+            retrieved_files = self.get_files(dirs_str)
 
-            # Run plutil on selected file
-            self.printer.info("Dumping content of the file...")
-            pl = dict(self.device.remote_op.parse_plist(option))
+            # Begin "individualual file" user interactivity loop
+            while self.running:
+                self.printer.info("Listing files from: [%s]" % dirs_str)
+                option = choose_from_list(retrieved_files) 
+                self.printer.info("File selected: [%s]" % option)
 
-            # Initialize output filename
-            outFile = self.set_output_name(option.strip())
+                # Run putil on file and Print Data to user
+                if not self.options['silent']: 
+                    self.printer.info("Dumping content of the file...")
+                    pl = dict(self.device.remote_op.parse_plist(option))
+                    self.print_cmd_output(pl)
 
-            # Print Data to user and save file
-            if not self.options['silent']: self.print_cmd_output(pl)
-            self.save_file(option.strip(), outFile)
-                    
+                # Save file
+                outFile = self.set_output_name(option.strip())
+                self.save_file(option.strip(), outFile)
+                        
+                # Ask user if they wish to view another file
+                yes = choose_yes_no("Would you like to inspect another file?")
+                if not yes: break
             # Ask user if they wish to view another file
-            yes = choose_yes_no("Would you like to inspect another file?")
+            yes = choose_yes_no("Would you like to view another directory?")
             if not yes: self.running = False
 
     # Run dump mode
@@ -89,8 +97,9 @@ class Module(BaseModule):
                 # Initialize output
                 outFile = self.set_output_name(f)
 
-                # filename and save file
-                self.printer.info("File: %s (%d/%d)" % (f, i+1, len(retrieved_files)))
+                # Save file
+                if not self.options['autosave']: 
+                    self.printer.info("File (%d/%d): %s" % (i+1, len(retrieved_files), f))
                 self.save_file(f, outFile)
 
             # Ask the user if they want to dump another directory
@@ -102,12 +111,12 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         self.running = True
-        self.printer.info("Looking for MDM Configuration file locations...")
 
         if self.options['dump_all'] and not self.options['autosave']:
-            self.printer.warning("Autosave recomended in DUMO_ALL mode!")
+            self.printer.warning("Autosave recomended in DUMP_ALL mode!")
 
         # Find MDM config file locations
+        self.printer.verbose("Searching for MDM Configuration file locations...")
         cmd = '{bin} / -type f -name "MDM*.plist" -o -name "UserSettings.plist"'.format(bin=self.device.DEVICE_TOOLS['FIND'])
         out = self.device.remote_op.command_blocking(cmd)
 
@@ -119,6 +128,4 @@ class Module(BaseModule):
 
         if not self.options['dump_all']:
             self.individual_mode(directories)
-        else:
-            self.printer.info("Running in dump mode!")
-            self.dump_mode(directories)
+        else: self.dump_mode(directories)
