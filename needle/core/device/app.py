@@ -195,3 +195,65 @@ class App(object):
 
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
         return shortname.replace('/', '_')
+
+    # ==================================================================================================================
+    # EXTENSION SUPPORT
+    # ==================================================================================================================
+    def get_extensions(self,app_metadata):
+        """ Obtain the metadata for each extension
+        """
+        plugin_dir = os.path.join(app_metadata['binary_directory'],"PlugIns")
+        
+        if self._device.remote_op.dir_exist(plugin_dir):
+            return self._retrieve_extensions(plugin_dir)
+        else:
+            return None
+
+    def _retrieve_extensions(self,plugin_dir):
+        items = self._device.remote_op.dir_list(plugin_dir)
+        plugins = []
+        extensions = []
+
+        for i in items:
+            if "appex" in i:
+                t = i.split(" ")
+                fn = str(t[len(t)-1]).strip()
+                plugin_path = os.path.join(plugin_dir,fn)
+                plugins.append(plugin_path)
+
+        # Parse the plist for each extension found 
+        for plugin in plugins:
+            plist_path = os.path.join(plugin,"Info.plist")
+            plist_local = self._device.remote_op.parse_plist(plist_path)
+            
+            bundle_id = plist_local['CFBundleIdentifier']
+            bundle_displayname = plist_local['CFBundleDisplayName']
+            bundle_exe = plist_local['CFBundleExecutable']
+            bundle_package_type = plist_local['CFBundlePackageType']
+            sdk_version = plist_local['DTSDKName']
+            minimum_os = plist_local['MinimumOSVersion']
+
+            try:
+                platform_version = plist_local['DTPlatformVersion']
+            except:
+                platform_version = None     
+
+            extension_data = plist_local['NSExtension']
+
+            extension_metadata = {
+            'bundle_id' : bundle_id,
+            'bundle_displayname' : bundle_displayname,
+            'bundle_exe' : bundle_exe,
+            'bundle_package_type' : bundle_package_type,
+            'sdk_version' : sdk_version,
+            'minimum_os' : minimum_os,
+            'extension_data' : extension_data
+            }
+
+            extensions.append(extension_metadata)
+        return extensions
+
+
+
+
+
