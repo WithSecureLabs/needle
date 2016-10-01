@@ -226,7 +226,7 @@ class RemoteOperations(object):
         """Given a filename, prints its content on screen."""
         cmd = 'cat {fname}'.format(fname=fname)
         if grep_args:
-            cmd = ' | grep {grep_args}'.format(grep_args=grep_args)
+            cmd += ' | grep {grep_args}'.format(grep_args=grep_args)
         return self.command_blocking(cmd, internal=True)
 
     def write_file(self, fname, body):
