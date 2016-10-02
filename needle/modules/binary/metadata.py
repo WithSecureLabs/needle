@@ -66,9 +66,8 @@ class Module(BaseModule):
 
         # App Extensions
         if self.APP_EXTENSIONS:
-            self.printer.notify('{:<20}'.format('Application Extensions',))
-
             for app_extension in self.APP_EXTENSIONS:
+                self.printer.notify('{:<20}'.format('Application Extension',))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Extension Name', app_extension['bundle_displayname']))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Bundle ID', app_extension['bundle_id']))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Bundle Executable', app_extension['bundle_exe']))
@@ -80,7 +79,16 @@ class Module(BaseModule):
                         self.printer.notify('\t\t NSExtensionAttributes')
                         vals = v.items()
                         for x, y in vals:
-                            self.printer.notify('\t\t\t {:<40}: {:<20}'.format(x, y))                        
+                            if "NSExtensionActivationRule" in x:
+                                try:
+                                    rules = y.items()
+                                except:
+                                    rules = None 
+                                if rules:
+                                    for q,w in rules:
+                                        self.printer.notify('\t\t\t {:<40}: {:<20}'.format(q, w))
+                                else:
+                                    self.printer.notify('\t\t\t {:<40}: {:<20}'.format(x, y))                        
                     else:
                         self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
 

@@ -216,10 +216,10 @@ class App(object):
 
         for i in items:
             if "appex" in i:
-                t = i.split(" ")
-                fn = str(t[len(t)-1]).strip()
+                fn = str(i).strip()
                 plugin_path = os.path.join(plugin_dir,fn)
-                plugins.append(plugin_path)
+                if self._device.remote_op.dir_exist(plugin_path):
+                    plugins.append(plugin_path)
 
         # Parse the plist for each extension found 
         for plugin in plugins:
