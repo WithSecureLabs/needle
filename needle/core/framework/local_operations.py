@@ -158,6 +158,12 @@ class LocalOperations(object):
         self.printer.notify("Content of file '%s': " % fname)
         print(out)
 
+    def write_file(self, fname, body):
+        """Given a filename, write body into it."""
+        self.printer.debug("Writing to file: {}".format(fname))
+        with open(fname, "w") as fp:
+            fp.write(body)
+
     def output_folder_setup(self, module):
         """Setup local output folder: create it if it doesn't exist. Oterhwise prompt the user and ask to back it up."""
         output = module._global_options['output_folder']
