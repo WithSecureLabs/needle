@@ -49,7 +49,6 @@ class Framework(cmd.Cmd):
     local_op = None
     device = None
     APP_METADATA = None
-    APP_EXTENSIONS = None
     TOOLS_LOCAL = Constants.PATH_TOOLS_LOCAL
 
     # ==================================================================================================================
@@ -691,8 +690,4 @@ class Framework(cmd.Cmd):
             # Metadata not yet fetched, retrieve it
             self.printer.info("Retrieving app's metadata...")
             self.APP_METADATA = Framework.APP_METADATA = self.device.app.get_metadata(app)
-            # Extensions not yet fetched, retrieve it
-            if not self.APP_EXTENSIONS:
-                self.printer.info("Rerieving app's extensions...")
-                self.APP_EXTENSIONS = Framework.APP_EXTENSIONS = self.device.app.get_extensions(self.APP_METADATA)
         return app

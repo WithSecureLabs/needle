@@ -6,7 +6,8 @@ class Module(BaseModule):
         'name': 'App Metadata',
         'author': '@LanciniMarco (@MWRLabs)',
         'description': "Display the app's metadata: UUID, app name/version, bundle name/ID, bundle/data/binary directory, "
-                       "binary path/name, entitlements, URL handlers, architectures, platform/SDK/OS version, ATS settings",
+                       "binary path/name, entitlements, URL handlers, architectures, platform/SDK/OS version, ATS settings,"
+                       "app extensions",
         'options': (
         ),
     }
@@ -65,9 +66,9 @@ class Module(BaseModule):
             self.printer.info('Apple Transport Security Settings not found')
 
         # App Extensions
-        if self.APP_EXTENSIONS:
-            for app_extension in self.APP_EXTENSIONS:
-                self.printer.notify('{:<20}'.format('Application Extension',))
+        if self.APP_METADATA['extensions']:
+            for app_extension in self.APP_METADATA['extensions']:
+                self.printer.notify('{:<20}'.format('Application Extension:',))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Extension Name', app_extension['bundle_displayname']))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Bundle ID', app_extension['bundle_id']))
                 self.printer.notify('\t\t {:<40}: {:<20}'.format('Bundle Executable', app_extension['bundle_exe']))
@@ -83,13 +84,13 @@ class Module(BaseModule):
                                 try:
                                     rules = y.items()
                                 except:
-                                    rules = None 
+                                    rules = None
                                 if rules:
-                                    for q,w in rules:
+                                    for q, w in rules:
                                         self.printer.notify('\t\t\t {:<40}: {:<20}'.format(q, w))
                                 else:
-                                    self.printer.notify('\t\t\t {:<40}: {:<20}'.format(x, y))                        
+                                    self.printer.notify('\t\t\t {:<40}: {:<20}'.format(x, y))
                     else:
                         self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
-
-
+        else:
+            self.printer.info('No Application Extensions found')

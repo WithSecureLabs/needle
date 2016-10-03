@@ -64,6 +64,9 @@ class App(object):
         # Detect architectures
         architectures = self._detect_architectures(binary_path)
 
+        # App Extensions
+        extensions = self.get_extensions(binary_directory)
+
         # Pack into a dict
         metadata = {
             'uuid': uuid,
@@ -82,6 +85,7 @@ class App(object):
             'url_handlers': url_handlers,
             'ats_settings': ats_settings,
             'architectures': architectures,
+            'extensions': extensions,
         }
         return metadata
 
@@ -94,6 +98,60 @@ class App(object):
         msg = out[0].strip()
         res = msg.rsplit(': ')[-1].split(' ')
         return res
+
+    # ==================================================================================================================
+    # EXTENSION SUPPORT
+    # ==================================================================================================================
+    def get_extensions(self, binary_directory):
+        """ Obtain the metadata for each extension."""
+        plugin_dir = os.path.join(binary_directory, "PlugIns")
+        if self._device.remote_op.dir_exist(plugin_dir):
+            return self._retrieve_extensions(plugin_dir)
+        else:
+            return None
+
+    def _retrieve_extensions(self, plugin_dir):
+        # Find plugins
+        items = self._device.remote_op.dir_list(plugin_dir)
+        plugins = []
+        for i in items:
+            if "appex" in i:
+                fn = str(i).strip()
+                plugin_path = os.path.join(plugin_dir, fn)
+                if self._device.remote_op.dir_exist(plugin_path):
+                    plugins.append(plugin_path)
+
+        # Parse the plist for each extension found
+        extensions = []
+        for plugin in plugins:
+            plist_path = os.path.join(plugin, "Info.plist")
+            plist_local = self._device.remote_op.parse_plist(plist_path)
+            # Parse the plist
+            bundle_id = plist_local['CFBundleIdentifier']
+            bundle_displayname = plist_local['CFBundleDisplayName']
+            bundle_exe = plist_local['CFBundleExecutable']
+            bundle_package_type = plist_local['CFBundlePackageType']
+            sdk_version = plist_local['DTSDKName']
+            minimum_os = plist_local['MinimumOSVersion']
+            extension_data = plist_local['NSExtension']
+            try:
+                platform_version = plist_local['DTPlatformVersion']
+            except:
+                platform_version = None
+
+            # Build the dict
+            extension_metadata = {
+                'bundle_id': bundle_id,
+                'bundle_displayname': bundle_displayname,
+                'bundle_exe': bundle_exe,
+                'bundle_package_type': bundle_package_type,
+                'sdk_version': sdk_version,
+                'platform_version': platform_version,
+                'minimum_os': minimum_os,
+                'extension_data': extension_data
+            }
+            extensions.append(extension_metadata)
+        return extensions
 
     # ==================================================================================================================
     # MANIPULATE APP
@@ -195,65 +253,3 @@ class App(object):
 
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
         return shortname.replace('/', '_')
-
-    # ==================================================================================================================
-    # EXTENSION SUPPORT
-    # ==================================================================================================================
-    def get_extensions(self,app_metadata):
-        """ Obtain the metadata for each extension
-        """
-        plugin_dir = os.path.join(app_metadata['binary_directory'],"PlugIns")
-        
-        if self._device.remote_op.dir_exist(plugin_dir):
-            return self._retrieve_extensions(plugin_dir)
-        else:
-            return None
-
-    def _retrieve_extensions(self,plugin_dir):
-        items = self._device.remote_op.dir_list(plugin_dir)
-        plugins = []
-        extensions = []
-
-        for i in items:
-            if "appex" in i:
-                fn = str(i).strip()
-                plugin_path = os.path.join(plugin_dir,fn)
-                if self._device.remote_op.dir_exist(plugin_path):
-                    plugins.append(plugin_path)
-
-        # Parse the plist for each extension found 
-        for plugin in plugins:
-            plist_path = os.path.join(plugin,"Info.plist")
-            plist_local = self._device.remote_op.parse_plist(plist_path)
-            
-            bundle_id = plist_local['CFBundleIdentifier']
-            bundle_displayname = plist_local['CFBundleDisplayName']
-            bundle_exe = plist_local['CFBundleExecutable']
-            bundle_package_type = plist_local['CFBundlePackageType']
-            sdk_version = plist_local['DTSDKName']
-            minimum_os = plist_local['MinimumOSVersion']
-
-            try:
-                platform_version = plist_local['DTPlatformVersion']
-            except:
-                platform_version = None     
-
-            extension_data = plist_local['NSExtension']
-
-            extension_metadata = {
-            'bundle_id' : bundle_id,
-            'bundle_displayname' : bundle_displayname,
-            'bundle_exe' : bundle_exe,
-            'bundle_package_type' : bundle_package_type,
-            'sdk_version' : sdk_version,
-            'minimum_os' : minimum_os,
-            'extension_data' : extension_data
-            }
-
-            extensions.append(extension_metadata)
-        return extensions
-
-
-
-
-
