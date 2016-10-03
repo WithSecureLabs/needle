@@ -68,9 +68,11 @@ class RemoteOperations(object):
         if force: delete(path)
         elif self.dir_exist(path): delete(path)
 
-    def dir_list_recursive(self, path):
+    def dir_list(self, path, recursive=False):
         path = Utils.escape_path(path)
-        cmd = 'ls -alR %s' % path
+        opts = ''
+        if recursive: opts = '-alR'
+        cmd = 'ls {opts} {path}'.format(opts=opts, path=path)
         return self.command_blocking(cmd)
 
     def dir_reset(self, path):
@@ -217,9 +219,11 @@ class RemoteOperations(object):
         pl = plistlib.readPlistFromString(out)
         return pl
 
-    def read_file(self, fname):
+    def read_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""
         cmd = 'cat {fname}'.format(fname=fname)
+        if grep_args:
+            cmd += ' | grep {grep_args}'.format(grep_args=grep_args)
         return self.command_blocking(cmd, internal=True)
 
     def write_file(self, fname, body):

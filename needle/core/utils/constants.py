@@ -27,7 +27,7 @@ class Constants(object):
     GLOBAL_PASSWORD = 'alpine'
     GLOBAL_DEBUG = False
     GLOBAL_VERBOSE = True
-    GLOBAL_SETUP_DEVICE = True
+    GLOBAL_SETUP_DEVICE = False
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
 
@@ -47,6 +47,7 @@ class Constants(object):
         'FRIDA-TRACE': 'frida-trace',
         'CAT': 'cat',
         'MITMDUMP': 'mitmdump',
+        'OPENSSL': 'openssl',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -98,6 +99,7 @@ class Constants(object):
             'FSMON': {'COMMAND': 'fsmon', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'fsmon')},
             'GDB': {'COMMAND': 'gdb', 'PACKAGES': ['gdb'], 'REPO': 'http://cydia.radare.org/', 'LOCAL': None},
             'IPAINSTALLER': {'COMMAND': 'ipainstaller', 'PACKAGES': ['com.autopear.installipa'], 'REPO': None, 'LOCAL': None},
+            #'KEYCHAIN_DUMP': {'COMMAND': 'keychain_dump', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychain_dump')},
             'KEYCHAINDUMPER': {'COMMAND': 'keychain_dumper', 'PACKAGES': ['keychaindumper'], 'REPO': None, 'LOCAL': None},
             #'KEYCHAINEDITOR': {'COMMAND': 'keychaineditor', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychaineditor')},
             'LDID': {'COMMAND': 'ldid', 'PACKAGES': ['ldid'], 'REPO': None, 'LOCAL': None},
