@@ -47,6 +47,7 @@ class Constants(object):
         'FRIDA-TRACE': 'frida-trace',
         'CAT': 'cat',
         'MITMDUMP': 'mitmdump',
+        'OPENSSL': 'openssl',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
