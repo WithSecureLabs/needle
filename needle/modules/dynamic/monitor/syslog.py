@@ -8,8 +8,10 @@ class Module(BackgroundModule):
         'description': 'Monitor the Syslog in background and dump its content.',
         'options': (
             ('output', True, True, 'Full path of the output file'),
+            ('filter', False, False, 'Filter to apply when monitoring the syslog. If empty, the entire syslog will be monitored'),
         ),
     }
+    PID = None
 
     # ==================================================================================================================
     # UTILS
@@ -18,6 +20,10 @@ class Module(BackgroundModule):
         BackgroundModule.__init__(self, params)
         # Setting default output file
         self.options['output'] = self.local_op.build_output_path_for_file(self, "syslog.txt")
+        # Setting default filter
+        if self.APP_METADATA:
+            self.printer.info('Setting filter to: %s (you can change it in options)' % self.APP_METADATA['binary_name'])
+            self.options['filter'] = self.APP_METADATA['binary_name']
 
     def module_pre(self):
         return BackgroundModule.module_pre(self, bypass_app=True)
@@ -31,14 +37,16 @@ class Module(BackgroundModule):
         self.path_local = self.options['output'] if self.options['output'] else None
 
         # Build cmd
-        cmd = '{app} > {out}'.format(app=self.device.DEVICE_TOOLS['ONDEVICECONSOLE'],
-                                     out=self.path_remote)
-        self.local_op.command_background_start(cmd)
+        cmd = '{app}'.format(app=self.device.DEVICE_TOOLS['ONDEVICECONSOLE'])
+        if self.options['filter']:
+            cmd += ' | grep -i "{flt}"'.format(flt=self.options['filter'])
+        cmd += ' > {out}'.format(out=self.path_remote)
+        self.device.remote_op.command_background_start(self, cmd)
 
     def module_kill(self):
         # Stop running process
         self.printer.info('Stopping Syslog monitor...')
-        self.local_op.command_background_stop(self.device.DEVICE_TOOLS['ONDEVICECONSOLE'])
+        self.device.remote_op.command_background_stop(self.PID)
 
         # Retrieving output
         self.printer.verbose('Retrieving output...')

@@ -35,9 +35,9 @@ class Module(BackgroundModule):
 
         # Run command in a thread
         self.printer.notify('Monitoring: %s' % self.options['folder'])
-        cmd = '{app} {flt} &> {fname} & echo $!'.format(app=self.device.DEVICE_TOOLS['FSMON'],
-                                                        flt=self.options['folder'],
-                                                        fname=self.fname)
+        cmd = '{app} {flt} &> {fname}'.format(app=self.device.DEVICE_TOOLS['FSMON'],
+                                              flt=self.options['folder'],
+                                              fname=self.fname)
         self.device.remote_op.command_background_start(self, cmd)
 
 
