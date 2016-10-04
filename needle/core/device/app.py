@@ -250,6 +250,7 @@ class App(object):
 
         # Remove extraneous ' symbols
         shortname = shortname.replace('\'', '')
-
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
-        return shortname.replace('/', '_')
+        shortname.replace('/', '_')
+        # Remove spaces
+        shortname.replace(' ', '')
