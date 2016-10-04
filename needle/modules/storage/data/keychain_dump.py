@@ -32,11 +32,12 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         # Composing the command string
-        cmd = '{}'.format(self.device.DEVICE_TOOLS['KEYCHAINDUMPER'])
+        cmd = '{} --action dump'.format(self.device.DEVICE_TOOLS['KEYCHAINEDITOR'])
         msg = "Dumping the keychain"
         if self.options['filter']:
-            cmd += ' | grep -i "{}" -A 3 -B2'.format(self.options['filter'])
+            cmd += ' --find {}'.format(self.options['filter'])
             msg += ' with filter: %s' % self.options['filter']
+
         # Dump Keychain
         self.printer.info(msg)
         out = self.device.remote_op.command_blocking(cmd)
