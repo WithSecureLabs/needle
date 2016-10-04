@@ -7,7 +7,7 @@ class Module(BaseModule):
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'Watch the syslog in realtime (and save it to file)',
         'options': (
-            ('output', True, False, 'Full path of the output file'),
+            ('output', '', False, 'Full path of the output file'),
         ),
     }
 
@@ -26,10 +26,20 @@ class Module(BaseModule):
     # RUN
     # ==================================================================================================================
     def module_run(self):
+        # Prepare paths
+        path_remote = self.device.remote_op.build_temp_path_for_file('syslog')
+        path_local = self.options['output'] if self.options['output'] else None
+
         # Build cmd
-        cmd = '{app}'.format(app=self.TOOLS_LOCAL['IDEVICESYSLOG'])
-        if self.options['output']:
-            cmd += ' | tee {}'.format(self.options['output'])
+        cmd = '{app}'.format(app=self.device.DEVICE_TOOLS['ONDEVICECONSOLE'])
+        if path_local:
+            cmd += ' | tee {}'.format(path_remote)
+
         # Running cmd
         self.printer.notify("Attaching to syslog (CTRL-C to quit)")
-        self.local_op.command_interactive(cmd)
+        self.device.remote_op.command_interactive_tty(cmd)
+
+        # Retrieving output
+        if path_local:
+            self.printer.verbose('Retrieving output...')
+            self.device.pull(path_remote, path_local)
