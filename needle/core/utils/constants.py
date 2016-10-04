@@ -48,6 +48,7 @@ class Constants(object):
         'CAT': 'cat',
         'MITMDUMP': 'mitmdump',
         'OPENSSL': 'openssl',
+        'VIM': 'vim',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -63,6 +64,7 @@ class Constants(object):
     DEVICE_PATH_DATA_iOS9    = '/private/var/mobile/Containers/Data/Application/'
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
     DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
+    DEVICE_PATH_HOSTS        = '/etc/hosts'
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
