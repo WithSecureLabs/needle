@@ -168,6 +168,8 @@ class App(object):
         out = self._device.remote_op.command_blocking(cmd)
         try:
             process_list = filter(lambda x: '/var/mobile' in x, out)
+            if len(process_list) == 0:
+                process_list = filter(lambda x: '/var/containers' in x, out)
             process = process_list[0].strip()
             pid = process.split(' ')[0]
             self._device.printer.verbose('PID found: %s' % pid)
