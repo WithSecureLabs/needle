@@ -168,6 +168,8 @@ class App(object):
         out = self._device.remote_op.command_blocking(cmd)
         try:
             process_list = filter(lambda x: '/var/mobile' in x, out)
+            if not process_list:
+                process_list = filter(lambda x: '/var/containers' in x, out)
             process = process_list[0].strip()
             pid = process.split(' ')[0]
             self._device.printer.verbose('PID found: %s' % pid)
@@ -250,6 +252,7 @@ class App(object):
 
         # Remove extraneous ' symbols
         shortname = shortname.replace('\'', '')
-
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
-        return shortname.replace('/', '_')
+        shortname.replace('/', '_')
+        # Remove spaces
+        shortname.replace(' ', '')
