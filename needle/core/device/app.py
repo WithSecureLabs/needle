@@ -168,7 +168,7 @@ class App(object):
         out = self._device.remote_op.command_blocking(cmd)
         try:
             process_list = filter(lambda x: '/var/mobile' in x, out)
-            if len(process_list) == 0:
+            if not process_list:
                 process_list = filter(lambda x: '/var/containers' in x, out)
             process = process_list[0].strip()
             pid = process.split(' ')[0]
@@ -195,7 +195,19 @@ class App(object):
             # Remove temp IPA
             self._device.remote_op.file_delete(out_temp)
         except Exception:
-            self._device.printer.warning('The app might be already decrypted. Trying to retrieve the IPA...')
+            # Check if Clutch failed somehow
+            msg = None
+            if 'Clutch2: Permission denied' in out[0]:
+                msg = 'marked as executable'
+            elif 'Clutch2: command not found' in out[0]:
+                msg = 'installed on the device'
+
+            if msg:
+                self._device.printer.error('Clutch2 could not be run successfully so the binary could not be decrypted')
+                raise Exception('Please confirm that Clutch2 is {}'.format(msg))
+            else:
+                self._device.printer.warning('The app might be already decrypted. Trying to retrieve the IPA...')
+
             # Retrieving the IPA
             cmd = '{bin} -b {bundle} -o {out}'.format(bin=self._device.DEVICE_TOOLS['IPAINSTALLER'],
                                                       bundle=app_metadata['bundle_id'],
@@ -252,6 +264,7 @@ class App(object):
 
         # Remove extraneous ' symbols
         shortname = shortname.replace('\'', '')
-
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
-        return shortname.replace('/', '_')
+        shortname.replace('/', '_')
+        # Remove spaces
+        shortname.replace(' ', '')

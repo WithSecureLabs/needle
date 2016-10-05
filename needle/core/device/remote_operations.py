@@ -121,6 +121,7 @@ class RemoteOperations(object):
         def daemon(module, cmd):
             """Daemon used to run the command so to avoid blocking the UI"""
             # Run command
+            cmd += ' & echo $!'
             out = self.command_blocking(cmd)
             # Parse PID of the process
             try:

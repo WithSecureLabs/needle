@@ -59,7 +59,7 @@ class Module(BaseModule):
             # Save to file
             outfile = self.options['output'] if self.options['output'] else None
             # Print to console
-            self.printer.notify("The following strings has been found: ")
+            self.printer.notify("The following strings have been found: ")
             self.print_cmd_output(out, outfile)
             # Analysis
             if self.options['analyze']:

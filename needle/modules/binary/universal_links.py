@@ -112,7 +112,7 @@ class Module(BaseModule):
         else:
             # Association not found
             self.printer.error("\t\tCould not retreive apple-app-site-association")
-            signed, signature = None, None
+            signed, signature, outfile = None, None, None
 
         # Save result
         temp = [domain, signed, signature, outfile]
