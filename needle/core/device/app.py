@@ -195,23 +195,16 @@ class App(object):
             # Remove temp IPA
             self._device.remote_op.file_delete(out_temp)
         except Exception:
-
+            # Check if Clutch failed somehow
             msg = None
-
-            # This is the error if the binary is not marked as executable.
             if 'Clutch2: Permission denied' in out[0]:
                 msg = 'marked as executable'
-
-            # This is the error if the binary cannot be found.
             elif 'Clutch2: command not found' in out[0]:
                 msg = 'installed on the device'
 
             if msg:
-                self._device.printer.error(
-                    'Clutch2 could not be run successfully so the binary could not be decrypted.')
-                self._device.printer.error(
-                    'Please confirm that Clutch2 is {}.'.format(msg))
-
+                self._device.printer.error('Clutch2 could not be run successfully so the binary could not be decrypted')
+                raise Exception('Please confirm that Clutch2 is {}'.format(msg))
             else:
                 self._device.printer.warning('The app might be already decrypted. Trying to retrieve the IPA...')
 
