@@ -151,9 +151,13 @@ class LocalOperations(object):
         temp_file = self.build_temp_path_for_file(module, fname)
         self.file_delete(temp_file)
 
-    def cat_file(self, fname):
+    def cat_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""
         cmd = '{bin} {fname}'.format(bin=Constants.PATH_TOOLS_LOCAL['CAT'], fname=fname)
+
+        if grep_args:
+            cmd += ' | grep {grep_args}'.format(grep_args=grep_args)
+
         out, err = self.command_blocking(cmd)
         self.printer.notify("Content of file '%s': " % fname)
         print(out)
