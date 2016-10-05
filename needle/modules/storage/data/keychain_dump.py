@@ -9,11 +9,10 @@ class Module(BaseModule):
         'description': 'Dump the keychain to plist files and store these files in the output directory. '
         'The user also has the option to analyze one of the files with or without a filter.',
         'options': (
-            ('analyze', False, True, 'Prompt to pick one file to analyze'),
             ('filter', '', False, 'Filter to apply when analyzing. '
              'If empty, the entire keychain file will be shown'),
-
             ('output', True, True, 'Full path of the output folder'),
+            ('analyze', False, True, 'Prompt to pick one file to analyze'),
         ),
         'comments': [
             'Ensure the screen is unlocked before dumping the keychain']
