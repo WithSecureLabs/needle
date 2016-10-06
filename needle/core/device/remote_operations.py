@@ -155,7 +155,7 @@ class RemoteOperations(object):
     # ==================================================================================================================
     def download(self, src, dst, recursive=False):
         """Download a file from the device."""
-        src, dst = Utils.escape_path_scp(src), Utils.escape_path_scp(dst)
+        src, dst = Utils.escape_path_scp(src), Utils.escape_path(dst)
         self._device.printer.debug("Downloading: %s -> %s" % (src, dst))
 
         cmd = 'sshpass -p "{password}" scp {hostverification} -P {port}'.format(password=self._device._password,
