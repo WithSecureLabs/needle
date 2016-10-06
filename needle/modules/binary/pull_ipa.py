@@ -41,19 +41,16 @@ class Module(BaseModule):
                                                       out=fname_remote)
             self.device.remote_op.command_blocking(cmd)
 
-            # If pulling the binary
+            # If pulling the binary, unpack the ipa and get the binary link
             if self.options['pull_binary']:
                 self.fname_binary = self.device.app.unpack_ipa(self.APP_METADATA, fname_remote)
 
         fname_local_ipa = self.local_op.build_output_path_for_file(self, fname_remote)
 
         # Pull file
-        self.printer.debug(fname_remote)
-        self.printer.debug(fname_local_ipa)
         self.device.pull(fname_remote, fname_local_ipa)
 
+        # Pull the binary if this has been set.
         if self.options['pull_binary']:
             fname_local_bin = self.local_op.build_output_path_for_file(self, self.fname_binary)
-            self.printer.debug(self.fname_binary)
-            self.printer.debug(fname_local_bin)
             self.device.pull(self.fname_binary, fname_local_bin)
