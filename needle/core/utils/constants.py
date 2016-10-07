@@ -49,6 +49,7 @@ class Constants(object):
         'MITMDUMP': 'mitmdump',
         'OPENSSL': 'openssl',
         'VIM': 'vim',
+        'OPEN': 'open'
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
