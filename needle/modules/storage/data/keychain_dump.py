@@ -100,7 +100,5 @@ class Module(BaseModule):
             # Save the file locally
             self.save_file(fname, fname, fname != chosen_file)
 
-
-        for fname in keychain_files:
             # clean up the dumped keychain files on the device
             self.device.remote_op.file_delete(fname)
