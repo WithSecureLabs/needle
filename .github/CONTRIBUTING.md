@@ -171,7 +171,7 @@ Tell us what happens instead.
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing? You can start by looking through the [open issues](https://github.com/mwrlabs/needle/issues).
+Unsure where to begin contributing? You can start by looking through the [open issues](https://github.com/mwrlabs/needle/issues) or the [new features that needs to be implemented](https://github.com/mwrlabs/needle/projects/1).
 
 MWR mantains also a collection of features/improvements needed by Needle. Just get in touch ([@mwrneedle](https://twitter.com/mwrneedle), [@lancinimarco](https://twitter.com/lancinimarco)) to know more!
 
