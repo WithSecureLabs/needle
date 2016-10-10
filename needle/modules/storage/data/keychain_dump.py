@@ -5,7 +5,7 @@ from core.utils.utils import Utils
 class Module(BaseModule):
     meta = {
         'name': 'Keychain Dump',
-        'author': '@LanciniMarco (@MWRLabs) (modifications by @JoshCGrossman (@tghosth))',
+        'author': '@LanciniMarco (@MWRLabs) (modifications by @tghosth)',
         'description': 'Dump the keychain to plist files and store these files in the output directory. '
         'The user also has the option to analyze one of the files with or without a filter.',
         'options': (
