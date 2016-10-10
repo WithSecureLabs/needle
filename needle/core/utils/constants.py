@@ -103,7 +103,6 @@ class Constants(object):
             'IPAINSTALLER': {'COMMAND': 'ipainstaller', 'PACKAGES': ['com.autopear.installipa'], 'REPO': None, 'LOCAL': None},
             'KEYCHAIN_DUMP': {'COMMAND': 'keychain_dump', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychain_dump')},
             #'KEYCHAINDUMPER': {'COMMAND': 'keychain_dumper', 'PACKAGES': ['keychaindumper'], 'REPO': None, 'LOCAL': None},
-            #'KEYCHAINEDITOR': {'COMMAND': 'keychaineditor', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychaineditor')},
             'LDID': {'COMMAND': 'ldid', 'PACKAGES': ['ldid'], 'REPO': None, 'LOCAL': None},
             'LIPO': {'COMMAND': 'lipo', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
             'ONDEVICECONSOLE': {'COMMAND': 'ondeviceconsole', 'PACKAGES': ['ondeviceconsole'], 'REPO': None, 'LOCAL': None},
