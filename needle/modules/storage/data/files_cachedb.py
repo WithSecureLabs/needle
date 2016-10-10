@@ -11,6 +11,8 @@ class Module(BaseModule):
                        'Plus, offers the chance to pull and inspect them with SQLite3 or to dump them all for local analysis.',
          'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
+            ('row_counts', False, False, 'Prints the number of rows in the standard Cache.db tables if '
+                                         'ANALYZE is also True'),
             ('dump_all', False, True, 'Retrieve all SQL files'),
             ('output', True, False, 'Full path of the output folder'),
             ('headers', True, True, 'Enable SQLite3 table headers'),
@@ -31,10 +33,31 @@ class Module(BaseModule):
         self.options['output'] = self._global_options['output_folder']
 
     def analyze_file(self, fname):
-        self.printer.info("Spawning SQLite3 console...")
+
         cmd_headers = ' -header' if self.options['headers'] else ''
         cmd_column = ' -column' if self.options['column_mode'] else ''
         cmd_csv = ' -csv' if self.options['csv_mode'] else ''
+
+        if self.options['row_counts']:
+            self.printer.info("Getting standard table row counts...")
+
+            # Query to get a tow counts for 3 standard tables in Cache.db
+            sql = "SELECT count (*) as 'Rows', 'cfurl_cache_receiver_data' as 'Table' from cfurl_cache_receiver_data " \
+                  "UNION SELECT count (*), 'cfurl_cache_blob_data' from cfurl_cache_blob_data " \
+                  "UNION SELECT count (*), 'cfurl_cache_response' from cfurl_cache_response;"
+
+            cmd = '{bin} {header} {column} {csv} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
+                                                              header=cmd_headers, column=cmd_column, csv=cmd_csv,
+                                                              db=fname, sql=sql)
+
+            # Run the query and then print the result to screen
+            out = self.local_op.command_blocking(cmd)
+
+            print
+            for line in out:
+                print(line)
+
+        self.printer.info("Spawning SQLite3 console...")
         cmd = '{bin} {header} {column} {csv} {db}'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
                                                           header=cmd_headers, column=cmd_column, csv=cmd_csv,
                                                           db=fname)
