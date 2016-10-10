@@ -41,10 +41,10 @@ class Module(BaseModule):
         if self.options['row_counts']:
             self.printer.info("Getting standard table row counts...")
 
-            # Query to get a tow counts for 3 standard tables in Cache.db
-            sql = "SELECT count (*) as 'Rows', 'cfurl_cache_receiver_data' as 'Table' from cfurl_cache_receiver_data " \
-                  "UNION SELECT count (*), 'cfurl_cache_blob_data' from cfurl_cache_blob_data " \
-                  "UNION SELECT count (*), 'cfurl_cache_response' from cfurl_cache_response;"
+            # Query to get a row counts for 3 standard tables in Cache.db
+            sql = "SELECT 'cfurl_cache_receiver_data' as 'Table', count (*) as 'Rows' from cfurl_cache_receiver_data " \
+                  "UNION SELECT 'cfurl_cache_blob_data', count (*) from cfurl_cache_blob_data " \
+                  "UNION SELECT 'cfurl_cache_response', count (*) from cfurl_cache_response;"
 
             cmd = '{bin} {header} {column} {csv} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
                                                               header=cmd_headers, column=cmd_column, csv=cmd_csv,
