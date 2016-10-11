@@ -64,16 +64,20 @@ class RemoteOperations(object):
         def delete(path):
             cmd = 'rm -rf %s 2> /dev/null' % path
             self.command_blocking(cmd)
-        if force:
-            delete(path)
-        elif self.dir_exist(path):
-            path = Utils.escape_path(path)
-            delete(path)
-
-    def dir_list_recursive(self, path):
         path = Utils.escape_path(path)
-        cmd = 'ls -alR %s' % path
+        if force: delete(path)
+        elif self.dir_exist(path): delete(path)
+
+    def dir_list(self, path, recursive=False):
+        path = Utils.escape_path(path)
+        opts = ''
+        if recursive: opts = '-alR'
+        cmd = 'ls {opts} {path}'.format(opts=opts, path=path)
         return self.command_blocking(cmd)
+
+    def dir_reset(self, path):
+        if self.dir_exist(path): self.dir_delete(path)
+        self.dir_create(path)
 
     # ==================================================================================================================
     # COMMANDS
@@ -117,6 +121,7 @@ class RemoteOperations(object):
         def daemon(module, cmd):
             """Daemon used to run the command so to avoid blocking the UI"""
             # Run command
+            cmd += ' & echo $!'
             out = self.command_blocking(cmd)
             # Parse PID of the process
             try:
@@ -215,7 +220,14 @@ class RemoteOperations(object):
         pl = plistlib.readPlistFromString(out)
         return pl
 
-    def read_file(self, fname):
+    def read_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""
         cmd = 'cat {fname}'.format(fname=fname)
+        if grep_args:
+            cmd += ' | grep {grep_args}'.format(grep_args=grep_args)
         return self.command_blocking(cmd, internal=True)
+
+    def write_file(self, fname, body):
+        """Given a filename, write body into it"""
+        cmd = "echo \"{content}\" > {dst}".format(content=body, dst=fname)
+        self.command_blocking(cmd)

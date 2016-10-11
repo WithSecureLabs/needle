@@ -34,6 +34,7 @@ class Framework(cmd.Cmd):
     _jobs = []
     _record = None
     _device_ready = False
+    _local_ready = False
     # Mode Flags
     _script = 0
     _load = 0
@@ -404,7 +405,7 @@ class Framework(cmd.Cmd):
     # COMMAND METHODS
     # ==================================================================================================================
     def do_exit(self, params):
-        """Stop background jobs, cleanup temp folder (local&remote), close connection, then exits the Framework."""
+        """Stop background jobs, cleanup temp folders (local&remote), close connection, then exits the Framework."""
         # Stop background jobs
         for i in xrange(len(self._jobs)):
             self.do_kill(i)
@@ -429,9 +430,10 @@ class Framework(cmd.Cmd):
                 self.device.disconnect()
         except Exception as e:
             self.printer.warning("Problem while cleaning up temp folders, ignoring: %s - %s " % (type(e).__name__, e.message))
-        # Exit
-        self._exit = 1
-        return True
+        finally:
+            # Exit
+            self._exit = 1
+            return True
 
     def do_back(self, params):
         """Exits the current context."""
@@ -461,6 +463,11 @@ class Framework(cmd.Cmd):
                 if self.options['verbose'] is False:
                     self.options['debug'] = False
                     self.printer.set_debug(self.options['debug'])
+            # Reset output folder
+            if name == 'output_folder':
+                self.printer.debug("Output folder changed, reloading modules")
+                self._local_ready = Framework._local_ready = False
+                self.do_reload(None)
             # TODO: support for config file
             #self._save_config(name)
         else:
@@ -620,21 +627,24 @@ class Framework(cmd.Cmd):
         PORT = self._global_options['port']
         USERNAME = self._global_options['username']
         PASSWORD = self._global_options['password']
-        return IP, PORT, USERNAME, PASSWORD
+        PUB_KEY_AUTH = self._global_options['pub_key_auth']
+        return IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
 
     def _spawn_device(self):
         """Instantiate a new Device object, and open a connection."""
-        IP, PORT, USERNAME, PASSWORD = self._parse_device_options()
-        self.device = Framework.device = Device(IP, PORT, USERNAME, PASSWORD, self.TOOLS_LOCAL)
+        IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH = self._parse_device_options()
+        self.device = Framework.device = Device(IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH, self.TOOLS_LOCAL)
 
     def _connection_new(self):
-        """Try to instaurate a new connection with the device."""
+        """Try to instantiate a new connection with the device."""
         try:
             self._spawn_device()
+            self.device.connect()
             self.printer.notify("Connected to: %s" % self._global_options['ip'])
         except Exception as e:
             self.printer.error("Problem establishing connection: %s - %s " % (type(e).__name__, e.message))
             self.print_exception()
+            self.device.disconnect()
             self.device = Framework.device = None
             return None
         return self.device
@@ -646,9 +656,14 @@ class Framework(cmd.Cmd):
             self.printer.verbose('Connection not present, creating a new instance')
             return self._connection_new()
         else:
-            # Check connection we have is with the current chosen IP
-            if self._global_options['ip'] != self.device._ip:
-                self.printer.verbose('IP changed in global options. Establishing a new connection')
+            # Check connection we have is with the current chosen IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
+            if self._global_options['ip'] != self.device._ip or \
+               self._global_options['port'] != self.device._port or \
+               self._global_options['username'] != self.device._username or \
+               self._global_options['password'] != self.device._password or \
+               self._global_options['pub_key_auth'] != self.device._pub_key_auth:
+
+                self.printer.verbose('Settings changed in global options. Establishing a new connection')
                 self.device = Framework.device = None
                 return self._connection_new()
             else:

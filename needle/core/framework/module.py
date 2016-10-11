@@ -121,7 +121,12 @@ class BaseModule(Framework):
 
     def module_pre(self, bypass_app=False):
         """Execute before module_run"""
-        # If it's a StaticModule, bypass the checks
+        # Setup local output folder
+        if not self._local_ready:
+            self.printer.debug("Setup local output folder: {}".format(self._global_options['output_folder']))
+            self.local_op.output_folder_setup(self)
+            self._local_ready = Framework._local_ready = True
+        # If it's a StaticModule, bypass any other check
         if isinstance(self, StaticModule):
             self.printer.verbose("Static Module, connection not needed...")
             return 1

@@ -15,6 +15,11 @@ class Constants(object):
     NAME_FOLDER = '.needle'
     NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)
 
+    # PATHS
+    FOLDER_HOME = os.path.join(os.path.expanduser('~'), NAME_FOLDER)
+    FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')
+    FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')
+
     # GLOBAL OPTIONS
     GLOBAL_IP = '127.0.0.1'
     GLOBAL_PORT = '2222'
@@ -22,7 +27,9 @@ class Constants(object):
     GLOBAL_PASSWORD = 'alpine'
     GLOBAL_DEBUG = False
     GLOBAL_VERBOSE = True
-    GLOBAL_SETUP_DEVICE = True
+    GLOBAL_SETUP_DEVICE = False
+    GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
+    GLOBAL_PUB_KEY_AUTH = True
 
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
@@ -40,6 +47,8 @@ class Constants(object):
         'FRIDA-TRACE': 'frida-trace',
         'CAT': 'cat',
         'MITMDUMP': 'mitmdump',
+        'OPENSSL': 'openssl',
+        'VIM': 'vim',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -55,6 +64,7 @@ class Constants(object):
     DEVICE_PATH_DATA_iOS9    = '/private/var/mobile/Containers/Data/Application/'
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
     DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
+    DEVICE_PATH_HOSTS        = '/etc/hosts'
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
@@ -91,10 +101,12 @@ class Constants(object):
             'FSMON': {'COMMAND': 'fsmon', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'fsmon')},
             'GDB': {'COMMAND': 'gdb', 'PACKAGES': ['gdb'], 'REPO': 'http://cydia.radare.org/', 'LOCAL': None},
             'IPAINSTALLER': {'COMMAND': 'ipainstaller', 'PACKAGES': ['com.autopear.installipa'], 'REPO': None, 'LOCAL': None},
-            'KEYCHAINDUMPER': {'COMMAND': 'keychain_dumper', 'PACKAGES': ['keychaindumper'], 'REPO': None, 'LOCAL': None},
-            #'KEYCHAINEDITOR': {'COMMAND': 'keychaineditor', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychaineditor')},
+            #'KEYCHAIN_DUMP': {'COMMAND': 'keychain_dump', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychain_dump')},
+            #'KEYCHAINDUMPER': {'COMMAND': 'keychain_dumper', 'PACKAGES': ['keychaindumper'], 'REPO': None, 'LOCAL': None},
+            'KEYCHAINEDITOR': {'COMMAND': 'keychaineditor', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychaineditor')},
             'LDID': {'COMMAND': 'ldid', 'PACKAGES': ['ldid'], 'REPO': None, 'LOCAL': None},
             'LIPO': {'COMMAND': 'lipo', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
+            'ONDEVICECONSOLE': {'COMMAND': 'ondeviceconsole', 'PACKAGES': ['ondeviceconsole'], 'REPO': None, 'LOCAL': None},
             'OPEN': {'COMMAND': 'open', 'PACKAGES': ['com.conradkramer.open'], 'REPO': None, 'LOCAL': None},
             'OTOOL': {'COMMAND': 'otool', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
             'PBWATCHER': {'COMMAND': 'pbwatcher', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'pbwatcher')},

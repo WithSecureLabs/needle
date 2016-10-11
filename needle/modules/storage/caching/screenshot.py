@@ -12,8 +12,17 @@ class Module(BaseModule):
                        "sensitive information could be cached on the file system in the form of a screenshot of the application's main window",
         'options': (
             ('pull', True, True, 'Automatically pull screenshots from device'),
+            ('output', True, True, 'Full path of the output file')
         ),
     }
+
+    # ==================================================================================================================
+    # UTILS
+    # ==================================================================================================================
+    def __init__(self, params):
+        BaseModule.__init__(self, params)
+        # Setting default output file
+        self.options['output'] = self._global_options['output_folder']
 
     # ==================================================================================================================
     # RUN
@@ -51,11 +60,11 @@ class Module(BaseModule):
 
         # Pull files & show image
         if self.options['pull']:
-            self.printer.notify('Retrieving screenshots and saving them in: %s' % self.path_home_temp)
+            self.printer.notify('Retrieving screenshots and saving them in: %s' % self.options['output'])
             for s in sc:
                 # Pull file
                 temp_name = Utils.extract_filename_from_path(s)
-                temp_file = self.local_op.build_temp_path_for_file(self, temp_name)
+                temp_file = os.path.join(self.options['output'], temp_name)
                 self.device.remote_op.download(s, temp_file)
 
                 # Show image
