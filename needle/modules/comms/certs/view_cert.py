@@ -29,7 +29,7 @@ class Module(BaseModule):
     def module_run(self):
 
         # Start building the cURL command
-        cmd = 'curl --insecure -v https://{} '.format(self.options['url'])
+        cmd = '{curl} --insecure -v https://{url} '.format(curl=self.device.DEVICE_TOOLS['CURL'], url=self.options['url'])
 
         # Add a proxy if relevant
         if self.options['proxy'] is not None:
