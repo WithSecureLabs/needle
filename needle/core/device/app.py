@@ -259,12 +259,13 @@ class App(object):
         stripped = fname.strip()
 
         # Remove bundle/data path from the file name
-        shortname = stripped.replace(app_metadata['bundle_directory'], '')
-        shortname = shortname.replace(app_metadata['data_directory'], '')
+        shortname = stripped.replace(app_metadata['bundle_directory'], 'bundledir')
+        shortname = shortname.replace(app_metadata['data_directory'], 'datadir')
 
         # Remove extraneous ' symbols
         shortname = shortname.replace('\'', '')
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
-        shortname.replace('/', '_')
+        shortname = shortname.replace('/', '_')
         # Remove spaces
-        shortname.replace(' ', '')
+        shortname = shortname.replace(' ', '')
+        return shortname
