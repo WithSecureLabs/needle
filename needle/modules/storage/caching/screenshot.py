@@ -24,6 +24,24 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
 
+    def show_image(self, sc):
+        if self.options['pull']:
+            self.printer.notify('Retrieving screenshots and saving them in: %s' % self.options['output'])
+            for s in sc:
+                # Pull file
+                temp_name = Utils.extract_filename_from_path(s)
+                temp_file = os.path.join(self.options['output'], temp_name)
+                self.device.remote_op.download(s, temp_file)
+
+                # Show image
+                # Kali
+                cmd = '{} "{}"'.format(self.TOOLS_LOCAL['EOG'], temp_file)
+                out, err = self.local_op.command_blocking(cmd)
+                if 'not found' in err:
+                    # OS X
+                    cmd = '{} "{}"'.format(self.TOOLS_LOCAL['OPEN'], temp_file)
+                    self.local_op.command_blocking(cmd)
+
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
@@ -59,14 +77,4 @@ class Module(BaseModule):
             self.printer.notify('\t{}'.format(fname))
 
         # Pull files & show image
-        if self.options['pull']:
-            self.printer.notify('Retrieving screenshots and saving them in: %s' % self.options['output'])
-            for s in sc:
-                # Pull file
-                temp_name = Utils.extract_filename_from_path(s)
-                temp_file = os.path.join(self.options['output'], temp_name)
-                self.device.remote_op.download(s, temp_file)
-
-                # Show image
-                cmd = '{} "{}"'.format(self.TOOLS_LOCAL['EOG'], temp_file)
-                self.local_op.command_blocking(cmd)
+        self.show_image(sc)
