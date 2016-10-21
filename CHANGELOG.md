@@ -4,12 +4,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
-
 ## Unreleased
 #### Added
+- **[CORE]** Support for plist files into print_cmd_output
+- **[CORE]** `move` function for Remote operations
+
 #### Fixed
+- **[CORE]** Sanitization of parsed plist files
+- **[MODULE]** Dump entire keychain _[idea from @tghosth]_
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
+
 #### Removed
 
 
