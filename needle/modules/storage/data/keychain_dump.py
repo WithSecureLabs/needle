@@ -1,22 +1,23 @@
 from core.framework.module import BaseModule
-from core.utils.menu import choose_from_list
 from core.utils.utils import Utils
+
 
 class Module(BaseModule):
     meta = {
         'name': 'Keychain Dump',
         'author': '@LanciniMarco (@MWRLabs) (modifications by @tghosth (@JoshCGrossman))',
-        'description': 'Dump the keychain to plist files and store these files in the output directory. '
-        'The user also has the option to analyze one of the files with or without a filter.',
+        'description': 'Dump the keychain.',
         'options': (
-            ('filter', '', False, 'Filter to apply when analyzing. '
-             'If empty, the entire keychain file will be shown'),
+            ('filter', '', False, 'Filter to apply when analyzing. If empty, the entire keychain file will be shown'),
             ('output', True, True, 'Full path of the output folder'),
-            ('analyze', False, True, 'Prompt to pick one file to analyze'),
         ),
         'comments': [
-            'Ensure the screen is unlocked before dumping the keychain']
+            'Ensure the screen is unlocked before dumping the keychain'
+        ]
     }
+
+    KEYCHAIN_PLISTS = ['cert.plist', 'genp.plist', 'inet.plist', 'keys.plist']
+    LOCAL_PLISTS = []
 
     # ==================================================================================================================
     # UTILS
@@ -24,7 +25,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "keychain")
+        self.options['output'] = self._global_options['output_folder']
         # Setting default filter
         if self.APP_METADATA:
             self.printer.info('Setting filter to: %s (you can change it in options)' % self.APP_METADATA['binary_name'])
@@ -33,72 +34,50 @@ class Module(BaseModule):
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
 
-    def save_file(self, remote_name, local_name, silent):
-        """Save it locally"""
-        self.printer.debug("Dumping content of the file: {}".format(remote_name))
-
-        # Pull the file locally
-        outfile = '{}_{}.txt'.format(self.options['output'], str(local_name))
-        self.device.pull(remote_name, outfile)
-
-        # Not silent means that this file should be analyzed
-        if not silent:
-
-            # Apply a filter if specified
-            grep_args = None
-            if self.options['filter']:
-                grep_args = ' -i -a "{}" -C 10 '.format(self.options['filter'])
-
-            # Display the file (with filter if necessary) to screen
-            self.print_cmd_output(self.local_op.cat_file(outfile, grep_args))
-
+    def retrieve_files(self):
+        if not self.options['output']:
+            self.options['output'] = self._global_options['output_folder']
+        for fp in self.KEYCHAIN_PLISTS:
+            # Prepare path
+            temp_name = 'keychain_{}'.format(fp)
+            local_name = self.local_op.build_output_path_for_file(self, temp_name)
+            self.LOCAL_PLISTS.append(local_name)
+            # Save to file
+            self.device.pull(fp, local_name)
+            # Move remote file to temp folder
+            remote_temp = self.device.remote_op.build_temp_path_for_file(fp)
+            self.device.remote_op.file_move(fp, remote_temp)
 
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
     def module_run(self):
-
-        # Composing the command string
-        cmd = '{}'.format(self.device.DEVICE_TOOLS['KEYCHAIN_DUMP'])
-        msg = "Dumping the keychain"
-
         # Dump Keychain (outputs .plist files)
-        self.printer.info(msg)
+        self.printer.info("Dumping the keychain...")
+        cmd = '{}'.format(self.device.DEVICE_TOOLS['KEYCHAIN_DUMP'])
         self.device.remote_op.command_blocking(cmd)
 
-        # Get a list of all files in the current directory (which should include the 4 keychain dump files)
-        all_files = self.device.remote_op.dir_list('.')
+        # Parse dumped plist files and merge them into a single data structure
+        self.printer.info("Parsing the content...")
+        parsed = [self.device.remote_op.parse_plist(item, convert=False, sanitize=True) for item in self.KEYCHAIN_PLISTS]
+        flatten = []
+        for el in parsed: flatten += el
 
-        # list to store the keychain dump files which were found.
-        keychain_files = []
-
-        # Ascertain which keychain dump files were actually created
-        for filename in all_files:
-            clean_name = Utils.escape_path(filename)
-
-            if clean_name in ['cert.plist', 'genp.plist', 'inet.plist', 'keys.plist']:
-                keychain_files.append(clean_name)
-
-        # If no dump files could be found, return an error
-        if len(keychain_files) == 0:
-            self.printer.warning('No content found. Ensure the screen is unlocked before dumping the keychain')
-            return
-
-        # If analyzing then allow the user to choose a file to analyze, otherwise just show the list.
-        self.printer.info("The following keychain dump files have been found:")
-
-        chosen_file = ''
-        if self.options['analyze']:
-            # Show Menu
-            chosen_file = choose_from_list(keychain_files)
+        # Apply filter
+        self.printer.info('Applying filter: {}'.format(self.options['filter']))
+        if self.options['filter']:
+            expected = [item for item in flatten if self.options['filter'].lower() in item['agrp'].lower()]
         else:
-            choose_from_list(keychain_files, choose=False)
+            expected = flatten
 
-        # Pull all files to the output folder specified on the local machine
-        self.printer.notify('Saving all keychain dump files...')
-        for fname in keychain_files:
-            # Save the file locally
-            self.save_file(fname, fname, fname != chosen_file)
+        # Retrieve dumped plist files
+        self.printer.verbose("Retrieving dumped plist files...")
+        self.retrieve_files()
 
-            # clean up the dumped keychain files on the device
-            self.device.remote_op.file_delete(fname)
+        # Print result
+        if expected:
+            self.printer.notify("The following content has been dumped (and matches the filter):")
+            loal_out = self.local_op.build_output_path_for_file(self, 'keychain_output')
+            self.print_cmd_output(expected, loal_out)
+        else:
+            self.printer.warning('No content found. Try to relax the filter (if applied) and ensure the screen is unlocked before dumping the keychain')

@@ -32,6 +32,6 @@ This licence does not apply to the following components:
 - BinaryCookieReader, available to download from: http://securitylearn.net/wp-content/uploads/tools/iOS/BinaryCookieReader.py
 - FileDP, available to download from: http://www.securitylearn.net/wp-content/uploads/tools/iOS/FileDP.zip
 - FSMon, available to download from: https://github.com/nowsecure/fsmon
-- keychain_dump, available to download from: https://github.com/dmayer/idb/tree/master/lib/utils/keychain_dump (Source: https://github.com/nabla-c0d3/iphone-dataprotection.keychainviewer)
+- keychain_dump, available to download from: https://github.com/nabla-c0d3/iphone-dataprotection.keychainviewer
 - PBWatcher, released under a MIT License and available to download from: https://github.com/dmayer/pbwatcher
 - USBMUXD, released under a GPLv2 License and available to download from: https://github.com/libimobiledevice/usbmuxd
