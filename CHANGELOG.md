@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 #### Fixed
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
+- **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
 #### Removed
 
 
