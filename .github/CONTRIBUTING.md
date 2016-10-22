@@ -10,7 +10,7 @@ These are just guidelines, not rules, use your best judgment and feel free to pr
 
 ## What should I know before I get started?
 
-For a description of Needle's architecture, folder structure, APIs, and module templates, please refer to the _[Architecture](https://github.com/mwrlabs/needle/wiki/Architecture)_ page of the Wiki.
+For a description of Needle's architecture, folder structure, APIs, and module templates, please refer to the _[Architecture](https://github.com/mwrlabs/needle/wiki/Architecture)_ page on the Wiki.
 
 
 
