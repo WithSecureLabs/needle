@@ -48,7 +48,7 @@ class App(object):
         app_version_short = plist_local['CFBundleShortVersionString']
         app_version = '{} ({})'.format(app_version_long, app_version_short)
         try:
-            url_handlers = plist_local['CFBundleURLTypes'][0]['CFBundleURLSchemes']
+            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist_local['CFBundleURLTypes']]
         except:
             url_handlers = None
         try:
