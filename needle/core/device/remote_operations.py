@@ -43,6 +43,11 @@ class RemoteOperations(object):
         cmd = "cp {} {}".format(src, dst)
         self.command_blocking(cmd)
 
+    def file_move(self, src, dst):
+        src, dst = Utils.escape_path(src), Utils.escape_path(dst)
+        cmd = "mv {} {}".format(src, dst)
+        self.command_blocking(cmd)
+
     # ==================================================================================================================
     # DIRECTORIES
     # ==================================================================================================================
@@ -203,21 +208,41 @@ class RemoteOperations(object):
         cmd = 'chmod +x %s' % fname
         self.command_blocking(cmd)
 
-    def parse_plist(self, plist):
+    def parse_plist(self, plist, convert=True, sanitize=False):
         """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
+        def sanitize_plist(plist):
+            self._device.printer.debug('Sanitizing content from: {}'.format(plist_copy))
+            remote_temp = self.build_temp_path_for_file('sanitize_temp')
+            cmd = "tr < {} -d '\\000' > {}".format(plist_copy, remote_temp)
+            self.command_blocking(cmd, internal=True)
+            cmd = "tr < {} -d '\\014' > {}".format(remote_temp, plist_copy)
+            self.command_blocking(cmd, internal=True)
+            cmd = "tr < {} -d '\\015' > {}".format(plist_copy, remote_temp)
+            self.command_blocking(cmd, internal=True)
+            self.file_copy(remote_temp, plist_copy)
+
         # Copy the plist
         plist_temp = self.build_temp_path_for_file(plist.strip("'"))
         plist_copy = Utils.escape_path(plist_temp)
+        self._device.printer.debug('Copy the plist to temp: {}'.format(plist_copy))
         self.file_copy(plist, plist_copy)
         # Convert to xml
-        cmd = '{plutil} -convert xml1 {plist}'.format(plutil=self._device.DEVICE_TOOLS['PLUTIL'], plist=plist_copy)
-        self.command_blocking(cmd, internal=True)
+        if convert:
+            self._device.printer.debug('Converting plist to XML: {}'.format(plist_copy))
+            cmd = '{plutil} -convert xml1 {plist}'.format(plutil=self._device.DEVICE_TOOLS['PLUTIL'], plist=plist_copy)
+            self.command_blocking(cmd, internal=True)
+        # Get the content
+        self._device.printer.debug('Extracting content from: {}'.format(plist_copy))
+        # Sanitize (possible to have NULL bytes)
+        if sanitize:
+            sanitize_plist(plist_copy)
         # Cat the content
         cmd = 'cat {}'.format(plist_copy)
         out = self.command_blocking(cmd, internal=True)
+        content = str(''.join(out).encode('utf-8'))
         # Parse it with plistlib
-        out = str(''.join(out).encode('utf-8'))
-        pl = plistlib.readPlistFromString(out)
+        self._device.printer.debug('Parsing plist content')
+        pl = plistlib.readPlistFromString(content)
         return pl
 
     def read_file(self, fname, grep_args=None):
