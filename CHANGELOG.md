@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Support for plist files into print_cmd_output
 - **[CORE]** `move` function for Remote operations
+- **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 
 #### Fixed
 - **[CORE]** Sanitization of parsed plist files
