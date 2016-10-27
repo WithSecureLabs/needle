@@ -159,7 +159,7 @@ class BaseModule(Framework):
             content_type = type(content)
             if content_type is dict or content_type is plistlib._InternalDict: pprint(content, indent=4)
             elif content_type is list: map(print_screen, content)
-            else: print('\t%s' % content)
+            else: print('\t%s' % content.strip())
 
         def print_file(content):
             content_type = type(content)

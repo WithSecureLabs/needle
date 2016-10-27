@@ -48,7 +48,7 @@ class Installer(object):
             if pk in self._packagelist:
                 self._device.printer.debug('[INSTALL] Already installed: %s.' % toolname)
             else:
-                self._device.printer.debug('[INSTALL] Installing %s via apt-get.' % toolname)
+                self._device.printer.verbose('[INSTALL] Installing %s via apt-get.' % toolname)
                 if repo: self.__apt_add_repo(repo)
                 self.__apt_install(pk)
 
@@ -66,7 +66,7 @@ class Installer(object):
         local, command = tool['LOCAL'], tool['COMMAND']
         name = Utils.extract_filename_from_path(command)
         if not self.__is_tool_available(name):
-            self._device.printer.debug('[INSTALL] Manually installing: %s' % toolname)
+            self._device.printer.verbose('[INSTALL] Manually installing: %s' % toolname)
             src = local
             dst = os.path.join('/usr/bin/', name)
             self._device.push(src, dst)

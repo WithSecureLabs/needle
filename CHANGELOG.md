@@ -8,12 +8,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Support for plist files into print_cmd_output
 - **[CORE]** `move` function for Remote operations
+- **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
+- **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
 
 #### Fixed
 - **[CORE]** Sanitization of parsed plist files
+- **[CORE]** App metadata: show all URI handlers
 - **[MODULE]** Dump entire keychain _[idea from @tghosth]_
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
+- **[MODULE]** Run proxy regular even without selecting a target app
 
 #### Removed
 
