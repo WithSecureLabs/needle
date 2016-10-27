@@ -71,6 +71,7 @@ class Constants(object):
     FRIDA_PORT = 27042
     DEBUG_PORT = 12345
     CA_MITM_URL = 'http://mitm.it/cert/pem'
+    CA_BURP_URL = 'http://burp/cert'
     CYDIA_LIST = '/etc/apt/sources.list.d/cydia.list'
     DEVICE_SETUP = {
         'PREREQUISITES': ['apt-get', 'dpkg'],

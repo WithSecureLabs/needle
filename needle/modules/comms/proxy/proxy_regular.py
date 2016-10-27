@@ -30,6 +30,9 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self.local_op.build_output_path_for_file(self, "proxy_regular.out")
 
+    def module_pre(self):
+        return BaseModule.module_pre(self, bypass_app=True)
+
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
