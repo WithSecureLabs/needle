@@ -8,7 +8,7 @@ class Module(BackgroundModule):
         'description': 'Monitor the app data folder and keep track of modified files',
         'options': (
             ('output', True, False, 'Full path of the output file'),
-            ('folder', "", True, 'The folder to monitor (leave empty to use the app Data directory)'),
+            ('folder', False, True, 'The folder to monitor (leave empty to use the app Data directory)'),
         ),
     }
     PID = None

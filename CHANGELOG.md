@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
 - **[MODULE]** Run proxy regular even without selecting a target app
+- **[MODULE]** File monitoring: automatically detect folder to monitor (regression)
 
 #### Removed
 
