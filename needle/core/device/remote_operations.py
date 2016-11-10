@@ -212,14 +212,29 @@ class RemoteOperations(object):
         """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
         def sanitize_plist(plist):
             self._device.printer.debug('Sanitizing content from: {}'.format(plist_copy))
+
+            # This is the list of characters to remove encoded as 'OCT'
+            # For example, \013 is vertical tab, see http://www.asciitable.com/
+            chars_to_remove = ['\\000', '\\014', '\\015', '\\013', '\\007', '\\021']
             remote_temp = self.build_temp_path_for_file('sanitize_temp')
-            cmd = "tr < {} -d '\\000' > {}".format(plist_copy, remote_temp)
-            self.command_blocking(cmd, internal=True)
-            cmd = "tr < {} -d '\\014' > {}".format(remote_temp, plist_copy)
-            self.command_blocking(cmd, internal=True)
-            cmd = "tr < {} -d '\\015' > {}".format(plist_copy, remote_temp)
-            self.command_blocking(cmd, internal=True)
-            self.file_copy(remote_temp, plist_copy)
+            dst = remote_temp
+            src = plist_copy
+
+            # Iterate through the characters to remove pulling the file back and forth between
+            # the original file and the temp file
+            for char in chars_to_remove:
+                cmd = "tr < {} -d '{}' > {}".format(src, char, dst)
+                self.command_blocking(cmd, internal=True)
+                src, dst = dst, src
+
+            # Make sure at the end that the final file is in the location of the original file
+            if plist_copy != src:
+                self.file_copy(src, plist_copy)
+
+            # clean up temp file
+            self.file_delete(remote_temp)
+
+
 
         # Copy the plist
         plist_temp = self.build_temp_path_for_file(plist.strip("'"))
@@ -242,7 +257,17 @@ class RemoteOperations(object):
         content = str(''.join(out).encode('utf-8'))
         # Parse it with plistlib
         self._device.printer.debug('Parsing plist content')
-        pl = plistlib.readPlistFromString(content)
+        try:
+            pl = plistlib.readPlistFromString(content)
+        except Exception as err:
+            if 'not well-formed (invalid token)' in err.message:
+                self._device.printer.error('Error occured whilst parsing plist')
+                self._device.printer.debug('This error is probably due to an invalid character in the plist file')
+                self._device.printer.debug('The invalid character needs to be added to array "chars_to_remove" in'
+                                           ' function "sanitize_plist" within "remote_operations.py')
+            raise
+
+
         return pl
 
     def read_file(self, fname, grep_args=None):
