@@ -224,7 +224,7 @@ class RemoteOperations(object):
             self.upload(local_plist, pl)
         # Copy the plist
         plist_copy = Utils.escape_path(self.build_temp_path_for_file(plist.strip("'")))
-        self._device.printer.debug('Copy the plist to temp: {}'.format(plist_copy))
+        self._device.printer.debug('Copy the plist to temp: {} -> {}'.format(plist, plist_copy))
         self.file_copy(plist, plist_copy)
         # Convert to xml
         if convert:
