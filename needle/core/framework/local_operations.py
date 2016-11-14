@@ -138,17 +138,23 @@ class LocalOperations(object):
     # ==================================================================================================================
     # LOCAL FILES
     # ==================================================================================================================
-    def build_output_path_for_file(self, module, fname):
+    def build_output_path_for_file(self, fname, module, path=None):
         """Given a filename, returns the full path in the local output folder."""
-        return os.path.join(module._global_options['output_folder'], Utils.extract_filename_from_path(fname))
+        if module: output_folder = module._global_options['output_folder']
+        elif path: output_folder = path
+        else: raise Exception('Please specify an output folder')
+        return os.path.join(output_folder, Utils.extract_filename_from_path(fname))
 
-    def build_temp_path_for_file(self, module, fname):
+    def build_temp_path_for_file(self, fname, module, path=None):
         """Given a filename, returns the full path in the local temp folder."""
-        return os.path.join(module.path_home_temp, Utils.extract_filename_from_path(fname))
+        if module: output_folder = module.path_home_temp
+        elif path: output_folder = path
+        else: raise Exception('Please specify an output folder')
+        return os.path.join(output_folder, Utils.extract_filename_from_path(fname))
 
-    def delete_temp_file(self, module, fname):
+    def delete_temp_file(self, fname, module):
         """Given a filename, delete the corresponding file in the local temp folder."""
-        temp_file = self.build_temp_path_for_file(module, fname)
+        temp_file = self.build_temp_path_for_file(fname, module)
         self.file_delete(temp_file)
 
     def cat_file(self, fname, grep_args=None):

@@ -22,7 +22,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "heap_dump.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("heap_dump.txt", self)
 
     # ==================================================================================================================
     # RUN

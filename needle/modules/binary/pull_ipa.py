@@ -19,7 +19,7 @@ class Module(BaseModule):
         BaseModule.__init__(self, params)
         # Setting default output file
         fname_ipa = '%s.ipa' % self.APP_METADATA['bundle_id'] if self.APP_METADATA else 'app.ipa'
-        self.options['output'] = self.local_op.build_output_path_for_file(self, fname_ipa)
+        self.options['output'] = self.local_op.build_output_path_for_file(fname_ipa, self)
 
     # ==================================================================================================================
     # RUN

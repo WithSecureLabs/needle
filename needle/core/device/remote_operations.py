@@ -212,20 +212,16 @@ class RemoteOperations(object):
         """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
         def sanitize_plist(pl):
             self._device.printer.debug('Sanitizing content from: {}'.format(pl))
-            # This is the list of characters to remove encoded as 'OCT'
-            # For example, \013 is vertical tab, see http://www.asciitable.com/
-            chars_to_remove = ['\\000', '\\014', '\\015', '\\013', '\\007', '\\021']
-            remote_temp = self.build_temp_path_for_file('sanitize_temp')
-            src, dst = pl, remote_temp
-            # Iterate through the characters to remove pulling the file back and forth between
-            # the original file and the temp file
-            for char in chars_to_remove:
-                cmd = "tr < {} -d '{}' > {}".format(src, char, dst)
-                self.command_blocking(cmd, internal=True)
-                src, dst = dst, src
-            # Make sure at the end that the final file is in the location of the original file
-            if pl != src:
-                self.file_copy(src, pl)
+            # Reading original content
+            local_plist = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
+            self.download(pl, local_plist)
+            with open(local_plist, 'rb') as fp:
+                text = fp.read()
+            # Writing back sanitized content
+            with open(local_plist, 'wb') as fp:
+                text_clean = Utils.regex_remove_control_chars(text)
+                fp.write(text_clean)
+            self.upload(local_plist, pl)
         # Copy the plist
         plist_copy = Utils.escape_path(self.build_temp_path_for_file(plist.strip("'")))
         self._device.printer.debug('Copy the plist to temp: {}'.format(plist_copy))

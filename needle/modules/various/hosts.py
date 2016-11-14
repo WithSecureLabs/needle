@@ -24,7 +24,7 @@ class Module(BaseModule):
     def module_run(self):
         # Define paths
         self.path_remote = Constants.DEVICE_PATH_HOSTS
-        self.path_local  = self.local_op.build_temp_path_for_file(self, "hosts")
+        self.path_local  = self.local_op.build_temp_path_for_file("hosts", self)
 
         # Read hosts file
         self.printer.info("Looking for the hosts file...")
