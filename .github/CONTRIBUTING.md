@@ -117,7 +117,6 @@ Tell us what happens instead.
 Unsure where to begin contributing? You can start by looking through:
 
 * :mag_right: [open issues](https://github.com/mwrlabs/needle/issues)
-* :clipboard: [new features that needs to be implemented](https://github.com/mwrlabs/needle/projects/1)
 
 
 
