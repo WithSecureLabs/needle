@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** `move` function for Remote operations
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
+- **[MODULE]** Allow using nano to edit hosts file (`various/hosts`) _[from @tghosth]_
 
 #### Fixed
 - **[CORE]** Sanitization of parsed plist files
