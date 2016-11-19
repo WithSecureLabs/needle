@@ -12,6 +12,8 @@ class Module(BaseModule):
         'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
             ('dump_all', False, True, 'Retrieve all SQL files'),
+            ('row_counts', False, False, 'Prints the number of rows in all database tables if '
+                                         'ANALYZE is also True'),
             ('output', True, False, 'Full path of the output folder'),
             ('headers', True, True, 'Enable SQLite3 table headers'),
             ('column_mode', True, True, 'Enable SQLite3 column mode'),
@@ -31,10 +33,47 @@ class Module(BaseModule):
         self.options['output'] = self._global_options['output_folder']
 
     def analyze_file(self, fname):
-        self.printer.info("Spawning SQLite3 console...")
         cmd_headers = ' -header' if self.options['headers'] else ''
         cmd_column = ' -column' if self.options['column_mode'] else ''
         cmd_csv = ' -csv' if self.options['csv_mode'] else ''
+
+        if self.options['row_counts']:
+            self.printer.info("Getting table row counts...")
+            self.printer.info("Note that table name may be truncated...")
+
+            cmd = '{bin} {header} {column} {csv} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
+                                                                      header=cmd_headers, column=cmd_column,
+                                                                      csv=cmd_csv,
+                                                                      db=fname, sql='.tables')
+
+            # Run the query and then print the result to screen
+            out = self.local_op.command_blocking(cmd)
+
+            # Query to get row counts for all tables in db
+            sql = ''
+            for line in out:
+                for item in line.split():
+                    sql += "SELECT '{item}' as 'Table', count (*) as 'Rows' from {item} UNION ".format(item=item)
+
+            if sql != '':
+
+                # Trim off the final 'UNION' from the query
+                sql = sql[:len(sql)-6]
+
+                cmd = '{bin} {header} {column} {csv} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
+                                                                      header=cmd_headers, column=cmd_column,
+                                                                      csv=cmd_csv,
+                                                                      db=fname, sql=sql)
+
+                # Run the query and then print the result to screen
+                out = self.local_op.command_blocking(cmd)
+
+                print
+                for line in out:
+                    print(line)
+
+        self.printer.info("Spawning SQLite3 console...")
+
         cmd = '{bin} {header} {column} {csv} {db}'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
                                                           header=cmd_headers, column=cmd_column, csv=cmd_csv,
                                                           db=fname)
