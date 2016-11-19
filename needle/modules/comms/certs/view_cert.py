@@ -20,7 +20,6 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
 
-
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
 
@@ -28,25 +27,21 @@ class Module(BaseModule):
     # RUN
     # ==================================================================================================================
     def module_run(self):
-
-        # Start building the cURL command
-        cmd = '{curl} --insecure https://{url} '.format(curl=self.device.DEVICE_TOOLS['CURL'], url=self.options['url'])
-
-        # Add a proxy if relevant
-        if self.options['proxy'] is not None:
+        # Build the cURL command
+        cmd = '{curl} --insecure https://{url} '.format(curl=self.TOOLS_LOCAL['CURL'], url=self.options['url'])
+        if self.options['proxy']:
             cmd += ' -x {} '.format(self.options['proxy'])
 
         # Run the command for the first time to check for errors
         # This command will automatically report if the URL is incorrect or if there is an issue with the proxy
+        self.printer.info('Checking for errors...')
         self.device.remote_op.command_blocking('{} --fail --silent --show-error'.format(cmd))
 
+        # Get the certificate
         self.printer.info('Getting the certificate...')
 
         # Use awk to display only the relevant lines from the output
         cmd += "-v 2>&1 | awk 'BEGIN { cert=0 } /^\* Server certificate:/ { cert=1 } /^\*/ { if (cert) print }'"
-
-        # Run the command and print to screen
-        # This command will automatically report if the URL is incorrect or if there is an issue with the proxy
         out = self.device.remote_op.command_blocking(cmd)
-
+        self.printer.notify('Certificate information for: {}'.format(self.options['url']))
         self.print_cmd_output(out)

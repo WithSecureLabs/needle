@@ -50,7 +50,8 @@ class Constants(object):
         'OPENSSL': 'openssl',
         'VIM': 'vim',
         'NANO': 'nano',
-        'OPEN': 'open'
+        'OPEN': 'open',
+        'CURL': 'curl'
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -96,7 +97,6 @@ class Constants(object):
             # PROGRAMS
             'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': '', 'LOCAL': None},
             'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': ['com.iphonecake.clutch2'], 'REPO': 'http://cydia.iphonecake.com/', 'LOCAL': None},
-            'CURL': {'COMMAND': 'curl', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
             'CYCRIPT': {'COMMAND': 'cycript', 'PACKAGES': ['cycript'], 'REPO': None, 'LOCAL': None},
             #'DEBUGSERVER': {'COMMAND': '/usr/bin/debugserver', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'debugserver_81')},
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP')},
