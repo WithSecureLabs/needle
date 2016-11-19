@@ -50,7 +50,8 @@ class Constants(object):
         'OPENSSL': 'openssl',
         'VIM': 'vim',
         'NANO': 'nano',
-        'OPEN': 'open'
+        'OPEN': 'open',
+        'CURL': 'curl'
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
