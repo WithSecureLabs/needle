@@ -9,9 +9,9 @@ class Module(BaseModule):
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'List Cache.db files contained in the app folders, alongside with their Data Protection Class. '
                        'Plus, offers the chance to pull and inspect them with SQLite3 or to dump them all for local analysis.',
-         'options': (
+        'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
-            ('row_counts', False, False, 'Prints the number of rows in the standard Cache.db tables if '
+            ('row_counts', True, False, 'Prints the number of rows in the standard Cache.db tables if '
                                          'ANALYZE is also True'),
             ('dump_all', False, True, 'Retrieve all SQL files'),
             ('output', True, False, 'Full path of the output folder'),
@@ -32,30 +32,33 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
 
-    def analyze_file(self, fname):
+    def _print_rows(self, fname):
+        self.printer.notify("Getting standard table row counts...")
+        # Query to get a row counts for 3 standard tables in Cache.db
+        sql = "SELECT 'cfurl_cache_receiver_data', count (*) from cfurl_cache_receiver_data " \
+              "UNION SELECT 'cfurl_cache_blob_data', count (*) from cfurl_cache_blob_data " \
+              "UNION SELECT 'cfurl_cache_response', count (*) from cfurl_cache_response;"
+        cmd = '{bin} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
+                                          db=fname, sql=sql)
+        # Run the query
+        out = self.local_op.command_blocking(cmd)
+        out_parsed = filter(None, out[0].split('\n'))
+        # Print the result to screen
+        rows = []
+        for elem in out_parsed:
+            tmp = elem.split('|')
+            rows.append([tmp[0], tmp[1]])
 
+        self.print_table(rows, header=['Table','Rows'])
+
+    def analyze_file(self, fname):
         cmd_headers = ' -header' if self.options['headers'] else ''
         cmd_column = ' -column' if self.options['column_mode'] else ''
         cmd_csv = ' -csv' if self.options['csv_mode'] else ''
 
         if self.options['row_counts']:
-            self.printer.info("Getting standard table row counts...")
+            self._print_rows(fname)
 
-            # Query to get a row counts for 3 standard tables in Cache.db
-            sql = "SELECT 'cfurl_cache_receiver_data' as 'Table', count (*) as 'Rows' from cfurl_cache_receiver_data " \
-                  "UNION SELECT 'cfurl_cache_blob_data', count (*) from cfurl_cache_blob_data " \
-                  "UNION SELECT 'cfurl_cache_response', count (*) from cfurl_cache_response;"
-
-            cmd = '{bin} {header} {column} {csv} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
-                                                              header=cmd_headers, column=cmd_column, csv=cmd_csv,
-                                                              db=fname, sql=sql)
-
-            # Run the query and then print the result to screen
-            out = self.local_op.command_blocking(cmd)
-
-            print
-            for line in out:
-                print(line)
 
         self.printer.info("Spawning SQLite3 console...")
         cmd = '{bin} {header} {column} {csv} {db}'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
