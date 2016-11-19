@@ -55,11 +55,10 @@ class Module(BaseModule):
         cmd_headers = ' -header' if self.options['headers'] else ''
         cmd_column = ' -column' if self.options['column_mode'] else ''
         cmd_csv = ' -csv' if self.options['csv_mode'] else ''
-
+        # Print row count
         if self.options['row_counts']:
             self._print_rows(fname)
-
-
+        # Spawn SQLite3 console
         self.printer.info("Spawning SQLite3 console...")
         cmd = '{bin} {header} {column} {csv} {db}'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
                                                           header=cmd_headers, column=cmd_column, csv=cmd_csv,
