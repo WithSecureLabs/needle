@@ -108,7 +108,7 @@ class Device(object):
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
         # Paramiko Exec Command
-        stdin, stdout, stderr = self.conn.exec_command(cmd)
+        stdin, stdout, stderr = self.conn.exec_command(cmd, timeout=30)
         # Parse STDOUT/ERR
         out = stdout.readlines()
         err = stderr.readlines()
