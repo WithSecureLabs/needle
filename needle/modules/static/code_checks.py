@@ -88,7 +88,7 @@ class Module(StaticModule):
         self.diffs = None
         self.findings = {}
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "code_checks.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("code_checks.txt", self)
 
     # ==================================================================================================================
     # UTILS

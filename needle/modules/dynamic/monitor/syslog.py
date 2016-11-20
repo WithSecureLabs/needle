@@ -19,7 +19,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "syslog.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("syslog.txt", self)
         # Setting default filter
         if self.APP_METADATA:
             self.printer.info('Setting filter to: %s (you can change it in options)' % self.APP_METADATA['binary_name'])

@@ -208,38 +208,23 @@ class RemoteOperations(object):
         cmd = 'chmod +x %s' % fname
         self.command_blocking(cmd)
 
-    def parse_plist(self, plist, convert=True, sanitize=False):
+    def parse_plist(self, plist, convert=True, sanitize=True):
         """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
-        def sanitize_plist(plist):
-            self._device.printer.debug('Sanitizing content from: {}'.format(plist_copy))
-
-            # This is the list of characters to remove encoded as 'OCT'
-            # For example, \013 is vertical tab, see http://www.asciitable.com/
-            chars_to_remove = ['\\000', '\\014', '\\015', '\\013', '\\007', '\\021']
-            remote_temp = self.build_temp_path_for_file('sanitize_temp')
-            dst = remote_temp
-            src = plist_copy
-
-            # Iterate through the characters to remove pulling the file back and forth between
-            # the original file and the temp file
-            for char in chars_to_remove:
-                cmd = "tr < {} -d '{}' > {}".format(src, char, dst)
-                self.command_blocking(cmd, internal=True)
-                src, dst = dst, src
-
-            # Make sure at the end that the final file is in the location of the original file
-            if plist_copy != src:
-                self.file_copy(src, plist_copy)
-
-            # clean up temp file
-            self.file_delete(remote_temp)
-
-
-
+        def sanitize_plist(pl):
+            self._device.printer.debug('Sanitizing content from: {}'.format(pl))
+            # Reading original content
+            local_plist = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
+            self.download(pl, local_plist)
+            with open(local_plist, 'rb') as fp:
+                text = fp.read()
+            # Writing back sanitized content
+            with open(local_plist, 'wb') as fp:
+                text_clean = Utils.regex_remove_control_chars(text)
+                fp.write(text_clean)
+            self.upload(local_plist, pl)
         # Copy the plist
-        plist_temp = self.build_temp_path_for_file(plist.strip("'"))
-        plist_copy = Utils.escape_path(plist_temp)
-        self._device.printer.debug('Copy the plist to temp: {}'.format(plist_copy))
+        plist_copy = Utils.escape_path(self.build_temp_path_for_file(plist.strip("'")))
+        self._device.printer.debug('Copy the plist to temp: {} -> {}'.format(plist, plist_copy))
         self.file_copy(plist, plist_copy)
         # Convert to xml
         if convert:
@@ -265,9 +250,7 @@ class RemoteOperations(object):
                 self._device.printer.debug('This error is probably due to an invalid character in the plist file')
                 self._device.printer.debug('The invalid character needs to be added to array "chars_to_remove" in'
                                            ' function "sanitize_plist" within "remote_operations.py')
-            raise
-
-
+            raise Exception(err)
         return pl
 
     def read_file(self, fname, grep_args=None):

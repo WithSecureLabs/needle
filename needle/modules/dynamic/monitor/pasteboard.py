@@ -19,7 +19,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "pasteboard.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("pasteboard.txt", self)
 
     # ==================================================================================================================
     # RUN

@@ -25,7 +25,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "template.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
         # Output array (do not delete)
         self.output = []
 

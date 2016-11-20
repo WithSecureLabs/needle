@@ -40,7 +40,7 @@ class Module(BaseModule):
         for fp in self.KEYCHAIN_PLISTS:
             # Prepare path
             temp_name = 'keychain_{}'.format(fp)
-            local_name = self.local_op.build_output_path_for_file(self, temp_name)
+            local_name = self.local_op.build_output_path_for_file(temp_name, self)
             self.LOCAL_PLISTS.append(local_name)
             # Save to file
             self.device.pull(fp, local_name)
@@ -77,7 +77,7 @@ class Module(BaseModule):
         # Print result
         if expected:
             self.printer.notify("The following content has been dumped (and matches the filter):")
-            loal_out = self.local_op.build_output_path_for_file(self, 'keychain_output')
+            loal_out = self.local_op.build_output_path_for_file('keychain_output', self)
             self.print_cmd_output(expected, loal_out)
         else:
             self.printer.warning('No content found. Try to relax the filter (if applied) and ensure the screen is unlocked before dumping the keychain')

@@ -66,7 +66,7 @@ class Module(BaseModule):
     def verify_signature(self, data, verify=True):
         """Verify the SMIME signature of the file."""
         # Temporarily write the content on disk
-        temp_assoc = self.local_op.build_temp_path_for_file(self, "assoc")
+        temp_assoc = self.local_op.build_temp_path_for_file("assoc", self)
         self.local_op.write_file(temp_assoc, data)
         # Verify the SMIME signature using built-in CAs (unless verify is set to false)
         if verify:
@@ -106,7 +106,7 @@ class Module(BaseModule):
                 signed = False
                 signature = None
             # Print & Save to file
-            assoc_path = self.local_op.build_output_path_for_file(self, 'appsiteassoc_{}'.format(domain))
+            assoc_path = self.local_op.build_output_path_for_file('appsiteassoc_{}'.format(domain), self)
             outfile = str(assoc_path) if self.options['output'] else None
             self.print_cmd_output(data, outfile, silent=True)
         else:

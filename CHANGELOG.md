@@ -10,10 +10,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** `move` function for Remote operations
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
+- **[MODULE]** Allow using nano to edit hosts file (`various/hosts`) _[from @tghosth]_
+- **[MODULE]** Automatically print row counts for standard tables in Cache.db files (`storage/data/files_cachedb`) _[from @tghosth]_
+- **[MODULE]** Automatically print row counts for standard tables in SQL files (`storage/data/files_cachedb`) _[from @tghosth]_
+- **[MODULE]** View Server Certificate (`comms/certs/view_cert`) _[from @tghosth]_
 
 #### Fixed
 - **[CORE]** Sanitization of parsed plist files
 - **[CORE]** App metadata: show all URI handlers
+- **[CORE]** Invalid characters when parsing plist files
 - **[MODULE]** Dump entire keychain _[idea from @tghosth]_
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
