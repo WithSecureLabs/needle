@@ -20,7 +20,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "strings")
+        self.options['output'] = self.local_op.build_output_path_for_file("strings", self)
 
     def analyze_strings(self, str_list):
         self.printer.info('Analyzing strings (press any key to continue)...')

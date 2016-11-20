@@ -35,7 +35,7 @@ class Module(BaseModule):
         pl = self.device.remote_op.parse_plist(remote_name)
         # Prepare path
         local_name = 'plist_{}'.format(local_name)
-        plist_path = self.local_op.build_output_path_for_file(self, local_name)
+        plist_path = self.local_op.build_output_path_for_file(local_name, self)
         # Print & Save to file
         outfile = str(plist_path) if self.options['output'] else None
         self.print_cmd_output(pl, outfile, silent)

@@ -20,7 +20,7 @@ class Module(BaseModule):
         # Any other customization goes here
 
         # Setting default output file
-        # self.options['output'] = self.local_op.build_output_path_for_file(self, "template.txt")
+        # self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
 
     # ==================================================================================================================
     # RUN

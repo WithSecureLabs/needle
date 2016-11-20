@@ -3,14 +3,25 @@ from core.framework.module import FridaScript
 
 class Module(FridaScript):
     meta = {
-        'name': 'Frida Launcher',
+        'name': 'Frida Script: dump UI',
         'author': '@LanciniMarco (@MWRLabs)',
-        'description': 'Run Frida scripts (JS payloads)',
+        'description': 'Print view hierarchy',
         'options': (
-            ('payload', "", True, 'Full path of the JS payload file'),
             ('output', True, False, 'Full path of the output file'),
         ),
     }
+
+    JS = '''\
+if(ObjC.available) {
+    ObjC.schedule(ObjC.mainQueue, () => {
+        const window = ObjC.classes.UIWindow.keyWindow();
+        const ui = window.recursiveDescription().toString();
+        send(ui);
+    });
+} else {
+    console.log("Objective-C Runtime is not available!");
+}
+    '''
 
     # ==================================================================================================================
     # UTILS
@@ -18,23 +29,22 @@ class Module(FridaScript):
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_launcher.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_dumpui.txt", self)
         self.output = []
 
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        # Parse the payload
-        payload = self.options['payload']
-        self.printer.info("Parsing payload: %s" % payload)
-        hook = open(payload, "r")
-        script = self.session.create_script(hook.read())
-
-        # Load the payload
-        script.on('message', self.on_message)
-        script.load()
-        self.printer.notify("Payload loaded. You can continue to use the app now...")
+        # Run the payload
+        try:
+            self.printer.info("Parsing payload")
+            hook = self.JS
+            script = self.session.create_script(hook)
+            script.on('message', self.on_message)
+            script.load()
+        except Exception as e:
+            self.printer.warning("Script terminated abruptly")
 
         # Save to file
         self.print_cmd_output(self.output, self.options['output'], silent=True)

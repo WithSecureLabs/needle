@@ -60,6 +60,13 @@ class Utils(object):
         return obj
 
     @staticmethod
-    def regex_escape_str(str):
+    def regex_escape_str(text):
         """Make the string regex-ready by escaping it."""
-        return re.escape(str)
+        return re.escape(text)
+
+    @staticmethod
+    def regex_remove_control_chars(text):
+        """Remove non-printable characters from string."""
+        control_chars = ''.join(map(unichr, range(0, 32) + range(127, 160)))
+        control_char_re = re.compile('[%s]' % re.escape(control_chars))
+        return control_char_re.sub('', text)

@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 import time
 import json
+import plistlib
 import textwrap
 from pprint import pprint
 
@@ -154,23 +155,25 @@ class BaseModule(Framework):
     # ==================================================================================================================
     def print_cmd_output(self, txt, outfile=None, silent=False):
         """Pretty print output coming from command execution. Also save it to file if specified"""
-        def print_screen():
-            if type(txt) is dict: pprint(txt, indent=4)
-            elif type(txt) is list: map(lambda x: print('\t%s' % x, end=''), txt)
-            else: print('\t%s' % txt)
+        def print_screen(content):
+            content_type = type(content)
+            if content_type is dict or content_type is plistlib._InternalDict: pprint(content, indent=4)
+            elif content_type is list: map(print_screen, content)
+            else: print('\t%s' % content.strip())
 
-        def print_file():
-            if type(txt) is dict:
-                try: json.dump(txt, fp)
+        def print_file(content):
+            content_type = type(content)
+            if content_type is dict or content_type is plistlib._InternalDict:
+                try: json.dump(content, fp)
                 except TypeError: pass
-            elif type(txt) is list:
-                for line in txt: fp.write('%s\n' % line.strip())
+            elif content_type is list:
+                for line in content: fp.write('%s\n' % line)
             else:
-                fp.write('%s\n' % txt)
+                fp.write('%s\n' % content)
 
         if txt:
             # Print to screen
-            if not silent: print_screen()
+            if not silent: print_screen(txt)
             # Saving to file
             if outfile:
                 if type(outfile) is not str:
@@ -178,8 +181,7 @@ class BaseModule(Framework):
                 else:
                     self.printer.info("Saving output to file: %s" % outfile)
                     with open(outfile, 'w') as fp:
-                        print_file()
-
+                        print_file(txt)
 
 # ======================================================================================================================
 # OTHER TYPES OF MODULES
