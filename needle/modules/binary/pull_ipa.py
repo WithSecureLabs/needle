@@ -19,7 +19,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self._global_options['output_folder']
+        self.options['output'] = self.local_op.build_output_path_for_file(fname_ipa, self)
 
     # ==================================================================================================================
     # RUN
@@ -52,5 +52,5 @@ class Module(BaseModule):
 
         # Pull the binary if this has been set.
         if self.options['pull_binary']:
-            fname_local_bin = self.local_op.build_output_path_for_file(self, self.fname_binary)
+            fname_local_bin = self.local_op.build_output_path_for_file(self.fname_binary, self)
             self.device.pull(self.fname_binary, fname_local_bin)
