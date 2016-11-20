@@ -19,7 +19,8 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, fname_ipa)
+        fname_ipa = '%s.ipa' % self.APP_METADATA['bundle_id'] if self.APP_METADATA else 'app.ipa'
+        self.options['output'] = self.local_op.build_output_path_for_file(fname_ipa, self)
 
     # ==================================================================================================================
     # RUN
@@ -28,6 +29,7 @@ class Module(BaseModule):
         # IPA filename
         fname_ipa = '%s.ipa' % self.APP_METADATA['bundle_id']
         fname_remote = self.device.remote_op.build_temp_path_for_file(fname_ipa)
+        fname_local_ipa = self.options['output']
 
         if self.options['decrypt']:
             # Decrypt the binary first
@@ -44,8 +46,6 @@ class Module(BaseModule):
             # If pulling the binary, unpack the ipa and get the binary link
             if self.options['pull_binary']:
                 self.fname_binary = self.device.app.unpack_ipa(self.APP_METADATA, fname_remote)
-
-        fname_local_ipa = self.local_op.build_output_path_for_file(self, fname_remote)
 
         # Pull file
         self.device.pull(fname_remote, fname_local_ipa)
