@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Automatically print row counts for standard tables in Cache.db files (`storage/data/files_cachedb`) _[from @tghosth]_
 - **[MODULE]** Automatically print row counts for standard tables in SQL files (`storage/data/files_cachedb`) _[from @tghosth]_
 - **[MODULE]** View Server Certificate (`comms/certs/view_cert`) _[from @tghosth]_
+- **[MODULE]** Pull IPA: pull the binary as well as the .ipa file (`binary/pull_ipa`) _[from @tghosth]_
 
 #### Fixed
 - **[CORE]** Sanitization of parsed plist files
