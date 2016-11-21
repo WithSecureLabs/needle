@@ -221,10 +221,19 @@ class App(object):
         if self._device.remote_op.dir_exist(payload_folder): self._device.remote_op.dir_delete(payload_folder)
         if self._device.remote_op.file_exist(itunes): self._device.remote_op.file_delete(itunes)
 
+        # Do IPA unzip and get binary path
+        fname_binary = self.unpack_ipa(app_metadata, fname_decrypted)
+
+        return fname_binary
+
+    # ==================================================================================================================
+    # UNPACK AN IPA FILE
+    # ==================================================================================================================
+    def unpack_ipa(self, app_metadata, ipa_fname):
         # Unzip
-        self._device.printer.info("Unpacking the decrypted IPA...")
+        self._device.printer.info("Unpacking the IPA...")
         cmd = '{bin} {ipa} -d {folder}'.format(bin=self._device.DEVICE_TOOLS['UNZIP'],
-                                               ipa=fname_decrypted,
+                                               ipa=ipa_fname,
                                                folder=self._device.TEMP_FOLDER)
         out = self._device.remote_op.command_blocking(cmd)
 
