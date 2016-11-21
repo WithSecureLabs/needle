@@ -8,8 +8,8 @@ class Module(BaseModule):
         'description': "Decrypt and pull the application's IPA from the device",
         'options': (
             ('output', "", True, 'Full path of the output file'),
-            ('decrypt', True, False, 'Set to true to decrypt the IPA before pulling'),
-            ('pull_binary', False, False, 'Set to true to pull the application binary as well separately')
+            ('decrypt', True, False, 'Set to True to decrypt the IPA before pulling'),
+            ('pull_binary', False, False, 'Set to True to pull the application binary as well separately')
         ),
     }
 
@@ -43,14 +43,12 @@ class Module(BaseModule):
                                                       out=fname_remote)
             self.device.remote_op.command_blocking(cmd)
 
-            # If pulling the binary, unpack the ipa and get the binary link
-            if self.options['pull_binary']:
-                self.fname_binary = self.device.app.unpack_ipa(self.APP_METADATA, fname_remote)
-
         # Pull file
         self.device.pull(fname_remote, fname_local_ipa)
 
         # Pull the binary if this has been set.
         if self.options['pull_binary']:
+            self.printer.info("Recovering the binary...")
+            self.fname_binary = self.device.app.unpack_ipa(self.APP_METADATA, fname_remote)
             fname_local_bin = self.local_op.build_output_path_for_file(self.fname_binary, self)
             self.device.pull(self.fname_binary, fname_local_bin)
