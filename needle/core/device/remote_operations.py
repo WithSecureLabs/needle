@@ -235,7 +235,9 @@ class RemoteOperations(object):
         self._device.printer.debug('Extracting content from: {}'.format(plist_copy))
         # Sanitize (possible to have NULL bytes)
         if sanitize:
-            sanitize_plist(plist_copy)
+            # TODO: FIX
+            #sanitize_plist(plist_copy)
+            pass
         # Cat the content
         cmd = 'cat {}'.format(plist_copy)
         out = self.command_blocking(cmd, internal=True)
