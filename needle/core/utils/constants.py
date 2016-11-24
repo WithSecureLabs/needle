@@ -75,6 +75,7 @@ class Constants(object):
     CA_MITM_URL = 'http://mitm.it/cert/pem'
     CA_BURP_URL = 'http://burp/cert'
     CYDIA_LIST = '/etc/apt/sources.list.d/cydia.list'
+    THEOS_FOLDER = '/private/var/theos/'
     DEVICE_SETUP = {
         'PREREQUISITES': ['apt-get', 'dpkg'],
         'TOOLS': {
@@ -116,8 +117,12 @@ class Constants(object):
             'PLUTIL': {'COMMAND': 'plutil', 'PACKAGES': ['com.ericasadun.utilities'], 'REPO': None, 'LOCAL': None},
             'SOCAT': {'COMMAND': 'socat', 'PACKAGES': ['socat'], 'REPO': None, 'LOCAL': None},
             'STRINGS': {'COMMAND': 'strings', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
-            'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None,
-                      'SETUP': ["wget --no-check-certificate https://github.com/theos/theos/archive/master.zip 2>&1", "unzip master.zip && rm master.zip", "mv theos-master /private/var/theos/"]},
+            'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
+                "GIT_SSL_NO_VERIFY=true git clone --recursive https://github.com/theos/theos.git %s" % THEOS_FOLDER,
+                "mkdir -p %ssdks" % THEOS_FOLDER,
+                "curl -ksL \"https://sdks.website/dl/iPhoneOS8.1.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
+            ]},
+            'THEOS_NIC': {'COMMAND': '%sbin/nic.pl' % THEOS_FOLDER, 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
             'UIOPEN': {'COMMAND': 'uiopen', 'PACKAGES': None, 'REPO': None, 'LOCAL': None},
         }
     }

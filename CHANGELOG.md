@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Support for plist files into print_cmd_output
 - **[CORE]** `move` function for Remote operations
+- **[CORE]** Automatically install Theos
+- **[MODULE]** Theos integration (`hooking/theos/theos_tweak`)
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
 - **[MODULE]** Allow using nano to edit hosts file (`various/hosts`) _[from @tghosth]_
