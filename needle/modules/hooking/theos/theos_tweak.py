@@ -9,7 +9,7 @@ class Module(BaseModule):
         'description': 'Automate management of THEOS Tweaks. To see a full list of commands for this module, please refer to the "Comments" section.',
         'options': (
             ('project_name', "", True, 'Project name'),
-            ('package_name', "", True, 'Package Name [com.yourcompany.test]'),
+            ('package_name', "", True, 'Package Name [yourcompany.test]. The "needle." prefix will be automatically added'),
             ('substrate_filter', "", False, 'MobileSubstrate Bundle filter [com.apple.springboard]'),
             ('terminate_app', "", False, "List of applications to terminate upon installation (space-separated) [SpringBoard]"),
             ('program', 'VIM', True, 'Select the program to use for editing files. Currently supported: VIM, NANO'),
@@ -34,16 +34,21 @@ class Module(BaseModule):
 
     def __init_const(self):
         # Parse options
-        project = self.options['project_name'].lower()
-        self.project_folder = '{}{}'.format(self.device.TEMP_FOLDER, project)
+        project_name = self.options['project_name'].lower()
+        package_name = 'needle.{}'.format(self.options['package_name'])
+        substrate_filter = self.options['substrate_filter'] if self.options['substrate_filter'] else ''
+        terminate_app = self.options['terminate_app'] if self.options['terminate_app'] else '-'
+        # Build paths
+        self.project_folder = '{}{}'.format(self.device.TEMP_FOLDER, project_name)
         self.tweak = "{}/Tweak.xm".format(self.project_folder)
+        # Build config list
         cfg = [
             '11',
-            self.options['project_name'],
-            self.options['package_name'],
+            project_name,
+            package_name,
             'Needle',
-            self.options['substrate_filter'] if self.options['substrate_filter'] else '',
-            self.options['terminate_app'] if self.options['terminate_app'] else '-',
+            substrate_filter,
+            terminate_app,
         ]
         self.cfg = '\n'.join(cfg)
 
@@ -100,7 +105,7 @@ class Module(BaseModule):
 
     def _tweak_disinstall(self):
         self.printer.info("Disinstalling the Tweak...")
-        cmd = "dpkg -r {}".format(self.options['package_name'])
+        cmd = "{dpkg} -r {package}".format(dpkg=self.device.DEVICE_TOOLS['DPKG'], package=self.options['package_name'])
         out = self.device.remote_op.command_blocking(cmd)
         self.print_cmd_output(out)
 
