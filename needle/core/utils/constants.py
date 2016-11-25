@@ -127,6 +127,7 @@ class Constants(object):
                 "GIT_SSL_NO_VERIFY=true git clone --recursive https://github.com/theos/theos.git %s" % THEOS_FOLDER,
                 "mkdir -p %ssdks" % THEOS_FOLDER,
                 "curl -ksL \"https://sdks.website/dl/iPhoneOS8.1.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
+                "curl -ksL \"https://sdks.website/dl/iPhoneOS9.3.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
             ]},
             'THEOS_NIC': {'COMMAND': '%sbin/nic.pl' % THEOS_FOLDER, 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'UIOPEN': {'COMMAND': 'uiopen', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
