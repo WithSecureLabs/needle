@@ -10,7 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** `move` function for Remote operations
 - **[CORE]** Automatically install Theos
 - **[CORE]** Automatically install SSL Kill Switch
-- **[CORE]** Add `validate_editor` and `parametrize module_run` (`core/framework/module`)
+- **[CORE]** Add `validate_editor` (`core/framework/module`)
+- **[CORE]** Parametrize `module_run` (`core/framework/module`)
 - **[MODULE]** Theos integration (`hooking/theos/theos_tweak`)
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
@@ -24,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Sanitization of parsed plist files
 - **[CORE]** App metadata: show all URI handlers
 - **[CORE]** Invalid characters when parsing plist files
+- **[CORE]** Minor on Remote Operations' wrapper: `list_dir` and `cat_file`
 - **[MODULE]** Dump entire keychain _[idea from @tghosth]_
 - **[MODULE]** `storage/caching/screenshot`: OS X support for rendering preview images
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
