@@ -21,7 +21,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "classdump")
+        self.options['output'] = self.local_op.build_output_path_for_file("classdump", self)
 
     def class_dump(self):
         if self.options['dump_interfaces']:
@@ -29,7 +29,7 @@ class Module(BaseModule):
             self.printer.debug("Leftovers cleanup...")
             folder_remote = self.device.remote_op.build_temp_path_for_file("interfaces")
             folder_local = self.options['output'] if self.options['output'] \
-                                                  else self.local_op.build_output_path_for_file("interfaces")
+                                                  else self.local_op.build_output_path_for_file("interfaces", self)
             self.device.remote_op.dir_reset(folder_remote)
             self.local_op.dir_reset(folder_local)
 

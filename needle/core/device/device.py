@@ -110,6 +110,9 @@ class Device(object):
         # Paramiko Exec Command
         stdin, stdout, stderr = self.conn.exec_command(cmd)
         # Parse STDOUT/ERR
+        # TODO: FIX
+        #out = stdout.read().decode('iso-8859-1').split('\n')
+        #out = filter(None, out)
         out = stdout.readlines()
         err = stderr.readlines()
         if internal:

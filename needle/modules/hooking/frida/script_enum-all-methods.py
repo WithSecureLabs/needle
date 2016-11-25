@@ -33,7 +33,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "frida_script_allmethods.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_allmethods.txt", self)
         self.output = []
 
     # ==================================================================================================================

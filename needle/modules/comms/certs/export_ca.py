@@ -21,7 +21,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "certs")
+        self.options['output'] = self.local_op.build_output_path_for_file("certs", self)
 
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
@@ -32,7 +32,7 @@ class Module(BaseModule):
         if not self.device.remote_op.file_exist(self.truststore_path):
             raise Exception("TrustStore file not found on device!")
         else:
-            self.db = self.local_op.build_output_path_for_file(self, "TrustStore.sqlite3")
+            self.db = self.local_op.build_output_path_for_file("TrustStore.sqlite3", self)
             self.device.pull(self.truststore_path, self.db)
 
     # ==================================================================================================================

@@ -77,7 +77,7 @@ class RemoteOperations(object):
         path = Utils.escape_path(path)
         opts = ''
         if recursive: opts = '-alR'
-        cmd = 'ls {opts} {path}'.format(opts=opts, path=path)
+        cmd = 'ls -l {opts} {path}'.format(opts=opts, path=path)
         return self.command_blocking(cmd)
 
     def dir_reset(self, path):
@@ -160,7 +160,7 @@ class RemoteOperations(object):
     # ==================================================================================================================
     def download(self, src, dst, recursive=False):
         """Download a file from the device."""
-        src, dst = Utils.escape_path_scp(src), Utils.escape_path_scp(dst)
+        src, dst = Utils.escape_path_scp(src), Utils.escape_path(dst)
         self._device.printer.debug("Downloading: %s -> %s" % (src, dst))
 
         cmd = 'sshpass -p "{password}" scp {hostverification} -P {port}'.format(password=self._device._password,
@@ -208,23 +208,23 @@ class RemoteOperations(object):
         cmd = 'chmod +x %s' % fname
         self.command_blocking(cmd)
 
-    def parse_plist(self, plist, convert=True, sanitize=False):
+    def parse_plist(self, plist, convert=True, sanitize=True):
         """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
-        def sanitize_plist(plist):
-            self._device.printer.debug('Sanitizing content from: {}'.format(plist_copy))
-            remote_temp = self.build_temp_path_for_file('sanitize_temp')
-            cmd = "tr < {} -d '\\000' > {}".format(plist_copy, remote_temp)
-            self.command_blocking(cmd, internal=True)
-            cmd = "tr < {} -d '\\014' > {}".format(remote_temp, plist_copy)
-            self.command_blocking(cmd, internal=True)
-            cmd = "tr < {} -d '\\015' > {}".format(plist_copy, remote_temp)
-            self.command_blocking(cmd, internal=True)
-            self.file_copy(remote_temp, plist_copy)
-
+        def sanitize_plist(pl):
+            self._device.printer.debug('Sanitizing content from: {}'.format(pl))
+            # Reading original content
+            local_plist = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
+            self.download(pl, local_plist)
+            with open(local_plist, 'rb') as fp:
+                text = fp.read()
+            # Writing back sanitized content
+            with open(local_plist, 'wb') as fp:
+                text_clean = Utils.regex_remove_control_chars(text)
+                fp.write(text_clean)
+            self.upload(local_plist, pl)
         # Copy the plist
-        plist_temp = self.build_temp_path_for_file(plist.strip("'"))
-        plist_copy = Utils.escape_path(plist_temp)
-        self._device.printer.debug('Copy the plist to temp: {}'.format(plist_copy))
+        plist_copy = Utils.escape_path(self.build_temp_path_for_file(plist.strip("'")))
+        self._device.printer.debug('Copy the plist to temp: {} -> {}'.format(plist, plist_copy))
         self.file_copy(plist, plist_copy)
         # Convert to xml
         if convert:
@@ -235,18 +235,31 @@ class RemoteOperations(object):
         self._device.printer.debug('Extracting content from: {}'.format(plist_copy))
         # Sanitize (possible to have NULL bytes)
         if sanitize:
-            sanitize_plist(plist_copy)
+            # TODO: FIX
+            #sanitize_plist(plist_copy)
+            pass
         # Cat the content
         cmd = 'cat {}'.format(plist_copy)
         out = self.command_blocking(cmd, internal=True)
         content = str(''.join(out).encode('utf-8'))
         # Parse it with plistlib
         self._device.printer.debug('Parsing plist content')
-        pl = plistlib.readPlistFromString(content)
+        try:
+            pl = plistlib.readPlistFromString(content)
+        except Exception as err:
+            if 'not well-formed (invalid token)' in err.message:
+                self._device.printer.error('Error occured whilst parsing plist')
+                self._device.printer.debug('This error is probably due to an invalid character in the plist file')
+                self._device.printer.debug('The invalid character needs to be added to array "chars_to_remove" in'
+                                           ' function "sanitize_plist" within "remote_operations.py')
+            raise Exception(err)
         return pl
 
     def read_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""
+        if not self.file_exist(fname):
+            self._device.printer.error('File not found: {}'.format(fname))
+            return
         cmd = 'cat {fname}'.format(fname=fname)
         if grep_args:
             cmd += ' | grep {grep_args}'.format(grep_args=grep_args)

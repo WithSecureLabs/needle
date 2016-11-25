@@ -9,12 +9,18 @@ class Module(BaseModule):
         'description': "Show the content of the device's /etc/hosts file, and offer the chance to edit it",
         'options': (
             ('edit', False, True, 'Modify the /etc/hosts file of the device.'),
+            ('program', 'VIM', True, 'Select the program to use for editing the file. Currently supported: VIM, NANO'),
         ),
     }
+
 
     # ==================================================================================================================
     # UTILS
     # ==================================================================================================================
+    def __init__(self, params):
+        BaseModule.__init__(self, params)
+        self.validate_editor()
+
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
 
@@ -24,7 +30,7 @@ class Module(BaseModule):
     def module_run(self):
         # Define paths
         self.path_remote = Constants.DEVICE_PATH_HOSTS
-        self.path_local  = self.local_op.build_temp_path_for_file(self, "hosts")
+        self.path_local  = self.local_op.build_temp_path_for_file("hosts", self)
 
         # Read hosts file
         self.printer.info("Looking for the hosts file...")
@@ -39,8 +45,8 @@ class Module(BaseModule):
             # Pull the file
             self.device.pull(self.path_remote, self.path_local)
 
-            # Modify it
-            cmd = '{vim} {fname}'.format(vim=self.TOOLS_LOCAL['VIM'],
+            # Modify it in the selected editor
+            cmd = '{editor} {fname}'.format(editor=self.editor,
                                          fname=self.path_local)
             self.local_op.command_interactive(cmd)
 

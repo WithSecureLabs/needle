@@ -21,7 +21,7 @@ class Module(BaseModule):
     def pull_ts(self):
         self.printer.info("Looking for the TrustStore.sqlite3 file...")
         self.truststore_path = Constants.DEVICE_PATH_TRUST_STORE
-        self.db = self.local_op.build_temp_path_for_file(self, "TrustStore.sqlite3")
+        self.db = self.local_op.build_temp_path_for_file("TrustStore.sqlite3", self)
         if not self.device.remote_op.file_exist(self.truststore_path):
             raise Exception("TrustStore file not found on device!")
         else:

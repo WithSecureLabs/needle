@@ -104,7 +104,7 @@ class BaseModule(Framework):
         self._reload = 1
         return True
 
-    def do_run(self, params):
+    def do_run(self, params, func=None):
         """Runs the module."""
         try:
             self._validate_options()
@@ -112,7 +112,10 @@ class BaseModule(Framework):
             pre = self.module_pre()
             if pre is None: return
             # Execute the module
-            self.module_run()
+            if func:
+                func()
+            else:
+                self.module_run()
             # Execute POST
             self.module_post()
         except KeyboardInterrupt:
@@ -182,6 +185,13 @@ class BaseModule(Framework):
                     self.printer.info("Saving output to file: %s" % outfile)
                     with open(outfile, 'w') as fp:
                         print_file(txt)
+
+    def validate_editor(self):
+        """Check that the user entered a recognised editor in the PROGRAM option by seeing if it exists in the TOOLS_LOCAL directory."""
+        if self.options['program'] in self.TOOLS_LOCAL:
+             self.editor = self.TOOLS_LOCAL[self.options['program']]
+        else:
+            raise FrameworkException('The Editing program specified ("{}") is not supported.'.format(self.options['program']))
 
 # ======================================================================================================================
 # OTHER TYPES OF MODULES

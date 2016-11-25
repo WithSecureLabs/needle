@@ -26,7 +26,7 @@ class Module(BaseModule):
         if not self.device.remote_op.file_exist(self.truststore_path):
             raise Exception("TrustStore file not found on device!")
         else:
-            self.db = self.local_op.build_temp_path_for_file(self, "TrustStore.sqlite3")
+            self.db = self.local_op.build_temp_path_for_file("TrustStore.sqlite3", self)
             self.device.pull(self.truststore_path, self.db)
 
     # ==================================================================================================================
