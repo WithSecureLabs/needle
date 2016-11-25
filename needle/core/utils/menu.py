@@ -42,3 +42,12 @@ def choose_from_list_data_protection(options, choose=True):
         fname = chosen_val[0].strip()
         fname = fname.strip(''''"''')
         return fname
+
+
+def choose_yes_no(prompt):
+    """Show yes/no menu, let users chose option"""
+    options = {"yes" : True, 'y' : True, "No" : False, 'n' : False}
+    choice = raw_input(prompt+'(Yes/No): ').strip()
+    option = options[choice.lower()]
+    return option
+
