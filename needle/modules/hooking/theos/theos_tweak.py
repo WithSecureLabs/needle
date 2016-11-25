@@ -17,9 +17,10 @@ class Module(BaseModule):
         'comments': [
             'run: create, edit, and install Tweak',
             'view: view the Tweak',
-            'edit: edit the Tweak',
+            'edit: edit and reinstall the Tweak',
             'install: (re)install the Tweak',
-            'disinstall: disinstall the Tweak'
+            'disinstall: disinstall the Tweak',
+            '(For further instructions, see: https://github.com/mwrlabs/needle/wiki/Theos-Integration)'
         ]
     }
 
