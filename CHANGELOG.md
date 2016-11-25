@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Automatically install SSL Kill Switch
 - **[CORE]** Add `validate_editor` (`core/framework/module`)
 - **[CORE]** Parametrize `module_run` (`core/framework/module`)
+- **[CORE]** Centralized utility for user interaction
 - **[MODULE]** Theos integration (`hooking/theos/theos_tweak`)
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
