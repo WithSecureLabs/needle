@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+#### Fixed
+#### Removed
+
+
+
+## [0.1.1] - 2016-11-25
+#### Added
 - **[CORE]** Support for plist files into print_cmd_output
 - **[CORE]** `move` function for Remote operations
 - **[CORE]** Automatically install Theos
@@ -33,8 +40,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Error saving files in `storage/data/files_*` modules _[from @tghosth]_
 - **[MODULE]** Run proxy regular even without selecting a target app
 - **[MODULE]** File monitoring: automatically detect folder to monitor (regression)
-
-#### Removed
 
 
 
