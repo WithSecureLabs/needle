@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Parametrize `module_run` (`core/framework/module`)
 - **[CORE]** Centralized utility for user interaction
 - **[MODULE]** Theos integration (`hooking/theos/theos_tweak`)
+- **[MODULE]** List installed Tweaks (`hooking/theos/list_tweaks`)
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`)
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
 - **[MODULE]** Allow using nano to edit hosts file (`various/hosts`) _[from @tghosth]_
