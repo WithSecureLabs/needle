@@ -3,9 +3,9 @@ from core.framework.module import FridaScript
 
 class Module(FridaScript):
     meta = {
-        'name': 'Frida Script: enumerate all methods',
-        'author': '@HenryHoggard (@MWRLabs)',
-        'description': 'Enumerate all methods from all classes in the application',
+        'name': 'Title',
+        'author': '@AUTHOR (@TWITTER)',
+        'description': 'Description',
         'options': (
             ('output', True, False, 'Full path of the output file'),
         ),
@@ -13,19 +13,11 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    for(var className in ObjC.classes) {
-        if(ObjC.classes.hasOwnProperty(className)) {
-            send("Class: " + className);
-            var methods = eval('ObjC.classes.'+className+'.$methods');
-            for (var i = 0; i < methods.length; i++) {
-                send(methods[i]);
-            }
-        }
-    }
+    // Actual payload
 } else {
     console.log("Objective-C Runtime is not available!");
 }
-    '''
+'''
 
     # ==================================================================================================================
     # UTILS
@@ -33,7 +25,8 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_allmethods.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
+        # Output array (do not delete)
         self.output = []
 
     # ==================================================================================================================
@@ -49,7 +42,6 @@ if(ObjC.available) {
             script.load()
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
-            print(e)
 
         # Save to file
         self.print_cmd_output(self.output, self.options['output'], silent=True)

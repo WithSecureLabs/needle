@@ -22,7 +22,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "heap_dump.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("heap_dump.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -58,7 +58,7 @@ class Module(BaseModule):
 
         # Check if we have dumps
         self.printer.verbose("Checking if we have dumps...")
-        file_list = self.device.remote_op.dir_list_recursive(dir_dumps)
+        file_list = self.device.remote_op.dir_list(dir_dumps, recursive=True)
         failure = filter(lambda x: 'total 0' in x, file_list)
         if failure:
             self.printer.error('It was not possible to attach to the process (known issue in iOS9. A Fix is coming soon)')

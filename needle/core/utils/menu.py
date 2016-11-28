@@ -2,6 +2,13 @@ from printer import Colors
 
 
 # ======================================================================================================================
+# UTILS
+# ======================================================================================================================
+def print_question(txt):
+    question = "{CS}[>][QUESTION]{CE} {txt}".format(CS=Colors.B, CE=Colors.N, txt=txt)
+    return raw_input(question).strip()
+
+# ======================================================================================================================
 # SUPPORT FOR MENU AND USER CHOICES
 # ======================================================================================================================
 def choose_from_list(options, choose=True):
@@ -14,7 +21,7 @@ def choose_from_list(options, choose=True):
         print(ll)
     # Get choice
     if choose:
-        choice = raw_input('Please select a number: ').strip()
+        choice = print_question('Please select a number: ')
         chosen_val = dict_opts[int(choice)]
         return chosen_val.strip()
 
@@ -37,13 +44,14 @@ def choose_from_list_data_protection(options, choose=True):
         print(ll)
     # Get choice
     if choose:
-        choice = raw_input('Please select a number: ').strip()
+        choice = print_question('Please select a number: ')
         chosen_val = dict_opts[int(choice)]
         fname = chosen_val[0].strip()
         fname = fname.strip(''''"''')
         return fname
 
 
+<<<<<<< HEAD
 def choose_yes_no(prompt):
     """Show yes/no menu, let users chose option"""
     options = {"yes" : True, 'y' : True, "No" : False, 'n' : False}
@@ -51,3 +59,11 @@ def choose_yes_no(prompt):
     option = options[choice.lower()]
     return option
 
+=======
+def choose_boolean(message):
+    question = "{} [y/N]: ".format(message)
+    choice = print_question(question)
+    if choice.lower() == 'y': return True
+    elif choice.lower() == 'n': return False
+    else: raise Exception('Please enter "y" or "n"')
+>>>>>>> 26345f2b0c558733b26452d1fd867494d926afad

@@ -36,7 +36,7 @@ class Module(BaseModule):
             return
         # Prepare path
         temp_name = 'BinaryCookies_{}'.format(local_name)
-        local_name = self.local_op.build_output_path_for_file(self, temp_name)
+        local_name = self.local_op.build_output_path_for_file(temp_name, self)
         # Save to file
         self.device.pull(remote_name, local_name)
         # Analyze

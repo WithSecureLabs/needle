@@ -9,8 +9,10 @@ class Module(BaseModule):
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'List Cache.db files contained in the app folders, alongside with their Data Protection Class. '
                        'Plus, offers the chance to pull and inspect them with SQLite3 or to dump them all for local analysis.',
-         'options': (
+        'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
+            ('row_counts', True, False, 'Prints the number of rows in the standard Cache.db tables if '
+                                         'ANALYZE is also True'),
             ('dump_all', False, True, 'Retrieve all SQL files'),
             ('output', True, False, 'Full path of the output folder'),
             ('headers', True, True, 'Enable SQLite3 table headers'),
@@ -30,11 +32,34 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
 
+    def _print_rows(self, fname):
+        self.printer.notify("Getting standard table row counts...")
+        # Query to get a row counts for 3 standard tables in Cache.db
+        sql = "SELECT 'cfurl_cache_receiver_data', count (*) from cfurl_cache_receiver_data " \
+              "UNION SELECT 'cfurl_cache_blob_data', count (*) from cfurl_cache_blob_data " \
+              "UNION SELECT 'cfurl_cache_response', count (*) from cfurl_cache_response;"
+        cmd = '{bin} {db} "{sql}"'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
+                                          db=fname, sql=sql)
+        # Run the query
+        out = self.local_op.command_blocking(cmd)
+        out_parsed = filter(None, out[0].split('\n'))
+        # Print the result to screen
+        rows = []
+        for elem in out_parsed:
+            tmp = elem.split('|')
+            rows.append([tmp[0], tmp[1]])
+
+        self.print_table(rows, header=['Table','Rows'])
+
     def analyze_file(self, fname):
-        self.printer.info("Spawning SQLite3 console...")
         cmd_headers = ' -header' if self.options['headers'] else ''
         cmd_column = ' -column' if self.options['column_mode'] else ''
         cmd_csv = ' -csv' if self.options['csv_mode'] else ''
+        # Print row count
+        if self.options['row_counts']:
+            self._print_rows(fname)
+        # Spawn SQLite3 console
+        self.printer.info("Spawning SQLite3 console...")
         cmd = '{bin} {header} {column} {csv} {db}'.format(bin=self.TOOLS_LOCAL['SQLITE3'],
                                                           header=cmd_headers, column=cmd_column, csv=cmd_csv,
                                                           db=fname)
@@ -45,7 +70,7 @@ class Module(BaseModule):
             return
         # Prepare path
         temp_name = 'CacheDB_{}'.format(local_name)
-        local_name = self.local_op.build_output_path_for_file(self, temp_name)
+        local_name = self.local_op.build_output_path_for_file(temp_name, self)
         # Save to file
         self.device.pull(remote_name, local_name)
         # Analyze

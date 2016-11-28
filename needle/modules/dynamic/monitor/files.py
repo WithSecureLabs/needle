@@ -8,7 +8,7 @@ class Module(BackgroundModule):
         'description': 'Monitor the app data folder and keep track of modified files',
         'options': (
             ('output', True, False, 'Full path of the output file'),
-            ('folder', "", True, 'The folder to monitor (leave empty to use the app Data directory)'),
+            ('folder', False, True, 'The folder to monitor (leave empty to use the app Data directory)'),
         ),
     }
     PID = None
@@ -19,7 +19,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting defaults
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "modified_files.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("modified_files.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -35,9 +35,9 @@ class Module(BackgroundModule):
 
         # Run command in a thread
         self.printer.notify('Monitoring: %s' % self.options['folder'])
-        cmd = '{app} {flt} &> {fname} & echo $!'.format(app=self.device.DEVICE_TOOLS['FSMON'],
-                                                        flt=self.options['folder'],
-                                                        fname=self.fname)
+        cmd = '{app} {flt} &> {fname}'.format(app=self.device.DEVICE_TOOLS['FSMON'],
+                                              flt=self.options['folder'],
+                                              fname=self.fname)
         self.device.remote_op.command_background_start(self, cmd)
 
 

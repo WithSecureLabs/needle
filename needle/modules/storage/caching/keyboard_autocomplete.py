@@ -18,7 +18,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "keyboard_autocomplete.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("keyboard_autocomplete.txt", self)
 
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)

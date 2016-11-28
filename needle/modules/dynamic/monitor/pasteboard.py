@@ -19,7 +19,7 @@ class Module(BackgroundModule):
     def __init__(self, params):
         BackgroundModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file(self, "pasteboard.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("pasteboard.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -35,9 +35,9 @@ class Module(BackgroundModule):
         self.fname = self.device.remote_op.build_temp_path_for_file("pasteboard")
 
         # Run command in a thread
-        cmd = '{app} {sleep} &> {fname} & echo $!'.format(app=self.device.DEVICE_TOOLS['PBWATCHER'],
-                                                          sleep=self.options['sleep'],
-                                                          fname=self.fname)
+        cmd = '{app} {sleep} &> {fname}'.format(app=self.device.DEVICE_TOOLS['PBWATCHER'],
+                                                sleep=self.options['sleep'],
+                                                fname=self.fname)
         self.device.remote_op.command_background_start(self, cmd)
 
     def module_kill(self):

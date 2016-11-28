@@ -48,7 +48,7 @@ class App(object):
         app_version_short = plist_local['CFBundleShortVersionString']
         app_version = '{} ({})'.format(app_version_long, app_version_short)
         try:
-            url_handlers = plist_local['CFBundleURLTypes'][0]['CFBundleURLSchemes']
+            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist_local['CFBundleURLTypes']]
         except:
             url_handlers = None
         try:
@@ -63,6 +63,9 @@ class App(object):
 
         # Detect architectures
         architectures = self._detect_architectures(binary_path)
+
+        # App Extensions
+        extensions = self.get_extensions(binary_directory)
 
         # Pack into a dict
         metadata = {
@@ -82,6 +85,7 @@ class App(object):
             'url_handlers': url_handlers,
             'ats_settings': ats_settings,
             'architectures': architectures,
+            'extensions': extensions,
         }
         return metadata
 
@@ -94,6 +98,60 @@ class App(object):
         msg = out[0].strip()
         res = msg.rsplit(': ')[-1].split(' ')
         return res
+
+    # ==================================================================================================================
+    # EXTENSION SUPPORT
+    # ==================================================================================================================
+    def get_extensions(self, binary_directory):
+        """ Obtain the metadata for each extension."""
+        plugin_dir = os.path.join(binary_directory, "PlugIns")
+        if self._device.remote_op.dir_exist(plugin_dir):
+            return self._retrieve_extensions(plugin_dir)
+        else:
+            return None
+
+    def _retrieve_extensions(self, plugin_dir):
+        # Find plugins
+        items = self._device.remote_op.dir_list(plugin_dir)
+        plugins = []
+        for i in items:
+            if "appex" in i:
+                fn = str(i).strip()
+                plugin_path = os.path.join(plugin_dir, fn)
+                if self._device.remote_op.dir_exist(plugin_path):
+                    plugins.append(plugin_path)
+
+        # Parse the plist for each extension found
+        extensions = []
+        for plugin in plugins:
+            plist_path = os.path.join(plugin, "Info.plist")
+            plist_local = self._device.remote_op.parse_plist(plist_path)
+            # Parse the plist
+            bundle_id = plist_local['CFBundleIdentifier']
+            bundle_displayname = plist_local['CFBundleDisplayName']
+            bundle_exe = plist_local['CFBundleExecutable']
+            bundle_package_type = plist_local['CFBundlePackageType']
+            sdk_version = plist_local['DTSDKName']
+            minimum_os = plist_local['MinimumOSVersion']
+            extension_data = plist_local['NSExtension']
+            try:
+                platform_version = plist_local['DTPlatformVersion']
+            except:
+                platform_version = None
+
+            # Build the dict
+            extension_metadata = {
+                'bundle_id': bundle_id,
+                'bundle_displayname': bundle_displayname,
+                'bundle_exe': bundle_exe,
+                'bundle_package_type': bundle_package_type,
+                'sdk_version': sdk_version,
+                'platform_version': platform_version,
+                'minimum_os': minimum_os,
+                'extension_data': extension_data
+            }
+            extensions.append(extension_metadata)
+        return extensions
 
     # ==================================================================================================================
     # MANIPULATE APP
@@ -110,6 +168,8 @@ class App(object):
         out = self._device.remote_op.command_blocking(cmd)
         try:
             process_list = filter(lambda x: '/var/mobile' in x, out)
+            if not process_list:
+                process_list = filter(lambda x: '/var/containers' in x, out)
             process = process_list[0].strip()
             pid = process.split(' ')[0]
             self._device.printer.verbose('PID found: %s' % pid)
@@ -135,7 +195,19 @@ class App(object):
             # Remove temp IPA
             self._device.remote_op.file_delete(out_temp)
         except Exception:
-            self._device.printer.warning('The app might be already decrypted. Trying to retrieve the IPA...')
+            # Check if Clutch failed somehow
+            msg = None
+            if 'Clutch2: Permission denied' in out[0]:
+                msg = 'marked as executable'
+            elif 'Clutch2: command not found' in out[0]:
+                msg = 'installed on the device'
+
+            if msg:
+                self._device.printer.error('Clutch2 could not be run successfully so the binary could not be decrypted')
+                raise Exception('Please confirm that Clutch2 is {}'.format(msg))
+            else:
+                self._device.printer.warning('The app might be already decrypted. Trying to retrieve the IPA...')
+
             # Retrieving the IPA
             cmd = '{bin} -b {bundle} -o {out}'.format(bin=self._device.DEVICE_TOOLS['IPAINSTALLER'],
                                                       bundle=app_metadata['bundle_id'],
@@ -143,6 +215,14 @@ class App(object):
             out = self._device.remote_op.command_blocking(cmd)
         self._device.printer.verbose("Decrypted IPA stored at: %s" % fname_decrypted)
 
+        # Unzip IPA and get binary path
+        fname_binary = self.unpack_ipa(app_metadata, fname_decrypted)
+        return fname_binary
+
+    # ==================================================================================================================
+    # UNPACK AN IPA FILE
+    # ==================================================================================================================
+    def unpack_ipa(self, app_metadata, ipa_fname):
         # Leftovers Cleanup
         payload_folder = '%s%s' % (self._device.TEMP_FOLDER, 'Payload')
         itunes = '%s%s' % (self._device.TEMP_FOLDER, 'iTunesArtwork')
@@ -150,9 +230,9 @@ class App(object):
         if self._device.remote_op.file_exist(itunes): self._device.remote_op.file_delete(itunes)
 
         # Unzip
-        self._device.printer.info("Unpacking the decrypted IPA...")
+        self._device.printer.info("Unpacking the IPA...")
         cmd = '{bin} {ipa} -d {folder}'.format(bin=self._device.DEVICE_TOOLS['UNZIP'],
-                                               ipa=fname_decrypted,
+                                               ipa=ipa_fname,
                                                folder=self._device.TEMP_FOLDER)
         out = self._device.remote_op.command_blocking(cmd)
 
@@ -187,11 +267,13 @@ class App(object):
         stripped = fname.strip()
 
         # Remove bundle/data path from the file name
-        shortname = stripped.replace(app_metadata['bundle_directory'], '')
-        shortname = shortname.replace(app_metadata['data_directory'], '')
+        shortname = stripped.replace(app_metadata['bundle_directory'], 'bundledir')
+        shortname = shortname.replace(app_metadata['data_directory'], 'datadir')
 
         # Remove extraneous ' symbols
         shortname = shortname.replace('\'', '')
-
         # Convert the directory path to a simple filename: swap the / symbol for a _ symbol
-        return shortname.replace('/', '_')
+        shortname = shortname.replace('/', '_')
+        # Remove spaces
+        shortname = shortname.replace(' ', '')
+        return shortname
