@@ -51,19 +51,10 @@ def choose_from_list_data_protection(options, choose=True):
         return fname
 
 
-<<<<<<< HEAD
-def choose_yes_no(prompt):
-    """Show yes/no menu, let users chose option"""
-    options = {"yes" : True, 'y' : True, "No" : False, 'n' : False}
-    choice = raw_input(prompt+'(Yes/No): ').strip()
-    option = options[choice.lower()]
-    return option
 
-=======
 def choose_boolean(message):
     question = "{} [y/N]: ".format(message)
     choice = print_question(question)
     if choice.lower() == 'y': return True
     elif choice.lower() == 'n': return False
     else: raise Exception('Please enter "y" or "n"')
->>>>>>> 26345f2b0c558733b26452d1fd867494d926afad

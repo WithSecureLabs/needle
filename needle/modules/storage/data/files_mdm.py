@@ -1,18 +1,18 @@
 from core.framework.module import BaseModule
 from core.device.device import Device
-from core.utils.menu import choose_from_list_data_protection, choose_from_list, choose_yes_no
+from core.utils.menu import choose_from_list_data_protection, choose_from_list, choose_boolean
 from core.utils.utils import Utils
+import re
 
 class Module(BaseModule):
     meta = {
-        'name': 'MDM dump',
+        'name': 'MDM Assess',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Locate and dump MDM configuration files',
+        'description': 'Assess MDM Configurateion Settings',
         'options': (
-            ('dump_all', False, False, 'DUMP_ALL mode. Dump all configuration files in a selected directory'),
-            ('autosave', False, False, 'Automatically save files. (Recomended with DUMP_ALL mode)'),
-            ('silent', False, False, 'Silent mode. Will not print file contents to screen.'),
-            ('output', True, True, 'Ful,l path of the output folder')
+            ('autosave', False, False, 'Automatically save files.'),
+            ('template', True, True, 'Configuration file for comparison.'),
+            ('output', True, True, 'Full path of the output folder')
         ),
     }
 
@@ -23,30 +23,11 @@ class Module(BaseModule):
         BaseModule.__init__(self, params)
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
-        self.running = True
-
-    # Prompt user to select a directory, and return directory string
-    def select_dir(self, directories):
-        self.printer.info("Configuration file locations:")
-        option = choose_from_list(directories)
-        return option
-
-    # Compose cmd string, and return cmd output
-    def get_files(self, dir_str):
-        self.printer.verbose("Identifying plist files within [%s]" % dir_str)
-        cmd = '{bin} {dirs_str} -maxdepth 1 -type f -name "*.plist"'.format(bin=self.device.DEVICE_TOOLS['FIND'], dirs_str=dir_str)
-        out = self.device.remote_op.command_blocking(cmd)
-        return out
-
-    # Filter out duplicate directories, and return list
-    def filter_dirs(self, dirs):
-        directories = list(set([Utils.extract_directory_from_path(x) for x in dirs if "needle" not in x]))
-        return directories
 
     # Format output filename
     def set_output_name(self, remote_file):
         fileName = Utils.extract_filename_from_path(remote_file)
-        fileName = 'mdm_export_{}'.format(fileName)
+        fileName = 'MDM_Export{}'.format(fileName)
         return self.local_op.build_output_path_for_file(self, fileName)
 
     # Save file
@@ -54,78 +35,69 @@ class Module(BaseModule):
         if self.options['autosave']:
             self.device.pull(remote_file, local_file)
         else:
-            save = choose_yes_no("Would you like to pull ths file?")
+            save = choose_boolean("Would you like to pull ths file?")
             if save: self.device.pull(remote_file, local_file)
 
-     # Run standard mode
-    def individual_mode(self, directories):
-        while self.running:
-            dirs_str = self.select_dir(directories)
-            retrieved_files = self.get_files(dirs_str)
+    # Parse Plist configuration data into dict
+    def parseConfigData(self, configFile, tmpFlag):
+        config, split, parsed = "", "", []
 
-            # Begin "individualual file" user interactivity loop
-            while self.running:
-                self.printer.info("Listing files from: [%s]" % dirs_str)
-                option = choose_from_list(retrieved_files) 
-                self.printer.info("File selected: [%s]" % option)
+        if tmpFlag:
+            config = ''.join(self.device.remote_op.read_file(configFile))
+        else:
+            cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['PLUTIL'], arg=configFile)
+            config = ''.join(self.device.remote_op.command_blocking(cmd))
 
-                # Run putil on file and Print Data to user
-                if not self.options['silent']: 
-                    self.printer.info("Dumping content of the file...")
-                    pl = dict(self.device.remote_op.parse_plist(option))
-                    self.print_cmd_output(pl)
+        for line in config.split('\n'):
+            regex = "(^(\{|\}).*)|(^ {4}[a-zA-Z]* = .*\{.*)|(^ {4}\}\;.*)"
+            if not re.compile(regex).search(line): split += line + "\n"
 
-                # Save file
-                outFile = self.set_output_name(option.strip())
-                self.save_file(option.strip(), outFile)
-                        
-                # Ask user if they wish to view another file
-                yes = choose_yes_no("Would you like to inspect another file?")
-                if not yes: break
-            # Ask user if they wish to view another file
-            yes = choose_yes_no("Would you like to view another directory?")
-            if not yes: self.running = False
+        config = re.compile("\};.*[ \n]").split(split)
 
-    # Run dump mode
-    def dump_mode(self, directories):
-        while self.running:
-            dirs_str = self.select_dir(directories)
-            retrieved_files = self.get_files(dirs_str)
+        for element in config:
+            regex = '(^ *)|(= *\{.*)|(;)'
+            parsed.append('\n'.join(re.sub(regex, '', x) for x in element.split('\n')[:-1]))
 
-            for i in range(len(retrieved_files)):
-                f = retrieved_files[i].strip()
-                # Initialize output
-                outFile = self.set_output_name(f)
+        return parsed
 
-                # Save file
-                if not self.options['autosave']: 
-                    self.printer.info("File (%d/%d): %s" % (i+1, len(retrieved_files), f))
-                self.save_file(f, outFile)
+    # Compare two files
+    def compare(self, file1, file2):
+        config  = self.parseConfigData(file1, False)
+        desired = self.parseConfigData(file2, True)
+        
+        
+        for i in range(len(config)):
+            if config[i] != desired[i]:
+                print "[!] Misconfigured"
+                print config[i].split("\n")[0]
+                for x in config[i].split("\n")[1:]:print "\t"+x
+                print 
+        
 
-            # Ask the user if they want to dump another directory
-            yes = choose_yes_no("Would you like to dump another directory?")
-            if not yes: self.running = False
 
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        self.running = True
-
-        if self.options['dump_all'] and not self.options['autosave']:
-            self.printer.warning("Autosave recomended in DUMP_ALL mode!")
-
         # Find MDM config file locations
-        self.printer.verbose("Searching for MDM Configuration file locations...")
-        cmd = '{bin} / -type f -name "MDM*.plist" -o -name "UserSettings.plist"'.format(bin=self.device.DEVICE_TOOLS['FIND'])
-        out = self.device.remote_op.command_blocking(cmd)
+        self.printer.verbose("Searching for Configuration file...")
 
-        if not out:
-            self.printer.error("No Configuration files found")
+        arg = "/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist"
+        cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=arg)
+        config = self.device.remote_op.command_blocking(cmd)[0].strip()
+
+        if not config:
+            self.printer.error("No Configuration files found!")
             return
+        
+        # Place template config within /tmp/ directory
+        template = "/tmp/" + self.options['template'].split('/')[-1]
+        self.device.push(self.options["template"], template)
 
-        directories = self.filter_dirs(out)
+        # Comaparing configuration with template
+        self.compare(config, template)
 
-        if not self.options['dump_all']:
-            self.individual_mode(directories)
-        else: self.dump_mode(directories)
+        # diff file1.txt file2.txt -C 1 | grep -A 2 "[\*]\{3\} [0-9]*,[0-9]* [\*]\{3\}"
+
+
+
