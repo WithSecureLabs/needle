@@ -10,8 +10,8 @@ class Module(BaseModule):
         'author': 'Oliver Simonnet (@MWRLabs)',
         'description': 'Assess MDM Configurateion Settings',
         'options': (
-            ('autosave', False, False, 'Automatically save files.'),
-            ('template', True, True, 'Configuration file for comparison.'),
+            ('template', True, True, 'Efficient configuration template.'),
+            ('verbose', True, True, 'Output verbosity.'),
             ('output', True, True, 'Full path of the output folder')
         ),
     }
@@ -38,11 +38,22 @@ class Module(BaseModule):
             save = choose_boolean("Would you like to pull ths file?")
             if save: self.device.pull(remote_file, local_file)
 
-    # Parse Plist configuration data into dict
-    def parseConfigData(self, configFile, tmpFlag):
-        config, split, parsed = "", "", []
+    # Check if file is Plist or a parsed Plist (plutil output) file
+    def isPlist(self, configFile):
+        head = self.device.remote_op.read_file(configFile)[0]
+        if "<?xml" in head: return True
+        elif "{\n" in head: return False
 
-        if tmpFlag:
+        self.printer.error("Incorrect file format!")
+        exit(1)
+        
+
+    # Parse Plist configuration data into dict
+    def parseConfigData(self, configFile):
+        config, split, parsed = "", "", []
+        plist = self.isPlist(configFile)
+
+        if not plist:
             config = ''.join(self.device.remote_op.read_file(configFile))
         else:
             cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['PLUTIL'], arg=configFile)
@@ -60,21 +71,38 @@ class Module(BaseModule):
 
         return parsed
 
-    # Compare two files
-    def compare(self, file1, file2):
-        config  = self.parseConfigData(file1, False)
-        desired = self.parseConfigData(file2, True)
+    # Compare two config files
+    def compare(self, fConfig, fDesired):
+        config  = self.parseConfigData(fConfig)
+        desired = self.parseConfigData(fDesired)
+        missmatch = 0
+
+        # Print header
+        print "\nMDM Configuration Assessment\n"+40*"-"
         
-        
-        for i in range(len(config)):
+        for i in range(len(config))[:-1]:
+            if missmatch > 3:
+                self.printer.error("Template/config mismatch!")
+                exit(1)
+
+            if config[i].split("\n")[0] != desired[i].split("\n")[0]:
+                self.printer.warning("Missmatch found!")
+                missmatch += 1
+                continue
+
             if config[i] != desired[i]:
-                print "[!] Misconfigured"
-                print config[i].split("\n")[0]
-                for x in config[i].split("\n")[1:]:print "\t"+x
-                print 
+                self.printer.error("[ BAD] " + config[i].split("\n")[0])
+
+                if self.options["verbose"]:
+                    for x in config[i].split("\n")[1:]:
+                        print "\b    ",
+                        self.printer.verbose(x)
+            else:
+                self.printer.info( "[GOOD] " + config[i].split("\n")[0])
+
+        # Print footer
+        print 40*'-'
         
-
-
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
@@ -95,9 +123,11 @@ class Module(BaseModule):
         self.device.push(self.options["template"], template)
 
         # Comaparing configuration with template
+        self.printer.verbose("Comparing Configuration...")
         self.compare(config, template)
 
-        # diff file1.txt file2.txt -C 1 | grep -A 2 "[\*]\{3\} [0-9]*,[0-9]* [\*]\{3\}"
+        # Message of completeion
+        self.printer.verbose("Complete!")
 
 
 
