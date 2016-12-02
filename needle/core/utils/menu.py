@@ -51,7 +51,6 @@ def choose_from_list_data_protection(options, choose=True):
         return fname
 
 
-
 def choose_boolean(message):
     question = "{} [y/N]: ".format(message)
     choice = print_question(question)
