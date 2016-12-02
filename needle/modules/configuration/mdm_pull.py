@@ -35,9 +35,8 @@ class Module(BaseModule):
         if self.options['autosave']:
             self.device.pull(remote_file, local_file)
         else:
-            save = choose_boolean("Would you like to pull ths file?")
+            save = choose_boolean("Would you like to save ths file?")
             if save: self.device.pull(remote_file, local_file)
-
         
     # ==================================================================================================================
     # RUN

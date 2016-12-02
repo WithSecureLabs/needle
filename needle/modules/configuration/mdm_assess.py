@@ -8,16 +8,16 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Assess',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Automated MDM Configuration Assessment tool.'
-                        '',
+        'description': 'Automated MDM Configuration Assessment tool.',
         'options': (
             ('template', True, True, 'Configuration template.[Plist|plutil-output]'),
-            ('verbosity', False, True, 'Output verbosity[1|2|3].')
+            ('verbosity', False, True, 'Output verbosity[1|2|3|4].')
         ),
         'comments': [
-            '"TEMPLATE" Is the full file path to an EffectiveUserSettings.plist file. This'
-            ' can be used in its original xml format or in the format returned by plutil.',
-            '"VERBOSITY" Will increase the level of information returned in the output']
+            'VERBOSITY: 1 Displays misconfigurations only.',
+            'VERBOSITY: 2 Displays misconfiguration values.',
+            'VERBOSITY: 3 Displays recomendations.',
+            'VERBOSITY: 4 Displats all configutaion.']
     }
 
     # ==================================================================================================================
@@ -69,7 +69,6 @@ class Module(BaseModule):
     def compare(self, fConfig, fDesired):
         config  = self.parseConfigData(fConfig)
         desired = self.parseConfigData(fDesired)
-        
         misConfigs = 0
 
         # Print output header
@@ -92,12 +91,14 @@ class Module(BaseModule):
 
                 # Print misconfiguration details Verbosely
                 if self.options["verbosity"] >= 2:
-                    for x in config[i].split("\n")[1:]:
-                        print "\b    ",
-                        self.printer.verbose(x)
-                        
+                    cAttribs = config[i].split("\n")[1:]
+                    dAttribs = desired[i].split("\n")[1:]
+                    for i in range(len(cAttribs)):
+                        print "\b    ",; self.printer.verbose(cAttribs[i])
+                        if cAttribs[i] != dAttribs[i] and self.options["verbosity"] >= 3:
+                            print "\b    ",; self.printer.notify(dAttribs[i]  + " [RECOMMENDED]")
             else:
-                if self.options["verbosity"] == 3:
+                if self.options["verbosity"] == 4:
                     # Print non-isconfigured attributes
                     self.printer.info( "[GOOD] " + config[i].split("\n")[0])
 
@@ -106,7 +107,6 @@ class Module(BaseModule):
         self.printer.notify("%s/%s Misconfigurations" % (misConfigs, len(desired)))
         print 40*'-'+"\n"
 
-        
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
