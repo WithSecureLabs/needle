@@ -8,10 +8,10 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Assess',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Assess MDM Configurateion Settings',
+        'description': 'Automated MDM Configuration Assessment tool.',
         'options': (
-            ('template', True, True, 'Efficient configuration template.'),
-            ('verbose', True, True, 'Output verbosity.'),
+            ('template', True, True, 'Configuration template.[Plist|plutil-output]'),
+            ('verbosity', False, True, 'Output verbosity[1|2|3].'),
             ('output', True, True, 'Full path of the output folder')
         ),
     }
@@ -23,20 +23,7 @@ class Module(BaseModule):
         BaseModule.__init__(self, params)
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
-
-    # Format output filename
-    def set_output_name(self, remote_file):
-        fileName = Utils.extract_filename_from_path(remote_file)
-        fileName = 'MDM_Export{}'.format(fileName)
-        return self.local_op.build_output_path_for_file(self, fileName)
-
-    # Save file
-    def save_file(self, remote_file, local_file):
-        if self.options['autosave']:
-            self.device.pull(remote_file, local_file)
-        else:
-            save = choose_boolean("Would you like to pull ths file?")
-            if save: self.device.pull(remote_file, local_file)
+        self.options['verbosity'] = 1
 
     # Check if file is Plist or a parsed Plist (plutil output) file
     def isPlist(self, configFile):
@@ -47,7 +34,6 @@ class Module(BaseModule):
         self.printer.error("Incorrect file format!")
         exit(1)
         
-
     # Parse Plist configuration data into dict
     def parseConfigData(self, configFile):
         config, split, parsed = "", "", []
@@ -75,33 +61,39 @@ class Module(BaseModule):
     def compare(self, fConfig, fDesired):
         config  = self.parseConfigData(fConfig)
         desired = self.parseConfigData(fDesired)
-        missmatch = 0
+        mismatch, bad = 0, 0
 
         # Print header
-        print "\nMDM Configuration Assessment\n"+40*"-"
+        print "\n"+40*"-"
+        self.printer.notify("MDM Configuration Assessment")
+        print 40*"-"
         
         for i in range(len(config))[:-1]:
-            if missmatch > 3:
+            if mismatch > 3:
                 self.printer.error("Template/config mismatch!")
                 exit(1)
 
             if config[i].split("\n")[0] != desired[i].split("\n")[0]:
-                self.printer.warning("Missmatch found!")
-                missmatch += 1
+                self.printer.warning("mismatch found!")
+                mismatch += 1
                 continue
 
             if config[i] != desired[i]:
                 self.printer.error("[ BAD] " + config[i].split("\n")[0])
+                bad += 1
 
-                if self.options["verbose"]:
+                if self.options["verbosity"] >= 2:
                     for x in config[i].split("\n")[1:]:
                         print "\b    ",
                         self.printer.verbose(x)
             else:
-                self.printer.info( "[GOOD] " + config[i].split("\n")[0])
+                if self.options["verbosity"] == 3:
+                    self.printer.info( "[GOOD] " + config[i].split("\n")[0])
 
         # Print footer
         print 40*'-'
+        self.printer.notify("{bad}/{total} Misconfigurations".format(bad=bad, total=len(desired)))
+        print 40*'-'+"\n"
         
     # ==================================================================================================================
     # RUN
@@ -125,9 +117,3 @@ class Module(BaseModule):
         # Comaparing configuration with template
         self.printer.verbose("Comparing Configuration...")
         self.compare(config, template)
-
-        # Message of completeion
-        self.printer.verbose("Complete!")
-
-
-
