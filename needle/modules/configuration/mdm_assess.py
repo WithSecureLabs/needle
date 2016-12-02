@@ -8,11 +8,16 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Assess',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Automated MDM Configuration Assessment tool.',
+        'description': 'Automated MDM Configuration Assessment tool.'
+                        '',
         'options': (
             ('template', True, True, 'Configuration template.[Plist|plutil-output]'),
             ('verbosity', False, True, 'Output verbosity[1|2|3].')
         ),
+        'comments': [
+            '"TEMPLATE" Is the full file path to an EffectiveUserSettings.plist file. This'
+            ' can be used in its original xml format or in the format returned by plutil.',
+            '"VERBOSITY" Will increase the level of information returned in the output']
     }
 
     # ==================================================================================================================
@@ -90,6 +95,7 @@ class Module(BaseModule):
                     for x in config[i].split("\n")[1:]:
                         print "\b    ",
                         self.printer.verbose(x)
+                        
             else:
                 if self.options["verbosity"] == 3:
                     # Print non-isconfigured attributes

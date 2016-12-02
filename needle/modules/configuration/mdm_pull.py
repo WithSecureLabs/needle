@@ -8,7 +8,7 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Pull',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Pulls the Effective Configuration from device.',
+        'description':  'Pulls the Effective Configuration from device.',
         'options': (
             ('autosave', False, False, 'Automatically save files.'),
             ('silent', True, False, 'Silent mode. Will not print config to screen.'),
