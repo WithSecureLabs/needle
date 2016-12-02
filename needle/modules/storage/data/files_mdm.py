@@ -2,7 +2,7 @@ from core.framework.module import BaseModule
 from core.device.device import Device
 from core.utils.menu import choose_from_list_data_protection, choose_from_list, choose_boolean
 from core.utils.utils import Utils
-import re
+import re, sys
 
 class Module(BaseModule):
     meta = {
@@ -11,8 +11,7 @@ class Module(BaseModule):
         'description': 'Automated MDM Configuration Assessment tool.',
         'options': (
             ('template', True, True, 'Configuration template.[Plist|plutil-output]'),
-            ('verbosity', False, True, 'Output verbosity[1|2|3].'),
-            ('output', True, True, 'Full path of the output folder')
+            ('verbosity', False, True, 'Output verbosity[1|2|3].')
         ),
     }
 
@@ -22,35 +21,39 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self._global_options['output_folder']
         self.options['verbosity'] = 1
 
-    # Check if file is Plist or a parsed Plist (plutil output) file
+    # Check if file is in Plist or a plutil-output format
     def isPlist(self, configFile):
         head = self.device.remote_op.read_file(configFile)[0]
         if "<?xml" in head: return True
         elif "{\n" in head: return False
 
+        # If incorrect format, print error and exit
         self.printer.error("Incorrect file format!")
         exit(1)
         
     # Parse Plist configuration data into dict
     def parseConfigData(self, configFile):
         config, split, parsed = "", "", []
+        
+        # Detemine file fromat and generate config string
         plist = self.isPlist(configFile)
-
         if not plist:
             config = ''.join(self.device.remote_op.read_file(configFile))
         else:
             cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['PLUTIL'], arg=configFile)
             config = ''.join(self.device.remote_op.command_blocking(cmd))
 
+        # Remove Unwanted data
         for line in config.split('\n'):
             regex = "(^(\{|\}).*)|(^ {4}[a-zA-Z]* = .*\{.*)|(^ {4}\}\;.*)"
             if not re.compile(regex).search(line): split += line + "\n"
 
+        # Split config string into array of attributes
         config = re.compile("\};.*[ \n]").split(split)
 
+        # Strip excess characters and reformat attributes
         for element in config:
             regex = '(^ *)|(= *\{.*)|(;)'
             parsed.append('\n'.join(re.sub(regex, '', x) for x in element.split('\n')[:-1]))
@@ -61,39 +64,42 @@ class Module(BaseModule):
     def compare(self, fConfig, fDesired):
         config  = self.parseConfigData(fConfig)
         desired = self.parseConfigData(fDesired)
-        mismatch, bad = 0, 0
+        
+        misConfigs = 0
 
-        # Print header
+        # Print output header
         print "\n"+40*"-"
         self.printer.notify("MDM Configuration Assessment")
         print 40*"-"
         
+        # Compare attribute
         for i in range(len(config))[:-1]:
-            if mismatch > 3:
-                self.printer.error("Template/config mismatch!")
+            # Check for termplate/config attribute mismatch
+            if config[i].split("\n")[0] != desired[i].split("\n")[0]:
+                self.printer.warning("Mismatch found! Invalid Template.")
+                self.printet.debug("%s >> %s" % (onfig[i].split("\n")[0],desired[i].split("\n")[0]))
                 exit(1)
 
-            if config[i].split("\n")[0] != desired[i].split("\n")[0]:
-                self.printer.warning("mismatch found!")
-                mismatch += 1
-                continue
-
+            # Check templace compliance
             if config[i] != desired[i]:
                 self.printer.error("[ BAD] " + config[i].split("\n")[0])
-                bad += 1
+                misConfigs += 1
 
+                # Print misconfiguration details Verbosely
                 if self.options["verbosity"] >= 2:
                     for x in config[i].split("\n")[1:]:
                         print "\b    ",
                         self.printer.verbose(x)
             else:
                 if self.options["verbosity"] == 3:
+                    # Print non-isconfigured attributes
                     self.printer.info( "[GOOD] " + config[i].split("\n")[0])
 
-        # Print footer
-        print 40*'-'
-        self.printer.notify("{bad}/{total} Misconfigurations".format(bad=bad, total=len(desired)))
+        # Print output footer
+        print '\b'+40*'-'
+        self.printer.notify("%s/%s Misconfigurations" % (misConfigs, len(desired)))
         print 40*'-'+"\n"
+
         
     # ==================================================================================================================
     # RUN
