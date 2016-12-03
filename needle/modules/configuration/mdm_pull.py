@@ -9,7 +9,7 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Pull',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description':  'Pulls the configuration plist from device.',
+        'description':  'Pulls the configuration file from the device.',
         'options': (
             ('silent', True, False, 'Silent mode. Will not print file contents to screen.'),
             ('output', True, True,  'Full path of the output folder.')
@@ -50,7 +50,7 @@ class Module(BaseModule):
         
         try: config = self.device.remote_op.command_blocking(cmd)[0].strip()
         except:
-            self.printer.error("No Configuration profile applied!")
+            self.printer.error("No Configuration profiles applied!")
             self.printer.warning("Could not find %s" % arg)
             return
         self.printer.notify("Found: %s" % config)
