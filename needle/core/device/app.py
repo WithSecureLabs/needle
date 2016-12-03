@@ -21,75 +21,100 @@ class App(object):
 
     def _retrieve_metadata(self):
         """Parse MobileInstallation.plist and the app's local Info.plist, and extract metadata."""
+
+
         # Content of the MobileInstallation plist
-        plist_global = self._device._applist[self._app]
-        uuid = plist_global['BundleContainer'].rsplit('/', 1)[-1]
-        name = plist_global['Path'].rsplit('/', 1)[-1]
-        bundle_id = plist_global['CFBundleIdentifier']
-        bundle_directory = plist_global['BundleContainer']
-        data_directory = plist_global['Container']
-        binary_directory = plist_global['Path']
-        try:
-            entitlements = plist_global['Entitlements']
-        except:
-            entitlements = None
+        plist_mobile_installation = self._device._applist[self._app]
+        metadata_mobile_installation = self.__parse_plist_mobile_installation(plist_mobile_installation)
 
         # Content of the app's local Info.plist
-        path_local = Utils.escape_path('%s/Info.plist' % plist_global['Path'])
-        plist_local = self._device.remote_op.parse_plist(path_local)
-        try:
-            platform_version = plist_local['DTPlatformVersion']
-        except:
-            platform_version = None
+        plist_info_path = Utils.escape_path('%s/Info.plist' % plist_mobile_installation['Path'])
+        plist_info = self._device.remote_op.parse_plist(plist_info_path)
+        metadata_info = self.__parse_plist_info(plist_info)
 
-        sdk_version = plist_local['DTSDKName']
-        minimum_os = plist_local['MinimumOSVersion']
-        app_version_long  = plist_local['CFBundleVersion']
-        app_version_short = plist_local['CFBundleShortVersionString']
-        app_version = '{} ({})'.format(app_version_long, app_version_short)
-        try:
-            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist_local['CFBundleURLTypes']]
-        except:
-            url_handlers = None
-        try:
-            ats_settings = plist_local['NSAppTransportSecurity']
-        except:
-            ats_settings = None 
+        # Detect architectures
+        architectures = self.__detect_architectures(metadata_mobile_installation['binary_path'])
 
+        # App Extensions
+        extensions = self.get_extensions(metadata_mobile_installation['binary_directory'])
+
+        # Pack into a dict
+        metadata = {
+            'architectures': architectures,
+            'extensions': extensions,
+        }
+        metadata = Utils.merge_dicts(metadata, metadata_mobile_installation, metadata_info)
+        return metadata
+
+    def __parse_plist_mobile_installation(self, plist):
+        # Parse the MobileInstallation plist
+        uuid = plist['BundleContainer'].rsplit('/', 1)[-1]
+        name = plist['Path'].rsplit('/', 1)[-1]
+        bundle_id = plist['CFBundleIdentifier']
+        bundle_directory = plist['BundleContainer']
+        data_directory = plist['Container']
+        binary_directory = plist['Path']
+        try:
+            entitlements = plist['Entitlements']
+        except:
+            entitlements = None
         # Compose binary path
         binary_folder = binary_directory
         binary_name = os.path.splitext(binary_folder.rsplit('/', 1)[-1])[0]
         binary_path = Utils.escape_path(os.path.join(binary_folder, binary_name))
-
-        # Detect architectures
-        architectures = self._detect_architectures(binary_path)
-
-        # App Extensions
-        extensions = self.get_extensions(binary_directory)
-
         # Pack into a dict
         metadata = {
             'uuid': uuid,
             'name': name,
-            'app_version': app_version,
             'bundle_id': bundle_id,
             'bundle_directory': bundle_directory,
             'data_directory': data_directory,
             'binary_directory': binary_directory,
+            'entitlements': entitlements,
             'binary_path': binary_path,
             'binary_name': binary_name,
-            'entitlements': entitlements,
-            'platform_version': platform_version,
-            'sdk_version': sdk_version,
-            'minimum_os': minimum_os,
-            'url_handlers': url_handlers,
-            'ats_settings': ats_settings,
-            'architectures': architectures,
-            'extensions': extensions,
         }
         return metadata
 
-    def _detect_architectures(self, binary):
+    def __parse_plist_info(self, plist):
+        # Parse the Info.plist file
+        sdk_version = plist['DTSDKName']
+        minimum_os = plist['MinimumOSVersion']
+        bundle_id = plist['CFBundleIdentifier']
+        bundle_displayname = plist['CFBundleDisplayName']
+        bundle_exe = plist['CFBundleExecutable']
+        bundle_package_type = plist['CFBundlePackageType']
+        app_version_long  = plist['CFBundleVersion']
+        app_version_short = plist['CFBundleShortVersionString']
+        app_version = '{} ({})'.format(app_version_long, app_version_short)
+        try:
+            platform_version = plist['DTPlatformVersion']
+        except:
+            platform_version = None
+        try:
+            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist['CFBundleURLTypes']]
+        except:
+            url_handlers = None
+        try:
+            ats_settings = plist['NSAppTransportSecurity']
+        except:
+            ats_settings = None
+        # Pack into a dict
+        metadata = {
+            'platform_version': platform_version,
+            'sdk_version': sdk_version,
+            'minimum_os': minimum_os,
+            'bundle_id': bundle_id,
+            'bundle_displayname': bundle_displayname,
+            'bundle_exe': bundle_exe,
+            'bundle_package_type': bundle_package_type,
+            'app_version': app_version,
+            'url_handlers': url_handlers,
+            'ats_settings': ats_settings,
+        }
+        return metadata
+
+    def __detect_architectures(self, binary):
         """Use lipo to detect supported architectures."""
         # Run lipo
         cmd = '{lipo} -info {binary}'.format(lipo=Constants.DEVICE_TOOLS['LIPO'], binary=binary)
@@ -108,48 +133,27 @@ class App(object):
         if self._device.remote_op.dir_exist(plugin_dir):
             return self._retrieve_extensions(plugin_dir)
         else:
+            self._device.printer.verbose("No Plugins found")
             return None
 
     def _retrieve_extensions(self, plugin_dir):
         # Find plugins
-        items = self._device.remote_op.dir_list(plugin_dir)
-        plugins = []
-        for i in items:
-            if "appex" in i:
-                fn = str(i).strip()
-                plugin_path = os.path.join(plugin_dir, fn)
-                if self._device.remote_op.dir_exist(plugin_path):
-                    plugins.append(plugin_path)
+        file_list = self._device.remote_op.dir_list(plugin_dir)
+        appex = filter(lambda x: "appex" in x, file_list)
+        plugins = [os.path.join(plugin_dir, x) for x in appex]
 
         # Parse the plist for each extension found
         extensions = []
         for plugin in plugins:
             plist_path = os.path.join(plugin, "Info.plist")
-            plist_local = self._device.remote_op.parse_plist(plist_path)
-            # Parse the plist
-            bundle_id = plist_local['CFBundleIdentifier']
-            bundle_displayname = plist_local['CFBundleDisplayName']
-            bundle_exe = plist_local['CFBundleExecutable']
-            bundle_package_type = plist_local['CFBundlePackageType']
-            sdk_version = plist_local['DTSDKName']
-            minimum_os = plist_local['MinimumOSVersion']
-            extension_data = plist_local['NSExtension']
-            try:
-                platform_version = plist_local['DTPlatformVersion']
-            except:
-                platform_version = None
-
+            plist_info = self._device.remote_op.parse_plist(plist_path)
+            metadata_info = self.__parse_plist_info(plist_info)
+            extension_data = plist_info['NSExtension']
             # Build the dict
             extension_metadata = {
-                'bundle_id': bundle_id,
-                'bundle_displayname': bundle_displayname,
-                'bundle_exe': bundle_exe,
-                'bundle_package_type': bundle_package_type,
-                'sdk_version': sdk_version,
-                'platform_version': platform_version,
-                'minimum_os': minimum_os,
-                'extension_data': extension_data
+                'extension_data': extension_data,
             }
+            extension_metadata = Utils.merge_dicts(metadata_info, extension_metadata)
             extensions.append(extension_metadata)
         return extensions
 
@@ -198,9 +202,9 @@ class App(object):
             # Check if Clutch failed somehow
             msg = None
             if 'Clutch2: Permission denied' in out[0]:
-                msg = 'marked as executable'
+                msg = 'marked as executable (using chmod +x /usr/bin/Clutch* from a device shell)'
             elif 'Clutch2: command not found' in out[0]:
-                msg = 'installed on the device'
+                msg = 'installed on the device (by running again with SETUP_DEVICE=True)'
 
             if msg:
                 self._device.printer.error('Clutch2 could not be run successfully so the binary could not be decrypted')

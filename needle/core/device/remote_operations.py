@@ -74,11 +74,13 @@ class RemoteOperations(object):
         elif self.dir_exist(path): delete(path)
 
     def dir_list(self, path, recursive=False):
+        if not self.dir_exist(path):
+            return None
         path = Utils.escape_path(path)
-        opts = ''
-        if recursive: opts = '-alR'
-        cmd = 'ls -l {opts} {path}'.format(opts=opts, path=path)
-        return self.command_blocking(cmd)
+        opts = '-aR' if recursive else ''
+        cmd = 'ls {opts} {path}'.format(opts=opts, path=path)
+        file_list = self.command_blocking(cmd)
+        return map(lambda x: x.strip(), file_list)
 
     def dir_reset(self, path):
         if self.dir_exist(path): self.dir_delete(path)

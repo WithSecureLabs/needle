@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Improved metadata parsing for extensions
 #### Fixed
 #### Removed
 
