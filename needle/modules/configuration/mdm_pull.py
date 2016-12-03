@@ -23,7 +23,8 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self._global_options['output_folder']
+        self.options['output']  = self._global_options['output_folder']
+        self.options['mode']    = 1
 
     # Format output file_name
     def set_output_name(self, remote_file):
@@ -68,5 +69,3 @@ class Module(BaseModule):
         if self.options['autosave'] or choose_boolean("Would you like to save ths file?"):
             self.device.pull(config, outFile)
             self.local_op.write_file(outFile+'.txt', parsed_config)
-
-
