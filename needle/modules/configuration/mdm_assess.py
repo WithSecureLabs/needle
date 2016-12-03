@@ -9,7 +9,7 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Assess',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Automated MDM Configuration Assessment tool.',
+        'description': 'Automated MDM Configuration Assessment Module.',
         'options': (
             ('template', True, True, 'Configuration template.[Plist]'),
             ('mode', False, True, 'Output mode [1|2|3].')
