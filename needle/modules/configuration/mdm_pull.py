@@ -11,8 +11,8 @@ class Module(BaseModule):
         'author': 'Oliver Simonnet (@MWRLabs)',
         'description':  'Pulls the configuration plist from device.',
         'options': (
-            ('autosave', False, False, 'Automatically save files.'),
-            ('output', True, True, 'Full path of the output folder')
+            ('silent', True, False, 'Silent mode. Will not print file contents to screen.'),
+            ('output', True, True,  'Full path of the output folder.')
         ),
     }
 
@@ -32,14 +32,11 @@ class Module(BaseModule):
 
     # Save file
     def save_file(self, remote_file, local_file):
-        if self.options['autosave'] or choose_boolean("Would you like to save ths file?"):
-            pl = self.device.remote_op.parse_plist(remote_file)
-            # Prepare path
-            local_file = 'MDM_Pull_{}'.format(local_file)
-            plist_path = self.local_op.build_output_path_for_file(local_file, self)
-            # Print & Save to file
-            outfile = str(plist_path) if self.options['output'] else None
-            self.print_cmd_output(pl, outfile, silent)
+        pl = self.device.remote_op.parse_plist(remote_file)
+        plist_path = self.local_op.build_output_path_for_file(local_file, self)
+        # Print & Save to file
+        out_file = str(plist_path) if self.options['output'] else None
+        self.print_cmd_output(pl, local_file, silent=self.options['silent'])
         
     # ==================================================================================================================
     # RUN
@@ -59,4 +56,5 @@ class Module(BaseModule):
         self.printer.notify("Found: %s" % config)
 
         # Parse and save file!
-        self.save_file(config, outFile)
+        out_file = self.set_output_name(config)
+        self.save_file(config, out_file)
