@@ -43,7 +43,7 @@ class Module(BaseModule):
         except: 
             # If incorrect format, print error and exit
             self.printer.error("Invalid configuration file!")
-            self.printer.debug("Invalid file: %s" % config_file)
+            self.printer.verbose("Invalid file: %s" % config_file)
             raise FrameworkException()
         
     # Parse Plist configuration data into dict
@@ -114,11 +114,11 @@ class Module(BaseModule):
         # Check EffectiveUserSettings.plist file is present!
         arg = Constants.DEVICE_PATH_EFFECTIVE_CONFIG
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=arg)
-        config = self.device.remote_op.command_blocking(cmd)[0].strip()
-
-        if not config:
-            self.printer.error("No Configuration files found!")
-            self.printer.debug("Could not find %s" % arg)
+        
+        try: config = self.device.remote_op.command_blocking(cmd)[0].strip()
+        except:
+            self.printer.warning("No Configuration profile applied!")
+            self.printer.verbose("Could not find %s" % arg)
             return
 
         # Pull Effective User Settings plist
