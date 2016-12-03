@@ -12,7 +12,6 @@ class Module(BaseModule):
         'description':  'Pulls the configuration plist from device.',
         'options': (
             ('autosave', False, False, 'Automatically save files.'),
-            ('silent', True, False, 'Silent mode. Will not print config to screen.'),
             ('output', True, True, 'Full path of the output folder')
         ),
     }
@@ -33,11 +32,14 @@ class Module(BaseModule):
 
     # Save file
     def save_file(self, remote_file, local_file):
-        if self.options['autosave']:
-            self.device.pull(remote_file, local_file)
-        else:
-            save = choose_boolean("Would you like to save ths file?")
-            if save: self.device.pull(remote_file, local_file)
+        if self.options['autosave'] or choose_boolean("Would you like to save ths file?"):
+            pl = self.device.remote_op.parse_plist(remote_file)
+            # Prepare path
+            local_file = 'MDM_Pull_{}'.format(local_file)
+            plist_path = self.local_op.build_output_path_for_file(local_file, self)
+            # Print & Save to file
+            outfile = str(plist_path) if self.options['output'] else None
+            self.print_cmd_output(pl, outfile, silent)
         
     # ==================================================================================================================
     # RUN
@@ -48,23 +50,13 @@ class Module(BaseModule):
         # Find MDM config file locations
         arg = Constants.DEVICE_PATH_EFFECTIVE_CONFIG
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=arg)
-        config = self.device.remote_op.command_blocking(cmd)[0].strip()
-
-        if not config:
-            self.printer.error("No Configuration files found!")
+        
+        try: config = self.device.remote_op.command_blocking(cmd)[0].strip()
+        except:
+            self.printer.error("No Configuration profile applied!")
+            self.printer.warning("Could not find %s" % arg)
             return
         self.printer.notify("Found: %s" % config)
 
-        # Parse configuration (and save to variable)
-        cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['PLUTIL'], arg=config)
-        parsed_config = ''.join(self.device.remote_op.command_blocking(cmd))
-
-        # Print config data (if not in silent mode)
-        if not self.options['silent']:
-            print parsed_config
-
-        # Save file (as both XML and object format)
-        outFile = self.set_output_name(config)
-        if self.options['autosave'] or choose_boolean("Would you like to save ths file?"):
-            self.device.pull(config, outFile)
-            self.local_op.write_file(outFile+'.txt', parsed_config)
+        # Parse and save file!
+        self.save_file(config, outFile)

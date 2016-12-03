@@ -68,13 +68,13 @@ class Module(BaseModule):
         for k,v in desired.items():
             if k in config.keys():
                 # Get setting status
-                status = ""
-                if len(v) != 0 and len(v) <= 1:
-                    status = "ENABLED" if str(config[k][config[k].keys()[0]]) == "True" else "DISSABLED"
+                status = "[NOT CONFIGURED]" if len(v) == 0 else ""
+                if len(v) != 0 and len(v) <= 1 and len(config[k].keys()) != 0:
+                    status = "[ENABLED]" if str(config[k][config[k].keys()[0]]) == "True" else "[DISSABLED]"
                 # Check for Config and Desired config setting mismatch
                 if v != config[k]:
-                    message = k +( ": "+status if status != "" and self.options['mode'] >= 2 else "")
-                    self.printer.warning("[BAD ] %s" % message)
+                    attribute = k +(": "+status if status != "" and self.options['mode'] >= 2 else "")
+                    self.printer.warning("[WEAK] %s" % attribute)
                     misConfigs += 1
 
                     # Print mismatch details if in mode 2
@@ -82,17 +82,17 @@ class Module(BaseModule):
                         # If attribute consists of multiple dict values process and print
                         if type(config[k]) is plistlib._InternalDict and len(config[k]) > 1:
                             for k1,v1 in config[k].items():
-                                message = "\t" + str(k1) + ": " + str(v1)
+                                attribute = "\t%s: %s" % ((str(k1).replace("range", "")).ljust(9), str(v1))
                                 recomendation = ""
 
                                 if config[k][k1] != desired[k][k1]:
                                     recomendation = " (Recommend: %s)" % str(desired[k][k1])
                                 # Print config status and recommended value
-                                self.printer.info(message + recomendation)
+                                self.printer.info(attribute + recomendation)
                         # Else print config status and recomended value
                         else:
                             val = desired[k]
-                            recommend = "ENABLED" if str(val[val.keys()[0]]) == "True" else "DISSABLED"
+                            recommend = "ENABLING" if str(val[val.keys()[0]]) == "True" else "DISABLING"
                             self.printer.info("\tRecommend: %s" % recommend)
                     else: pass
                 else:
@@ -102,7 +102,7 @@ class Module(BaseModule):
 
         # Print output footer
         self.printer.info(40*'-')
-        self.printer.notify("%s/%s Misconfigurations" % (misConfigs, len(desired)))
+        self.printer.notify("%d/%d Misconfigurations" % (misConfigs, len(desired)))
         self.printer.info(40*'-');print
 
     # ==================================================================================================================
@@ -117,8 +117,8 @@ class Module(BaseModule):
         
         try: config = self.device.remote_op.command_blocking(cmd)[0].strip()
         except:
-            self.printer.warning("No Configuration profile applied!")
-            self.printer.verbose("Could not find %s" % arg)
+            self.printer.error("No Configuration profiles applied!")
+            self.printer.warning("Could not find %s" % arg)
             return
 
         # Pull Effective User Settings plist
