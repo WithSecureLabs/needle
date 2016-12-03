@@ -23,8 +23,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output']  = self._global_options['output_folder']
-        self.options['mode']    = 1
+        self.options['output'] = self._global_options['output_folder']
 
     # Format output file_name
     def set_output_name(self, remote_file):
