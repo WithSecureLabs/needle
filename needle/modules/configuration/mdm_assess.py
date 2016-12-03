@@ -69,7 +69,7 @@ class Module(BaseModule):
             if k in config.keys():
                 # Get setting status
                 status = "[NOT CONFIGURED]" if len(v) == 0 else ""
-                if len(v) != 0 and len(v) <= 1 and len(config[k].keys()) != 0:
+                if len(v) == 1 and len(config[k].keys()) != 0:
                     status = "[ENABLED]" if str(config[k][config[k].keys()[0]]) == "True" else "[DISSABLED]"
                 # Check for Config and Desired config setting mismatch
                 if v != config[k]:
