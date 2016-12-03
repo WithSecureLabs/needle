@@ -42,7 +42,7 @@ class Utils(object):
 
     @staticmethod
     def extract_directory_from_path(fullpath):
-        # Returns the irectory of a given full file path.
+        """Returns the directory of a given full file path."""
         return os.path.dirname(fullpath)
 
     # ==================================================================================================================

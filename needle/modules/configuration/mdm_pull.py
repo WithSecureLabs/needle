@@ -8,7 +8,7 @@ class Module(BaseModule):
     meta = {
         'name': 'MDM Pull',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description':  'Pulls the Effective Configuration from device.',
+        'description':  'Pulls the configuration plist from device.',
         'options': (
             ('autosave', False, False, 'Automatically save files.'),
             ('silent', True, False, 'Silent mode. Will not print config to screen.'),
@@ -24,11 +24,11 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
 
-    # Format output filename
+    # Format output file_name
     def set_output_name(self, remote_file):
-        fileName = Utils.extract_filename_from_path(remote_file)
-        fileName = 'mdm_pull_{}'.format(fileName)
-        return self.local_op.build_output_path_for_file(fileName, self)
+        file_name = Utils.extract_filename_from_path(remote_file)
+        file_name = 'mdm_pull_{}'.format(file_name)
+        return self.local_op.build_output_path_for_file(file_name, self)
 
     # Save file
     def save_file(self, remote_file, local_file):
@@ -56,16 +56,16 @@ class Module(BaseModule):
 
         # Parse configuration (and save to variable)
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['PLUTIL'], arg=config)
-        parsedConfig = ''.join(self.device.remote_op.command_blocking(cmd))
+        parsed_config = ''.join(self.device.remote_op.command_blocking(cmd))
 
         # Print config data (if not in silent mode)
         if not self.options['silent']:
-            print parsedConfig
+            print parsed_config
 
         # Save file (as both XML and object format)
         outFile = self.set_output_name(config)
         if self.options['autosave'] or choose_boolean("Would you like to save ths file?"):
             self.device.pull(config, outFile)
-            self.local_op.write_file(outFile+'.txt', parsedConfig)
+            self.local_op.write_file(outFile+'.txt', parsed_config)
 
 
