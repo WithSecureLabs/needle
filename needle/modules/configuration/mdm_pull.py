@@ -1,7 +1,8 @@
 from core.framework.module import BaseModule
 from core.device.device import Device
-from core.utils.menu import choose_from_list_data_protection, choose_from_list, choose_boolean
+from core.utils.menu import choose_boolean
 from core.utils.utils import Utils
+from core.utils.constants import Constants
 import re, sys
 
 class Module(BaseModule):
@@ -45,7 +46,7 @@ class Module(BaseModule):
         self.printer.verbose("Searching for Configuration file...")
 
         # Find MDM config file locations
-        arg = "/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist"
+        arg = Constants.DEVICE_PATH_EFFECTIVE_CONFIG
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=arg)
         config = self.device.remote_op.command_blocking(cmd)[0].strip()
 

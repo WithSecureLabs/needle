@@ -1,8 +1,8 @@
 from core.framework.module import BaseModule
 from core.framework.framework import FrameworkException
 from core.device.device import Device
-from core.utils.menu import choose_from_list_data_protection, choose_from_list, choose_boolean
 from core.utils.utils import Utils
+from core.utils.constants import Constants
 import re, sys, plistlib
 
 class Module(BaseModule):
@@ -35,14 +35,14 @@ class Module(BaseModule):
         file_name = 'mdm_assess_{}'.format(file_name)
         return self.local_op.build_output_path_for_file(file_name, self)
 
-    # Check if file is in Plist or a plutil-output format
+    # Check if file is a valid Plist
     def is_plist(self, config_file):
         try: 
             plistlib.readPlist(config_file)
             return True
         except: 
             # If incorrect format, print error and exit
-            self.printer.error("Invalid file!")
+            self.printer.error("Invalid configuration file!")
             self.printer.debug("Invalid file: %s" % config_file)
             raise FrameworkException()
         
@@ -109,15 +109,16 @@ class Module(BaseModule):
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        # Check EffectiveUserSettings.plist file is present!
         self.printer.verbose("Searching for Configuration file...")
-        arg = "/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist"
+
+        # Check EffectiveUserSettings.plist file is present!
+        arg = Constants.DEVICE_PATH_EFFECTIVE_CONFIG
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=arg)
         config = self.device.remote_op.command_blocking(cmd)[0].strip()
 
         if not config:
             self.printer.error("No Configuration files found!")
-            self.printer.debud("Could not find %s" % arg)
+            self.printer.debug("Could not find %s" % arg)
             return
 
         # Pull Effective User Settings plist
