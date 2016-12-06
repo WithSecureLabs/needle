@@ -13,9 +13,14 @@ class Module(BaseModule):
         ),
     }
 
+
     # ==================================================================================================================
     # UTILS
     # ==================================================================================================================
+    def __init__(self, params):
+        BaseModule.__init__(self, params)
+        self.validate_editor()
+
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
 
@@ -37,20 +42,11 @@ class Module(BaseModule):
 
         # Modify the file
         if self.options['edit']:
-
-            # Check that the user entered a recognised editor in the PROGRAM option by seeing if it
-            # exists in the TOOLS_LOCAL directory
-            if self.options['program'] in self.TOOLS_LOCAL:
-                editor = self.TOOLS_LOCAL[self.options['program']]
-            else:
-                self.printer.error('Editing program "{}" specified is not supported.'.format(self.options['program']))
-                return
-
             # Pull the file
             self.device.pull(self.path_remote, self.path_local)
 
             # Modify it in the selected editor
-            cmd = '{editor} {fname}'.format(editor=editor,
+            cmd = '{editor} {fname}'.format(editor=self.editor,
                                          fname=self.path_local)
             self.local_op.command_interactive(cmd)
 

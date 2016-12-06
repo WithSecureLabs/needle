@@ -10,64 +10,7 @@ These are just guidelines, not rules, use your best judgment and feel free to pr
 
 ## What should I know before I get started?
 
-### Needle Architecture
-
-Needle is an open source project, designed to be highly-modular. Needle is indeed easily extensible and new modules can be added in the form of python scripts.
-
-When you initially consider contributing to it, you might be unsure about which of those components implements the functionality you want to change or report a bug for.
-This section should help you with that.
-
-To get a sense for the components that compose Needle, here's a list that explains each one's task:
-
-```
-needle
-|-- core                                    
-|   |-- device                              
-|   |   |-- app.py                          [wrapper for managing installed apps]
-|   |   |-- device.py                       [manage connection with the device & basic commands]
-|   |   |-- installer.py                    [install all the tools/dependencies needed on the device]
-|   |   `-- remote_operations.py            [APIs to interact with the remote OS]
-|   |-- framework                           
-|   |   |-- cli.py                          [command line interface for Needle, the UI]
-|   |   |-- framework.py                    [init and manage all the other components]
-|   |   |-- local_operations.py             [APIs to interact with the local OS]
-|   |   |-- module.py                       [base class, inherited by module's implementations]
-|   |   `-- options.py                      [wrapper for the global/local options]
-|   `-- utils
-|       |-- constants.py                    [global constants for the framework]
-|       |-- __init__.py
-|       |-- menu.py                         [show menus to the user]
-|       |-- printer.py                      [provides logging]
-|       `-- utils.py                        [various utils (path manipulation, escaping, etc)]
-|-- libs                                    [dependencies that needs to be bundled within Needle]
-`-- modules                                 [collection of features, in the form of python scripts]
-```
-
-### APIs
-
-As mentioned in the section above, the framework core exposes APIs to interact with the local and remote OS.
-These APIs wraps common functionalities, like file and data access, command execution, networking.
-
-A high-level view of the design is shown in the following image:
-
-![](https://labs.mwrinfosecurity.com/assets/BlogFiles/Needle/api-design.png)
-
-
-### Module Templates
-
-Needle supports multiple kinds of modules, each type developed for a particular use case.
-Templates for each type of module are provided in the `modules/_templates` folder:
-
-Template                 | Type
-------------- 	         | ------------- 	 	
-`BaseModule`             | Standard module
-`BackgroundModule`       | To be used for background processes (jobs)
-`DebugModule`            | To be used for modules relying on LLDB
-`FridaModule`            | To be used for modules relying on Frida
-`FridaScript`            | To be used for modules that just needs to execute a JS payload
-`StaticModule`           | To be used for modules that do not require a connection with the device
-
-
+For a description of Needle's architecture, folder structure, APIs, and module templates, please refer to the _[Architecture](https://github.com/mwrlabs/needle/wiki/Architecture)_ page on the Wiki.
 
 
 
@@ -173,8 +116,7 @@ Tell us what happens instead.
 
 Unsure where to begin contributing? You can start by looking through:
 
-* :mag_right: the [open issues](https://github.com/mwrlabs/needle/issues)
-* :clipboard: the [new features that needs to be implemented](https://github.com/mwrlabs/needle/projects/1)
+* :mag_right: [open issues](https://github.com/mwrlabs/needle/issues)
 
 
 
