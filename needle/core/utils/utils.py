@@ -70,3 +70,14 @@ class Utils(object):
         control_chars = ''.join(map(unichr, range(0, 32) + range(127, 160)))
         control_char_re = re.compile('[%s]' % re.escape(control_chars))
         return control_char_re.sub('', text)
+
+    # ==================================================================================================================
+    # DATA STRUCTURE UTILS
+    # ==================================================================================================================
+    @staticmethod
+    def merge_dicts(*dict_args):
+        """Given any number of dicts, shallow copy and merge into a new dict."""
+        result = {}
+        for dictionary in dict_args:
+            result.update(dictionary)
+        return result
