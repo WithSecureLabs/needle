@@ -120,10 +120,11 @@ class Constants(object):
             'STRINGS': {'COMMAND': 'strings', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'SSLKILLSWITCH': {'COMMAND': None, 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "curl -ksL \"https://github.com/iSECPartners/ios-ssl-kill-switch/releases/download/release-0.6/com.isecpartners.nabla.sslkillswitch_v0.6-iOS_7.0.deb\" -o /var/root/kill.deb",
-                "dpkg -i /var/root/kill.deb",
+                "dpkg -i /var/root/kill.deb && rm -f /var/root/kill.deb",
                 "killall -HUP SpringBoard"
             ]},
             'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
+                "ln -s /usr/local/bin/perl /usr/bin/perl",
                 "GIT_SSL_NO_VERIFY=true git clone --recursive https://github.com/theos/theos.git %s" % THEOS_FOLDER,
                 "mkdir -p %ssdks" % THEOS_FOLDER,
                 "curl -ksL \"https://sdks.website/dl/iPhoneOS8.1.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
