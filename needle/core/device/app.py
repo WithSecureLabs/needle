@@ -81,12 +81,15 @@ class App(object):
         sdk_version = plist['DTSDKName']
         minimum_os = plist['MinimumOSVersion']
         bundle_id = plist['CFBundleIdentifier']
-        bundle_displayname = plist['CFBundleDisplayName']
         bundle_exe = plist['CFBundleExecutable']
         bundle_package_type = plist['CFBundlePackageType']
         app_version_long  = plist['CFBundleVersion']
         app_version_short = plist['CFBundleShortVersionString']
         app_version = '{} ({})'.format(app_version_long, app_version_short)
+        try:
+            bundle_displayname = plist['CFBundleDisplayName']
+        except:
+            bundle_displayname = None
         try:
             platform_version = plist['DTPlatformVersion']
         except:
