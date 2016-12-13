@@ -1,5 +1,4 @@
 import os
-
 from ..utils.constants import Constants
 from ..utils.utils import Utils
 
@@ -21,8 +20,6 @@ class App(object):
 
     def _retrieve_metadata(self):
         """Parse MobileInstallation.plist and the app's local Info.plist, and extract metadata."""
-
-
         # Content of the MobileInstallation plist
         plist_mobile_installation = self._device._applist[self._app]
         metadata_mobile_installation = self.__parse_plist_mobile_installation(plist_mobile_installation)
@@ -48,16 +45,13 @@ class App(object):
 
     def __parse_plist_mobile_installation(self, plist):
         # Parse the MobileInstallation plist
-        uuid = plist['BundleContainer'].rsplit('/', 1)[-1]
-        name = plist['Path'].rsplit('/', 1)[-1]
-        bundle_id = plist['CFBundleIdentifier']
-        bundle_directory = plist['BundleContainer']
-        data_directory = plist['Container']
-        binary_directory = plist['Path']
-        try:
-            entitlements = plist['Entitlements']
-        except:
-            entitlements = None
+        uuid = self.__extract_field(plist, 'BundleContainer').rsplit('/', 1)[-1]
+        name = self.__extract_field(plist, 'Path').rsplit('/', 1)[-1]
+        bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
+        bundle_directory = self.__extract_field(plist, 'BundleContainer')
+        data_directory = self.__extract_field(plist, 'Container')
+        binary_directory = self.__extract_field(plist, 'Path')
+        entitlements = self.__extract_field(plist, 'Entitlements')
         # Compose binary path
         binary_folder = binary_directory
         binary_name = os.path.splitext(binary_folder.rsplit('/', 1)[-1])[0]
@@ -78,27 +72,21 @@ class App(object):
 
     def __parse_plist_info(self, plist):
         # Parse the Info.plist file
-        sdk_version = plist['DTSDKName']
-        minimum_os = plist['MinimumOSVersion']
-        bundle_id = plist['CFBundleIdentifier']
-        bundle_displayname = plist['CFBundleDisplayName']
-        bundle_exe = plist['CFBundleExecutable']
-        bundle_package_type = plist['CFBundlePackageType']
-        app_version_long  = plist['CFBundleVersion']
-        app_version_short = plist['CFBundleShortVersionString']
+        sdk_version = self.__extract_field(plist, 'DTSDKName')
+        minimum_os = self.__extract_field(plist, 'MinimumOSVersion')
+        bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
+        bundle_displayname = self.__extract_field(plist, 'CFBundleDisplayName')
+        bundle_exe = self.__extract_field(plist, 'CFBundleExecutable')
+        bundle_package_type = self.__extract_field(plist, 'CFBundlePackageType')
+        app_version_long = self.__extract_field(plist, 'CFBundleVersion')
+        app_version_short = self.__extract_field(plist, 'CFBundleShortVersionString')
         app_version = '{} ({})'.format(app_version_long, app_version_short)
-        try:
-            platform_version = plist['DTPlatformVersion']
-        except:
-            platform_version = None
+        platform_version = self.__extract_field(plist, 'DTPlatformVersion')
+        ats_settings = self.__extract_field(plist, 'NSAppTransportSecurity')
         try:
             url_handlers = [url['CFBundleURLSchemes'][0] for url in plist['CFBundleURLTypes']]
         except:
             url_handlers = None
-        try:
-            ats_settings = plist['NSAppTransportSecurity']
-        except:
-            ats_settings = None
         # Pack into a dict
         metadata = {
             'platform_version': platform_version,
@@ -113,6 +101,13 @@ class App(object):
             'ats_settings': ats_settings,
         }
         return metadata
+
+    def __extract_field(self, plist, field):
+        """Extract the specified entry from the plist file. Returns empty string if not present."""
+        try:
+            return plist[field]
+        except:
+            return ""
 
     def __detect_architectures(self, binary):
         """Use lipo to detect supported architectures."""

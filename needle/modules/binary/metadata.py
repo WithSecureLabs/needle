@@ -82,7 +82,6 @@ class Module(BaseModule):
         else:
             self.printer.info('Entitlements not found')
 
-
         # App Extensions
         if self.APP_METADATA['extensions']:
             for app_extension in self.APP_METADATA['extensions']:
