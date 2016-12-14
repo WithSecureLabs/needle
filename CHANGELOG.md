@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Improved metadata parsing for extensions
 #### Fixed
+- **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
 #### Removed
 
 
