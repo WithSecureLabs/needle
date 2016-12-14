@@ -13,7 +13,7 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    ObjC.schedule(ObjC.mainQueue, () => {
+    ObjC.schedule(ObjC.mainQueue, function() {
         const window = ObjC.classes.UIWindow.keyWindow();
         const ui = window.recursiveDescription().toString();
         send(ui);
