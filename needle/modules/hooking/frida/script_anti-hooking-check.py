@@ -5,7 +5,7 @@ class Module(FridaScript):
     meta = {
         'name': 'Frida Script: Anti Hooking Checks',
         'author': 'Henry Hoggard (@MWRLabs)',
-        'description': 'Display Alert in the target application. Can be used as simple proof that there are no anti-hooking checks in place.',
+        'description': 'Display an Alert in the target application. Can be used as simple proof that there are no anti-hooking checks in place.',
         'options': (
             ('title', "Needle", True, 'Title of alert box.'),
             ('content', "If this message is visible, this application has insufficient anti-hooking protections.", True, 'Content of alert box.')
