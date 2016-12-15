@@ -53,9 +53,8 @@ class App(object):
         binary_directory = self.__extract_field(plist, 'Path')
         entitlements = self.__extract_field(plist, 'Entitlements')
         # Compose binary path
-        binary_folder = binary_directory
-        binary_name = os.path.splitext(binary_folder.rsplit('/', 1)[-1])[0]
-        binary_path = Utils.escape_path(os.path.join(binary_folder, binary_name))
+        binary_name = os.path.splitext(binary_directory.rsplit('/', 1)[-1])[0]
+        binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
         # Pack into a dict
         metadata = {
             'uuid': uuid,
