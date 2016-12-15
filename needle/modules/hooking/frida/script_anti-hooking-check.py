@@ -7,10 +7,9 @@ class Module(FridaScript):
         'author': 'Henry Hoggard (@MWRLabs)',
         'description': 'Display Alert in the target application. Can be used as simple proof that there are no anti-hooking checks in place.',
         'options': (
-        ('title', "Needle", True, 'Title of alert box.'),
-        ('content', "If this message is visible, this application has insufficient anti-hooking protections.", True, 'Content of alert box.')
+            ('title', "Needle", True, 'Title of alert box.'),
+            ('content', "If this message is visible, this application has insufficient anti-hooking protections.", True, 'Content of alert box.')
         ),
-
     }
 
     JS = '''\
@@ -43,7 +42,6 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
 
-
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
@@ -53,7 +51,7 @@ if(ObjC.available) {
             self.printer.info("Parsing payload")
             title = self.options['title']
             content = self.options['content']
-            hook = self.JS % (title,content)
+            hook = self.JS % (title, content)
             script = self.session.create_script(hook)
             script.on('message', self.on_message)
             script.load()
