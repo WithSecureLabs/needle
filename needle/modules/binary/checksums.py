@@ -1,5 +1,5 @@
 from core.framework.module import BaseModule
-import os
+
 
 class Module(BaseModule):
     meta = {
