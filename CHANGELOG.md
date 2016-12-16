@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
 - **[MODULE]** Checksums (`binary/checksums`) _[from @HenryHoggard]_
 #### Fixed
+- **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
 #### Removed
 

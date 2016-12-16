@@ -29,14 +29,21 @@ class App(object):
         plist_info = self._device.remote_op.parse_plist(plist_info_path)
         metadata_info = self.__parse_plist_info(plist_info)
 
+        # Compose binary path
+        binary_directory = metadata_mobile_installation['binary_directory']
+        binary_name = metadata_info['bundle_exe']
+        binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
+
         # Detect architectures
-        architectures = self.__detect_architectures(metadata_mobile_installation['binary_path'])
+        architectures = self.__detect_architectures(binary_path)
 
         # App Extensions
-        extensions = self.get_extensions(metadata_mobile_installation['binary_directory'])
+        extensions = self.get_extensions(binary_directory)
 
         # Pack into a dict
         metadata = {
+            'binary_path': binary_path,
+            'binary_name': binary_name,
             'architectures': architectures,
             'extensions': extensions,
         }
@@ -52,9 +59,6 @@ class App(object):
         data_directory = self.__extract_field(plist, 'Container')
         binary_directory = self.__extract_field(plist, 'Path')
         entitlements = self.__extract_field(plist, 'Entitlements')
-        # Compose binary path
-        binary_name = os.path.splitext(binary_directory.rsplit('/', 1)[-1])[0]
-        binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
         # Pack into a dict
         metadata = {
             'uuid': uuid,
@@ -64,8 +68,6 @@ class App(object):
             'data_directory': data_directory,
             'binary_directory': binary_directory,
             'entitlements': entitlements,
-            'binary_path': binary_path,
-            'binary_name': binary_name,
         }
         return metadata
 
