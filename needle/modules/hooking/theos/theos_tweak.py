@@ -30,6 +30,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         self.options['substrate_filter'] = self.APP_METADATA['bundle_id'] if self.APP_METADATA else ""
+        # Ensure a valid editor has been specified
         self.validate_editor()
 
     def __init_const(self):

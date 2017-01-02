@@ -13,13 +13,11 @@ class Module(BaseModule):
         ),
     }
 
-
     # ==================================================================================================================
     # UTILS
     # ==================================================================================================================
     def __init__(self, params):
         BaseModule.__init__(self, params)
-
 
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
@@ -42,7 +40,6 @@ class Module(BaseModule):
 
         # Modify the file
         if self.options['edit']:
-
             # Ensure a valid editor has been specified
             self.validate_editor()
 
@@ -50,8 +47,7 @@ class Module(BaseModule):
             self.device.pull(self.path_remote, self.path_local)
 
             # Modify it in the selected editor
-            cmd = '{editor} {fname}'.format(editor=self.editor,
-                                         fname=self.path_local)
+            cmd = '{editor} {fname}'.format(editor=self.editor, fname=self.path_local)
             self.local_op.command_interactive(cmd)
 
             # Backup
