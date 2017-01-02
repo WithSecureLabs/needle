@@ -19,7 +19,7 @@ class Module(BaseModule):
     # ==================================================================================================================
     def __init__(self, params):
         BaseModule.__init__(self, params)
-        self.validate_editor()
+
 
     def module_pre(self):
         return BaseModule.module_pre(self, bypass_app=True)
@@ -42,6 +42,10 @@ class Module(BaseModule):
 
         # Modify the file
         if self.options['edit']:
+
+            # Ensure a valid editor has been specified
+            self.validate_editor()
+
             # Pull the file
             self.device.pull(self.path_remote, self.path_local)
 
