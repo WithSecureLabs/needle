@@ -11,7 +11,7 @@ class Module(BaseModule):
                        'Plus, offers the chance to pull and inspect them with BinaryCookieReader or to dump them all for local analysis.',
         'options': (
             ('analyze', True, True, 'Prompt to pick one file to analyze'),
-            ('dump_all', False, True, 'Retrieve all SQL files'),
+            ('dump_all', False, True, 'Retrieve all binary cookie files'),
             ('output', True, False, 'Full path of the output folder'),
         ),
         'comments': [
