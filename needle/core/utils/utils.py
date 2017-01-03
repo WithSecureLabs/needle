@@ -99,13 +99,19 @@ class Utils(object):
         def json_serial(obj):
             """
             JSON serializer for objects not serializable by default json code
-            Currently only handles datetime objects
-            based on: http://stackoverflow.com/a/22238613/7011779
+            Currently handles:
+            - datetime objects based on: http://stackoverflow.com/a/22238613/7011779
+            - biplist.Uid based on just getting the representation of the object
             """
 
+            # datetime
             if isinstance(obj, datetime):
-                serial = obj.isoformat()
-                return serial
+                return obj.isoformat()
+
+            # biplist.Uid
+            if isinstance(obj, biplist.Uid):
+                return repr(obj)
+
             raise TypeError("Type not serializable")
 
 
@@ -130,17 +136,16 @@ class Utils(object):
 
     @staticmethod
     def plist_read_from_file(path):
-        """Read a plist from file."""
+        """Recursively read a plist from a file."""
         try:
             plist = biplist.readPlist(path)
-
             return Utils.decode_nested_plist(plist)
-            # return plist
         except (biplist.InvalidPlistException, biplist.NotBinaryPlistException), e:
             raise Exception("Failed to parse plist file: {}".format(e))
 
     @staticmethod
     def decode_nested_plist(inner_plist):
+        """This method is designed to allow recursively decoding a plist file."""
         for k, v in inner_plist.iteritems():
             if isinstance(v, biplist.Data):
                 inner_plist[k] = Utils.plist_read_from_string(v)
@@ -149,7 +154,7 @@ class Utils(object):
 
     @staticmethod
     def plist_read_from_string(text):
-        """Read a plist from string."""
+        """Recursively read a plist from a file."""
         return Utils.plist_read_from_file(io.BytesIO(text))
 
     @staticmethod
