@@ -126,7 +126,7 @@ class Utils(object):
     @staticmethod
     def plist_read_from_string(text):
         """Read a plist from string."""
-        Utils.plist_read_from_file(io.BytesIO(text))
+        return Utils.plist_read_from_file(io.BytesIO(text))
 
     @staticmethod
     def plist_write_to_file(text, fp):
