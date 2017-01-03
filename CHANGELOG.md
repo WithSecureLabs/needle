@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Plist wrapper using biplist
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
 - **[MODULE]** Improved SQLite DB identification by reducing false positives and false negatives _[from @HenryHoggard]_
+- **[MODULE]** Editing with different editors _[from @tghosth]_
 #### Removed
 
 
