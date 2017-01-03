@@ -119,14 +119,24 @@ class Utils(object):
         """Read a plist from file."""
         try:
             plist = biplist.readPlist(path)
-            return plist
+
+            return Utils.decode_nested_plist(plist)
+            # return plist
         except (biplist.InvalidPlistException, biplist.NotBinaryPlistException), e:
             raise Exception("Failed to parse plist file: {}".format(e))
 
     @staticmethod
+    def decode_nested_plist(inner_plist):
+        for k, v in inner_plist.iteritems():
+            if isinstance(v, biplist.Data):
+                inner_plist[k] = Utils.plist_read_from_string(v)
+
+        return inner_plist
+
+    @staticmethod
     def plist_read_from_string(text):
         """Read a plist from string."""
-        Utils.plist_read_from_file(io.BytesIO(text))
+        return Utils.plist_read_from_file(io.BytesIO(text))
 
     @staticmethod
     def plist_write_to_file(text, fp):
