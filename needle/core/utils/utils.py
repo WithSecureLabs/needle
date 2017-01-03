@@ -98,22 +98,18 @@ class Utils(object):
 
         def json_serial(obj):
             """
-            JSON serializer for objects not serializable by default json code
+            JSON serializer for objects not serializable by default
             Currently handles:
-            - datetime objects based on: http://stackoverflow.com/a/22238613/7011779
+            - datetime objects (based on: http://stackoverflow.com/a/22238613/7011779)
             - biplist.Uid based on just getting the representation of the object
             """
-
             # datetime
             if isinstance(obj, datetime):
                 return obj.isoformat()
-
             # biplist.Uid
             if isinstance(obj, biplist.Uid):
                 return repr(obj)
-
             raise TypeError("Type not serializable")
-
 
         try:
             json.dump(text, fp, indent=4, default=json_serial)
@@ -137,22 +133,19 @@ class Utils(object):
     @staticmethod
     def plist_read_from_file(path):
         """Recursively read a plist from a file."""
+        def decode_nested_plist(inner_plist):
+            """This method is designed to allow recursively decoding a plist file."""
+            if hasattr(inner_plist,'iteritems'):
+                for k, v in inner_plist.iteritems():
+                    if isinstance(v, biplist.Data):
+                        inner_plist[k] = Utils.plist_read_from_string(v)
+            return inner_plist
+
         try:
             plist = biplist.readPlist(path)
-            return Utils.decode_nested_plist(plist)
+            return decode_nested_plist(plist)
         except (biplist.InvalidPlistException, biplist.NotBinaryPlistException), e:
             raise Exception("Failed to parse plist file: {}".format(e))
-
-    @staticmethod
-    def decode_nested_plist(inner_plist):
-        """This method is designed to allow recursively decoding a plist file."""
-
-        if hasattr(inner_plist,'iteritems'):
-            for k, v in inner_plist.iteritems():
-                if isinstance(v, biplist.Data):
-                    inner_plist[k] = Utils.plist_read_from_string(v)
-
-        return inner_plist
 
     @staticmethod
     def plist_read_from_string(text):
