@@ -146,9 +146,11 @@ class Utils(object):
     @staticmethod
     def decode_nested_plist(inner_plist):
         """This method is designed to allow recursively decoding a plist file."""
-        for k, v in inner_plist.iteritems():
-            if isinstance(v, biplist.Data):
-                inner_plist[k] = Utils.plist_read_from_string(v)
+
+        if hasattr(inner_plist,'iteritems'):
+            for k, v in inner_plist.iteritems():
+                if isinstance(v, biplist.Data):
+                    inner_plist[k] = Utils.plist_read_from_string(v)
 
         return inner_plist
 
