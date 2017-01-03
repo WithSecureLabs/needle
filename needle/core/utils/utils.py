@@ -5,7 +5,7 @@ import json
 import biplist
 import plistlib
 from pprint import pprint
-
+from datetime import datetime
 
 # ======================================================================================================================
 # GENERAL UTILS
@@ -95,8 +95,22 @@ class Utils(object):
     @staticmethod
     def dict_write_to_file(text, fp):
         """Print a dictionary to file."""
+
+        def json_serial(obj):
+            """
+            JSON serializer for objects not serializable by default json code
+            Currently only handles datetime objects
+            based on: http://stackoverflow.com/a/22238613/7011779
+            """
+
+            if isinstance(obj, datetime):
+                serial = obj.isoformat()
+                return serial
+            raise TypeError("Type not serializable")
+
+
         try:
-            json.dump(text, fp, indent=4)
+            json.dump(text, fp, indent=4, default=json_serial)
         except TypeError as e:
             raise Exception(e)
 
