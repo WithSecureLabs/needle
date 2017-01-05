@@ -7,14 +7,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 #### Added
 - **[CORE]** Improved metadata parsing for extensions
+- **[CORE]** Improved plist parsing
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
 - **[MODULE]** Checksums (`binary/checksums`) _[from @HenryHoggard]_
 
 #### Fixed
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
 - **[CORE]** Plist wrapper using biplist
+- **[CORE]** Multiple plist parsing issues _[from @tghosth]_
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
 - **[MODULE]** Improved SQLite DB identification by reducing false positives and false negatives _[from @HenryHoggard]_
+- **[MODULE]** Editing with different editors _[from @tghosth]_
 
 #### Removed
 
