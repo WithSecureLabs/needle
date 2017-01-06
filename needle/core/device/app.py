@@ -85,7 +85,7 @@ class App(object):
         platform_version = self.__extract_field(plist, 'DTPlatformVersion')
         ats_settings = self.__extract_field(plist, 'NSAppTransportSecurity')
         try:
-            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist['CFBundleURLTypes']]
+            url_handlers = [url['CFBundleURLSchemes'] for url in plist['CFBundleURLTypes']]
         except:
             url_handlers = None
         # Pack into a dict

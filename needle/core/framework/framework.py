@@ -349,57 +349,6 @@ class Framework(cmd.Cmd):
 
     def register_option(self, name, value, required, description):
         self.options.init_option(name=name.lower(), value=value, required=required, description=description)
-        # TODO: support for config file
-        #self._load_config()
-
-    # TODO: support for config file
-    '''
-    def _load_config(self):
-        config_path = os.path.join(self._home, 'config.dat')
-        # don't bother loading if a config file doesn't exist
-        if os.path.exists(config_path):
-            # retrieve saved config data
-            with open(config_path) as config_file:
-                try:
-                    config_data = json.loads(config_file.read())
-                except ValueError:
-                    # file is corrupt, nothing to load, exit gracefully
-                    pass
-                else:
-                    # set option values
-                    for key in self.options:
-                        try:
-                            self.options[key] = config_data[self._modulename][key]
-                        except KeyError:
-                            # invalid key, contnue to load valid keys
-                            continue
-
-    def _save_config(self, name):
-        config_path = os.path.join(self._home, 'config.dat')
-        # create a config file if one doesn't exist
-        open(config_path, 'a').close()
-        # retrieve saved config data
-        with open(config_path) as config_file:
-            try:
-                config_data = json.loads(config_file.read())
-            except ValueError:
-                # file is empty or corrupt, nothing to load
-                config_data = {}
-        # create a container for the current module
-        if self._modulename not in config_data:
-            config_data[self._modulename] = {}
-        # set the new option value in the config
-        config_data[self._modulename][name] = self.options[name]
-        # remove the option if it has been unset
-        if config_data[self._modulename][name] is None:
-            del config_data[self._modulename][name]
-        # remove the module container if it is empty
-        if not config_data[self._modulename]:
-            del config_data[self._modulename]
-        # write the new config data to the config file
-        with open(config_path, 'w') as config_file:
-            json.dump(config_data, config_file, indent=4)
-    '''
 
     # ==================================================================================================================
     # COMMAND METHODS
@@ -468,8 +417,6 @@ class Framework(cmd.Cmd):
                 self.printer.debug("Output folder changed, reloading modules")
                 self._local_ready = Framework._local_ready = False
                 self.do_reload(None)
-            # TODO: support for config file
-            #self._save_config(name)
         else:
             self.printer.error('Invalid option.')
 
