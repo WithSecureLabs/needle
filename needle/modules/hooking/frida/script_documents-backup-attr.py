@@ -5,7 +5,7 @@ class Module(FridaScript):
     meta = {
         'name': 'Frida Script: iCloud Backups',
         'author': 'Bernard Wagner (@MWRLabs)',
-        'description': 'List files within Documents directory mot excluded from iCloud Backups',
+        'description': 'List files within Documents directory not excluded from iCloud Backups',
         'options': (
 
         ),
