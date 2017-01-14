@@ -39,13 +39,6 @@ class Module(FridaScript):
           }
         }
         '''
-    # ==================================================================================================================
-    # UTILS
-    # ==================================================================================================================
-    def __init__(self, params):
-        FridaScript.__init__(self, params)
-        self.results = []
-
 
     # ==================================================================================================================
     # RUN
@@ -53,6 +46,7 @@ class Module(FridaScript):
     def module_run(self):
         # Run the payload
         try:
+            self.results = []
             self.printer.info("Parsing payload")
             hook = self.JS
             script = self.session.create_script(hook)
