@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Improved plist parsing
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
 - **[MODULE]** Checksums (`binary/checksums`) _[from @HenryHoggard]_
+- **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
 
 #### Fixed
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist

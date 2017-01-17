@@ -5,7 +5,7 @@ class Module(FridaScript):
     meta = {
         'name': 'Frida Script: iCloud Backups',
         'author': 'Bernard Wagner (@MWRLabs)',
-        'description': 'List files within Documents directory not excluded from iCloud Backups',
+        'description': 'List files within the "Documents" directory not excluded from iCloud Backups',
         'options': (
 
         ),
@@ -68,4 +68,4 @@ if (ObjC.available) {
         self.printer.info("Files to be included in iCloud Backup")
         for key in self.results:
             if key["result"] == "0":
-                self.printer.warning("{0}".format(key["path"]))
+                self.printer.notify("{0}".format(key["path"]))
