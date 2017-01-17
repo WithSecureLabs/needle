@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Improved metadata parsing for extensions
 - **[CORE]** Improved plist parsing
+- **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
 - **[MODULE]** Checksums (`binary/checksums`) _[from @HenryHoggard]_

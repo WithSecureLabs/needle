@@ -7,7 +7,7 @@ class Module(FridaScript):
         'author': 'Bernard Wagner (@MWRLabs)',
         'description': 'List files within the "Documents" directory not excluded from iCloud Backups',
         'options': (
-
+            ('output', True, False, 'Full path of the output file'),
         ),
     }
 
@@ -38,7 +38,15 @@ if (ObjC.available) {
 } else {
     console.log("Objective-C Runtime is not available!");
 }
-        '''
+'''
+
+    # ==================================================================================================================
+    # UTILS
+    # ==================================================================================================================
+    def __init__(self, params):
+        FridaScript.__init__(self, params)
+        # Setting default output file
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_documents_backup.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -46,7 +54,6 @@ if (ObjC.available) {
     def module_run(self):
         # Run the payload
         try:
-            self.results = []
             self.printer.info("Parsing payload")
             hook = self.JS
             script = self.session.create_script(hook)
@@ -54,18 +61,10 @@ if (ObjC.available) {
             script.load()
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
-            print(e)
-
-    def on_message(self, message, data):
-        try:
-            if message:
-                self.results.append(json.loads(message["payload"]))
-        except Exception as e:
-            print(message)
-            print(e)
+            self.printer.warning(e)
 
     def module_post(self):
-        self.printer.info("Files to be included in iCloud Backup")
-        for key in self.results:
-            if key["result"] == "0":
-                self.printer.notify("{0}".format(key["path"]))
+        self.printer.info("Files to be included in iCloud Backup:")
+        temp = [key["path"] for key in self.results if key["result"] == "0"]
+        self.results = temp
+        self.print_cmd_output()

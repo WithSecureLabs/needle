@@ -21,7 +21,7 @@ if(ObjC.available) {
                 console.log("Methods found : ")
                 var methods = ObjC.classes.%s.$methods
                 for (var i = 0; i < methods.length; i++) {
-                    send(methods[i]);
+                    send(JSON.stringify({class:className.toString(), method:methods[i].toString()}));
                 }
             }
         }
@@ -38,7 +38,6 @@ if(ObjC.available) {
         FridaScript.__init__(self, params)
         # Setting default output file
         self.options['output'] = self.local_op.build_output_path_for_file("frida_script_enummethods.txt", self)
-        self.output = []
 
     # ==================================================================================================================
     # RUN
@@ -58,5 +57,5 @@ if(ObjC.available) {
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
 
-        # Save to file
-        self.print_cmd_output(self.output, self.options['output'], silent=True)
+    def module_post(self):
+        self.print_cmd_output()

@@ -18,7 +18,7 @@ if(ObjC.available) {
             send("Class: " + className);
             var methods = eval('ObjC.classes.'+className+'.$methods');
             for (var i = 0; i < methods.length; i++) {
-                send(methods[i]);
+                send(JSON.stringify({class:className.toString(), method:methods[i].toString()}));
             }
         }
     }
@@ -33,8 +33,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_allmethods.txt", self)
-        self.output = []
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_all_methods.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -49,7 +48,7 @@ if(ObjC.available) {
             script.load()
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
-            print(e)
+            self.printer.warning(e)
 
-        # Save to file
-        self.print_cmd_output(self.output, self.options['output'], silent=True)
+    def module_post(self):
+        self.print_cmd_output()

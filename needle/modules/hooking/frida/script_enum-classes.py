@@ -15,7 +15,7 @@ class Module(FridaScript):
 if(ObjC.available) {
     for(var className in ObjC.classes) {
         if(ObjC.classes.hasOwnProperty(className)) {
-            send(className);
+            send(JSON.stringify({class:className.toString()}));
         }
     }
 } else {
@@ -29,8 +29,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_enumclasses.txt", self)
-        self.output = []
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_enum_classes.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -45,6 +44,9 @@ if(ObjC.available) {
             script.load()
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
+            self.printer.warning(e)
 
-        # Save to file
-        self.print_cmd_output(self.output, self.options['output'], silent=True)
+    def module_post(self):
+        temp = [key["class"] for key in self.results]
+        self.results = temp
+        self.print_cmd_output()

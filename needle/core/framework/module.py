@@ -1,5 +1,6 @@
 from __future__ import print_function
 import os
+import json
 import time
 import textwrap
 
@@ -285,13 +286,29 @@ class FridaScript(FridaModule):
         # Attaching to the process
         self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
+
+        # Preparing results
+        self.results = []
         return 1
 
     def on_message(self, message, data):
         try:
             if message:
-                print("[*] {0}".format(message["payload"]))
-                self.output.append(message["payload"])
+                try:
+                    pld = json.loads(message["payload"])
+                except:
+                    pld = message["payload"]
+                finally:
+                    self.results.append(pld)
         except Exception as e:
             print(message)
             print(e)
+
+    def print_cmd_output(self, silent=False):
+        # Print to console
+        if not silent:
+            for key in self.results:
+                parsed = json.dumps(key, indent=4, sort_keys=True)
+                self.device.printer.notify(parsed)
+        # Print to file
+        BaseModule.print_cmd_output(self, self.results, self.options['output'], silent=True)
