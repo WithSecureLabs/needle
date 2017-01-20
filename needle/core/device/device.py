@@ -108,12 +108,22 @@ class Device(object):
 
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
+        def hotfix_67():
+            # TODO: replace with a more long-term fix
+            import time
+            timeout = 30
+            endtime = time.time() + timeout
+            while not stdout.channel.eof_received:
+                time.sleep(1)
+                if time.time() > endtime:
+                    stdout.channel.close()
+                    break
+
         # Paramiko Exec Command
         stdin, stdout, stderr = self.conn.exec_command(cmd)
+        hotfix_67()
+
         # Parse STDOUT/ERR
-        # TODO: FIX
-        #out = stdout.read().decode('iso-8859-1').split('\n')
-        #out = filter(None, out)
         out = stdout.readlines()
         err = stderr.readlines()
         if internal:

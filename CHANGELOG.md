@@ -6,19 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
-- **[CORE]** Support for iOS10
+- **[CORE]** Preliminary support for iOS10
 - **[CORE]** Improved metadata parsing for extensions
 - **[CORE]** Improved plist parsing
 - **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
-- **[MODULE]** Checksums (`binary/checksums`) _[from @HenryHoggard]_
-- **[MODULE]** Application Container (`storage/data/container`)
+- **[MODULE]** Calculate binary checksums (`binary/checksums`) _[from @HenryHoggard]_
+- **[MODULE]** Retrieve application container (`storage/data/container`)
 
 #### Fixed
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
 - **[CORE]** Plist wrapper using biplist
 - **[CORE]** Multiple plist parsing issues _[from @tghosth]_
+- **[CORE]** Paramiko hanging waiting for an EOF _[from @TheBananaStand]_
 - **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
 - **[MODULE]** Improved SQLite DB identification by reducing false positives and false negatives _[from @HenryHoggard]_
 - **[MODULE]** Editing with different editors _[from @tghosth]_
