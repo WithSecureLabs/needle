@@ -30,7 +30,7 @@ class Constants(object):
     GLOBAL_SETUP_DEVICE = False
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
-    PASSWORD_CLEAR_NAME = 'password_clear'
+    PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 
 

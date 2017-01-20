@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Preliminary support for iOS10
 - **[CORE]** Improved metadata parsing for extensions
 - **[CORE]** Improved plist parsing
+- **[CORE]** Star out password _[from @tghosth]_
 - **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
