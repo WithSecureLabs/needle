@@ -140,7 +140,6 @@ class Utils(object):
                     if isinstance(v, biplist.Data):
                         inner_plist[k] = Utils.plist_read_from_string(v)
             return inner_plist
-
         try:
             plist = biplist.readPlist(path)
             return decode_nested_plist(plist)

@@ -64,7 +64,6 @@ class Constants(object):
     DEVICE_PATH_BUNDLE_iOS7  = '/private/var/mobile/Applications/'
     DEVICE_PATH_BUNDLE_iOS8  = '/private/var/mobile/Containers/Bundle/Application/'
     DEVICE_PATH_BUNDLE_iOS9  = '/private/var/containers/Bundle/Application/'
-    DEVICE_PATH_BUNDLE_iOS10 = '/private/var/containers/Bundle/Application/'
     DEVICE_PATH_DATA_iOS8    = '/private/var/mobile/Containers/Data/Application/'
     DEVICE_PATH_DATA_iOS9    = '/private/var/mobile/Containers/Data/Application/'
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'

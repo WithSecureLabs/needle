@@ -129,7 +129,7 @@ class App(object):
         if self._device.remote_op.dir_exist(plugin_dir):
             return self._retrieve_extensions(plugin_dir)
         else:
-            self._device.printer.verbose("No Plugins found")
+            self._device.printer.debug("No Plugins found")
             return None
 
     def _retrieve_extensions(self, plugin_dir):

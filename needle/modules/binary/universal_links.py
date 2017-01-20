@@ -32,7 +32,7 @@ class Module(BaseModule):
         try:
             response = urllib2.urlopen(url)
             return response
-        except urllib2.HTTPError as e:
+        except:
             return None
 
     def _retrieve_apple_app_site_association(self, domain):
