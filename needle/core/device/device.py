@@ -109,6 +109,15 @@ class Device(object):
         """Execute a shell command on the device, then parse/print output."""
         # Paramiko Exec Command
         stdin, stdout, stderr = self.conn.exec_command(cmd)
+        # Prevent open channels from hanging / waiting for returned output
+        import time
+        timeout = 30
+        endtime = time.time() + timeout
+        while not stdout.channel.eof_received:
+            time.sleep(1)
+            if time.time() > endtime:
+                stdout.channel.close()
+                break
         # Parse STDOUT/ERR
         # TODO: FIX
         #out = stdout.read().decode('iso-8859-1').split('\n')
