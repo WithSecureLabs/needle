@@ -253,11 +253,12 @@ class Framework(cmd.Cmd):
             print(pattern % ('Name'.ljust(key_len), 'Current Value'.ljust(val_len), 'Required', 'Description'))
             print(pattern % (self.ruler*key_len, (self.ruler*13).ljust(val_len), self.ruler*8, self.ruler*11))
             for key in sorted(options):
-                value = options[key] if options[key] != None else ''
-                reqd = 'no' if options.required[key] is False else 'yes'
-                desc = options.description[key]
-                print(pattern % (key.upper().ljust(key_len), Utils.to_unicode_str(value).ljust(val_len),
-                                 Utils.to_unicode_str(reqd).ljust(8), desc))
+                if not (key == Constants.PASSWORD_CLEAR_NAME):
+                    value = options[key] if options[key] != None else ''
+                    reqd = 'no' if options.required[key] is False else 'yes'
+                    desc = options.description[key]
+                    print(pattern % (key.upper().ljust(key_len), Utils.to_unicode_str(value).ljust(val_len),
+                                     Utils.to_unicode_str(reqd).ljust(8), desc))
             print('')
         else:
             print('')
@@ -402,8 +403,13 @@ class Framework(cmd.Cmd):
         name = options[0].lower()
         if name in self.options:
             value = ' '.join(options[1:])
+
+            if name == 'password':
+                self.options[Constants.PASSWORD_CLEAR_NAME] = value
+                value = Constants.PASSWORD_MASK
+
             self.options[name] = value
-            print('%s => %s' % (name.upper(), value))
+            print('%s => %s' % (name.upper(), self.options[name]))
             # Check verbosity level
             if name == 'debug':
                 self.printer.set_debug(self.options['debug'])
@@ -573,7 +579,7 @@ class Framework(cmd.Cmd):
         IP = self._global_options['ip']
         PORT = self._global_options['port']
         USERNAME = self._global_options['username']
-        PASSWORD = self._global_options['password']
+        PASSWORD = self._global_options[Constants.PASSWORD_CLEAR_NAME]
         PUB_KEY_AUTH = self._global_options['pub_key_auth']
         return IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
 
@@ -607,7 +613,7 @@ class Framework(cmd.Cmd):
             if self._global_options['ip'] != self.device._ip or \
                self._global_options['port'] != self.device._port or \
                self._global_options['username'] != self.device._username or \
-               self._global_options['password'] != self.device._password or \
+               self._global_options[Constants.PASSWORD_CLEAR_NAME] != self.device._password or \
                self._global_options['pub_key_auth'] != self.device._pub_key_auth:
 
                 self.printer.verbose('Settings changed in global options. Establishing a new connection')
