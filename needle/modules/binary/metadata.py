@@ -31,6 +31,8 @@ class Module(BaseModule):
         if ats:
             self.printer.notify('{}{:<20}'.format(tab_base, 'Apple Transport Security Settings'))
             for k, v in ats.items():
+                if "NSAllowsArbitraryLoads" in k and v == '1':
+                    self.printer.error('{}{:<40}: {:<20}'.format(tab_sub, k, v))
                 if "NSExceptionDomains" in k:
                     self.printer.notify('{}NSExceptionDomains'.format(tab_sub))
                     vals = v.items()
@@ -40,6 +42,17 @@ class Module(BaseModule):
                     self.printer.notify('{}{:<40}: {:<20}'.format(tab_sub, k, v))
         else:
             self.printer.info('{}Apple Transport Security Settings not found'.format(tab_base))
+
+    def _print_entitlements(self, ents):
+        if ents:
+            self.printer.notify('{:<20}'.format('Entitlements',))
+            for k, v in ents.items():
+                if "get-task-allow" in k and v == '1':
+                    self.printer.error('{:<40}: {:<20}'.format(k, v))
+                else:
+                    self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
+        else:
+            self.printer.info('Entitlements not found')
 
     # ==================================================================================================================
     # RUN
@@ -75,12 +88,7 @@ class Module(BaseModule):
 
         # Entitlements
         entitlements = self.APP_METADATA['entitlements']
-        if entitlements:
-            self.printer.notify('{:<20}'.format('Entitlements',))
-            for k, v in entitlements.items():
-                self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
-        else:
-            self.printer.info('Entitlements not found')
+        self._print_entitlements(entitlements)
 
         # App Extensions
         if self.APP_METADATA['extensions']:

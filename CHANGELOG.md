@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 - **[CORE]** Preliminary support for iOS10
 - **[CORE]** Improved metadata parsing for extensions
+- **[CORE]** Improved issues recognition from metadata
 - **[CORE]** Improved plist parsing
 - **[CORE]** Star out password _[from @tghosth]_
 - **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
