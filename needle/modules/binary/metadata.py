@@ -31,9 +31,9 @@ class Module(BaseModule):
         if ats:
             self.printer.notify('{}{:<20}'.format(tab_base, 'Apple Transport Security Settings'))
             for k, v in ats.items():
-                if "NSAllowsArbitraryLoads" in k and v == '1':
+                if "NSAllowsArbitraryLoads" in k and v:
                     self.printer.error('{}{:<40}: {:<20}'.format(tab_sub, k, v))
-                if "NSExceptionDomains" in k:
+                elif "NSExceptionDomains" in k:
                     self.printer.notify('{}NSExceptionDomains'.format(tab_sub))
                     vals = v.items()
                     for x, y in vals:
@@ -47,8 +47,8 @@ class Module(BaseModule):
         if ents:
             self.printer.notify('{:<20}'.format('Entitlements',))
             for k, v in ents.items():
-                if "get-task-allow" in k and v == '1':
-                    self.printer.error('{:<40}: {:<20}'.format(k, v))
+                if "get-task-allow" in k and v:
+                    self.printer.error('\t\t{:<40}: {:<20}'.format(k, v))
                 else:
                     self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
         else:
