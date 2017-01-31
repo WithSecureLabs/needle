@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Calculate binary checksums (`binary/checksums`) _[from @HenryHoggard]_
 - **[MODULE]** Retrieve application container (`storage/data/container`)
 - **[MODULE]** Strings: now look also in the application resources (`binary/strings`)
+- **[MODULE]** Provisioning profile: Inspect the provisioning profile of the application (`binary/provisioning_profile`)
 
 #### Fixed
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
