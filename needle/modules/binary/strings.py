@@ -5,7 +5,7 @@ class Module(BaseModule):
     meta = {
         'name': 'Strings',
         'author': '@LanciniMarco (@MWRLabs)',
-        'description': 'Find strings in the (decrypted) application binary, then try to extract URIs and ViewControllers',
+        'description': 'Find strings in the (decrypted) application binary and resources, then try to extract URIs and ViewControllers',
         'options': (
             ('length', 10, True, 'Minimum length for a string to be considered'),
             ('filter', '', False, 'Filter the output (grep)'),
@@ -44,17 +44,28 @@ class Module(BaseModule):
         # Decrypt the binary and unzip the IPA
         self.fname_binary = self.device.app.decrypt(self.APP_METADATA)
 
-        # Extract strings
+        # Setup filter
+        query = str(self.options['filter']).strip('''"''''') if self.options['filter'] else ''
+
+        # Extract strings - binary
         self.printer.verbose("Analyzing binary...")
-        if self.options['filter']:
-            query = str(self.options['filter']).strip('''"''''')
-        else:
-            query = ''
-        cmd = '''{bin} "{app}" | awk 'length > {length}' | sort -u | grep -E '{query}' '''.format(bin=self.device.DEVICE_TOOLS['STRINGS'],
+        cmd_1 = '''{bin} "{app}" | awk 'length > {length}' | sort -u | grep -E '{query}' '''.format(bin=self.device.DEVICE_TOOLS['STRINGS'],
                                                                                                   app=self.fname_binary,
                                                                                                   length=self.options['length'],
                                                                                                   query=query)
-        out = self.device.remote_op.command_blocking(cmd)
+        out_1 = self.device.remote_op.command_blocking(cmd_1)
+
+        # Extract strings - resources
+        self.printer.verbose("Analyzing resources...")
+        cmd_2 = '''{bin} "{folder}" -type f -print -exec strings {{}} \; | grep -vEi "\.(png|ttf|htm)" | awk 'length > {length}' | sort -u | grep -E '{query}' '''.format(
+                bin=self.device.DEVICE_TOOLS['FIND'],
+                folder=self.APP_METADATA['binary_directory'],
+                length=self.options['length'],
+                query=query)
+        out_2 = self.device.remote_op.command_blocking(cmd_2)
+
+        # Processing output
+        out = list(set(out_1 + out_2))
         if out:
             # Save to file
             outfile = self.options['output'] if self.options['output'] else None

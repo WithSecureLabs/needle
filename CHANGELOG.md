@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
 - **[MODULE]** Calculate binary checksums (`binary/checksums`) _[from @HenryHoggard]_
 - **[MODULE]** Retrieve application container (`storage/data/container`)
+- **[MODULE]** Strings: now look also in the application resources (`binary/strings`)
 
 #### Fixed
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
