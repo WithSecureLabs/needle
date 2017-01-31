@@ -33,28 +33,28 @@ class Constants(object):
     PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 
-
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
     PATH_DEVICETOOLS = os.path.join(PATH_LIBS, 'devicetools')
     PATH_TOOLS_LOCAL = {
         'ADVTRUSTSTORE': os.path.join(PATH_LIBS, 'ADVTrustStore/TrustManager.py'),
         'BINARYCOOKIEREADER': os.path.join(PATH_LIBS, 'binarycookiereader/binarycookiereader.py'),
-        'TCPRELAY': os.path.join(PATH_LIBS, 'usbmuxd/tcprelay.py'),
-        'IDEVICESYSLOG': 'idevicesyslog',
-        'SQLITE3': 'sqlite3',
+        'CAT': 'cat',
+        'CURL': 'curl',
         'DIFF': 'diff',
         'EOG': 'eog',
-        'GREP': 'grep',
         'FRIDA': 'frida',
         'FRIDA-TRACE': 'frida-trace',
-        'CAT': 'cat',
+        'GREP': 'grep',
+        'IDEVICESYSLOG': 'idevicesyslog',
         'MITMDUMP': 'mitmdump',
-        'OPENSSL': 'openssl',
-        'VIM': 'vim',
         'NANO': 'nano',
         'OPEN': 'open',
-        'CURL': 'curl'
+        'OPENSSL': 'openssl',
+        'SECURITY': 'security',
+        'SQLITE3': 'sqlite3',
+        'TCPRELAY': os.path.join(PATH_LIBS, 'usbmuxd/tcprelay.py'),
+        'VIM': 'vim',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -76,6 +76,7 @@ class Constants(object):
     # DEVICE TOOLS
     FRIDA_PORT = 27042
     DEBUG_PORT = 12345
+    PREFERRED_ARCH = 'armv7'
     CA_MITM_URL = 'http://mitm.it/cert/pem'
     CA_BURP_URL = 'http://burp/cert'
     CYDIA_LIST = '/etc/apt/sources.list.d/cydia.list'
