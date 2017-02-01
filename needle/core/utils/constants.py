@@ -19,6 +19,7 @@ class Constants(object):
     FOLDER_HOME = os.path.join(os.path.expanduser('~'), NAME_FOLDER)
     FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')
     FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')
+    FILE_HISTORY = os.path.join(FOLDER_HOME, 'needle_history')
 
     # GLOBAL OPTIONS
     GLOBAL_IP = '127.0.0.1'
@@ -30,6 +31,7 @@ class Constants(object):
     GLOBAL_SETUP_DEVICE = False
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
+    GLOBAL_SAVE_HISTORY = True
     PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 

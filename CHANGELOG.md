@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 #### Added
 - **[CORE]** Preliminary support for iOS10
+- **[CORE]** Support for persisting command history across sessions
 - **[CORE]** Improved metadata parsing for extensions
 - **[CORE]** Improved issues recognition from metadata
 - **[CORE]** Improved plist parsing

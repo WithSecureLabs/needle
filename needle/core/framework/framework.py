@@ -3,6 +3,7 @@ import os
 import sys
 import cmd
 import codecs
+import readline
 import traceback
 
 from options import Options
@@ -138,6 +139,24 @@ class Framework(cmd.Cmd):
             else: return [x for x in Framework._loaded_modules]
         options = sorted(self._get_show_names())
         return [x for x in options if x.startswith(text)]
+
+    def _history_save(self):
+        if self.options['save_history']:
+            history_path = Constants.FILE_HISTORY
+            try:
+                self.printer.debug("Saving command history to: {}".format(history_path))
+                readline.write_history_file(history_path)
+            except Exception as e:
+                self.printer.warning("Error while saving command history: {}".format(e))
+                self.printer.warning("Continuing anyway...")
+
+    def _history_load(self):
+        history_path = Constants.FILE_HISTORY
+        if os.path.exists(history_path):
+            self.printer.debug("Trying to load command history from: {}".format(history_path))
+            readline.read_history_file(history_path)
+        else:
+            self.printer.debug("Command history not found in: {}".format(history_path))
 
     # ==================================================================================================================
     # OUTPUT METHODS
@@ -358,6 +377,8 @@ class Framework(cmd.Cmd):
     # ==================================================================================================================
     def do_exit(self, params):
         """Stop background jobs, cleanup temp folders (local&remote), close connection, then exits the Framework."""
+        # Save history
+        self._history_save()
         # Stop background jobs
         for i in xrange(len(self._jobs)):
             self.do_kill(i)
