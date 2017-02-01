@@ -307,6 +307,8 @@ class FridaScript(FridaModule):
     def print_cmd_output(self, silent=False):
         # Print to console
         if not silent:
+            if not self.results:
+                self.device.printer.warning('No results found!')
             for key in self.results:
                 parsed = json.dumps(key, indent=4, sort_keys=True)
                 self.device.printer.notify(parsed)
