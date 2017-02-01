@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Improved issues recognition from metadata
 - **[CORE]** Improved plist parsing
 - **[CORE]** Star out password _[from @tghosth]_
+- **[MODULE]** Frida Script: TLS Pinning Bypass (`hooking/frida/script_pinning_bypass`)
 - **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
 - **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
