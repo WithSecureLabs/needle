@@ -32,7 +32,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Clean storage does not need to require a target
 
 #### Removed
-
+- **[CORE]** Unused dependencies
 
 
 
