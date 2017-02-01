@@ -141,14 +141,14 @@ class Framework(cmd.Cmd):
         return [x for x in options if x.startswith(text)]
 
     def _history_save(self):
-        if self.options['save_history']:
-            history_path = Constants.FILE_HISTORY
-            try:
+        history_path = Constants.FILE_HISTORY
+        try:
+            if self._global_options['save_history']:
                 self.printer.debug("Saving command history to: {}".format(history_path))
                 readline.write_history_file(history_path)
-            except Exception as e:
-                self.printer.warning("Error while saving command history: {}".format(e))
-                self.printer.warning("Continuing anyway...")
+        except Exception as e:
+            self.printer.warning("Error while saving command history: {}".format(e))
+            self.printer.warning("Continuing anyway...")
 
     def _history_load(self):
         history_path = Constants.FILE_HISTORY
