@@ -29,7 +29,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_enum_classes.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_enum_classes.txt", self)
 
     # ==================================================================================================================
     # RUN
