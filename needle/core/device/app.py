@@ -54,7 +54,6 @@ class App(object):
         # Parse the MobileInstallation plist
         uuid = self.__extract_field(plist, 'BundleContainer').rsplit('/', 1)[-1]
         name = self.__extract_field(plist, 'Path').rsplit('/', 1)[-1]
-        bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
         bundle_directory = self.__extract_field(plist, 'BundleContainer')
         data_directory = self.__extract_field(plist, 'Container')
         binary_directory = self.__extract_field(plist, 'Path')
@@ -63,7 +62,6 @@ class App(object):
         metadata = {
             'uuid': uuid,
             'name': name,
-            'bundle_id': bundle_id,
             'bundle_directory': bundle_directory,
             'data_directory': data_directory,
             'binary_directory': binary_directory,
@@ -73,6 +71,7 @@ class App(object):
 
     def __parse_plist_info(self, plist):
         # Parse the Info.plist file
+        bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
         sdk_version = self.__extract_field(plist, 'DTSDKName')
         minimum_os = self.__extract_field(plist, 'MinimumOSVersion')
         bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
@@ -90,6 +89,7 @@ class App(object):
             url_handlers = None
         # Pack into a dict
         metadata = {
+            'bundle_id': bundle_id,
             'platform_version': platform_version,
             'sdk_version': sdk_version,
             'minimum_os': minimum_os,
@@ -213,11 +213,26 @@ class App(object):
                                                       bundle=app_metadata['bundle_id'],
                                                       out=fname_decrypted)
             out = self._device.remote_op.command_blocking(cmd)
-        self._device.printer.verbose("Decrypted IPA stored at: %s" % fname_decrypted)
+        self._device.printer.debug("Decrypted IPA stored at: %s" % fname_decrypted)
 
         # Unzip IPA and get binary path
         fname_binary = self.unpack_ipa(app_metadata, fname_decrypted)
         return fname_binary
+
+        # Thin the binary
+        #fname_thinned = self.thin_binary(fname_binary)
+        #return fname_thinned
+
+    def thin_binary(self, fname_binary, arch=Constants.PREFERRED_ARCH):
+        self._device.printer.info("Thinning the binary...")
+        fname_thinned = self._device.remote_op.build_temp_path_for_file('thinned')
+        cmd = '{bin} -thin {arch} -output {output} {binary}'.format(bin=self._device.DEVICE_TOOLS['LIPO'],
+                                                                    arch=arch,
+                                                                    output=fname_thinned,
+                                                                    binary=fname_binary)
+        self._device.remote_op.command_blocking(cmd)
+        self._device.printer.debug("Thinned IPA stored at: %s" % fname_thinned)
+        return fname_thinned
 
     # ==================================================================================================================
     # UNPACK AN IPA FILE
