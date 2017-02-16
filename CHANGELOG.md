@@ -6,8 +6,34 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Preliminary support for iOS10
+- **[CORE]** Support for persisting command history across sessions
+- **[CORE]** Improved metadata parsing for extensions
+- **[CORE]** Improved issues recognition from metadata
+- **[CORE]** Improved plist parsing
+- **[CORE]** Star out password _[from @tghosth]_
+- **[MODULE]** Frida Script: TLS Pinning Bypass (`hooking/frida/script_pinning_bypass`)
+- **[MODULE]** Frida Script: Keychain Dumper (`hooking/frida/script_dump-keychain`) _[from @bernard-wagner]_
+- **[MODULE]** Frida Script: iCloud Backups (`hooking/frida/script_documents-backup-attr`) _[from @bernard-wagner]_
+- **[MODULE]** Frida Script: Anti Hooking Checks (`hooking/frida/script_anti-hooking-check`) _[from @HenryHoggard]_
+- **[MODULE]** Calculate binary checksums (`binary/checksums`) _[from @HenryHoggard]_
+- **[MODULE]** Retrieve application container (`storage/data/container`)
+- **[MODULE]** Strings: now look also in the application resources (`binary/strings`)
+- **[MODULE]** Provisioning profile: Inspect the provisioning profile of the application (`binary/provisioning_profile`)
+
 #### Fixed
+- **[CORE]** Modified the organization of modules into packages
+- **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
+- **[CORE]** Plist wrapper using biplist
+- **[CORE]** Multiple plist parsing issues _[from @tghosth]_
+- **[CORE]** Paramiko hanging waiting for an EOF _[from @TheBananaStand]_
+- **[MODULE]** Frida Script: print view hierarchy (`hooking/frida/script_dump-ui`) _[from @HenryHoggard]_
+- **[MODULE]** Improved SQLite DB identification by reducing false positives and false negatives _[from @HenryHoggard]_
+- **[MODULE]** Editing with different editors _[from @tghosth]_
+- **[MODULE]** Clean storage does not need to require a target
+
 #### Removed
+- **[CORE]** Unused dependencies
 
 
 
@@ -26,7 +52,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Install Burp Proxy CA Certificate (`comms/certs/install_ca_burp`)
 - **[MODULE]** Allow using nano to edit hosts file (`various/hosts`) _[from @tghosth]_
 - **[MODULE]** Automatically print row counts for standard tables in Cache.db files (`storage/data/files_cachedb`) _[from @tghosth]_
-- **[MODULE]** Automatically print row counts for standard tables in SQL files (`storage/data/files_cachedb`) _[from @tghosth]_
+- **[MODULE]** Automatically print row counts for tables in SQL files (`storage/data/files_sql`) _[from @tghosth]_
 - **[MODULE]** View Server Certificate (`comms/certs/view_cert`) _[from @tghosth]_
 - **[MODULE]** Pull IPA: pull the binary as well as the .ipa file (`binary/pull_ipa`) _[from @tghosth]_
 

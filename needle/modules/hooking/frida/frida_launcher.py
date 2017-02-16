@@ -37,4 +37,4 @@ class Module(FridaScript):
         self.printer.notify("Payload loaded. You can continue to use the app now...")
 
         # Save to file
-        self.print_cmd_output(self.output, self.options['output'], silent=True)
+        self.print_cmd_output()

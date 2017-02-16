@@ -30,6 +30,7 @@ class Device(object):
     # App specific
     _is_iOS8 = False
     _is_iOS9 = False
+    _is_iOS10 = False
     _is_iOS7_or_less = False
     _applist = None
     _device_ready = False
@@ -107,12 +108,22 @@ class Device(object):
 
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
+        def hotfix_67():
+            # TODO: replace with a more long-term fix
+            import time
+            timeout = 30
+            endtime = time.time() + timeout
+            while not stdout.channel.eof_received:
+                time.sleep(1)
+                if time.time() > endtime:
+                    stdout.channel.close()
+                    break
+
         # Paramiko Exec Command
         stdin, stdout, stderr = self.conn.exec_command(cmd)
+        hotfix_67()
+
         # Parse STDOUT/ERR
-        # TODO: FIX
-        #out = stdout.read().decode('iso-8859-1').split('\n')
-        #out = filter(None, out)
         out = stdout.readlines()
         err = stderr.readlines()
         if internal:
@@ -176,6 +187,8 @@ class Device(object):
             self._is_iOS8 = True
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
             self._is_iOS9 = True
+        elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS10):
+            self._is_iOS10 = True
         else: self._is_iOS7_or_less = True
 
     def _list_apps(self):
@@ -184,7 +197,7 @@ class Device(object):
         def list_iOS_7():
             raise Exception('Support for iOS < 8 not yet implemented')
 
-        def list_iOS_89(applist):
+        def list_iOS_8(applist):
             # Refresh UICache in case an app was installed after the last reboot
             self.printer.verbose("Refreshing list of installed apps...")
             self.remote_op.command_blocking('/bin/su mobile -c /usr/bin/uicache', internal=True)
@@ -194,8 +207,9 @@ class Device(object):
 
         # Dispatch
         self._detect_ios_version()
-        if self._is_iOS8: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS8)
-        elif self._is_iOS9: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS9)
+        if self._is_iOS8: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS8)
+        elif self._is_iOS9: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS9)
+        elif self._is_iOS10: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS10)
         else: list_iOS_7()
 
     def select_target_app(self):

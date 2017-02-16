@@ -19,6 +19,7 @@ class Constants(object):
     FOLDER_HOME = os.path.join(os.path.expanduser('~'), NAME_FOLDER)
     FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')
     FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')
+    FILE_HISTORY = os.path.join(FOLDER_HOME, 'needle_history')
 
     # GLOBAL OPTIONS
     GLOBAL_IP = '127.0.0.1'
@@ -30,6 +31,9 @@ class Constants(object):
     GLOBAL_SETUP_DEVICE = False
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
+    GLOBAL_SAVE_HISTORY = True
+    PASSWORD_CLEAR = 'password_clear'
+    PASSWORD_MASK = '********'
 
     # LOCAL TOOLS
     PATH_LIBS = os.path.join(sys.path[0], 'libs')
@@ -37,21 +41,22 @@ class Constants(object):
     PATH_TOOLS_LOCAL = {
         'ADVTRUSTSTORE': os.path.join(PATH_LIBS, 'ADVTrustStore/TrustManager.py'),
         'BINARYCOOKIEREADER': os.path.join(PATH_LIBS, 'binarycookiereader/binarycookiereader.py'),
-        'TCPRELAY': os.path.join(PATH_LIBS, 'usbmuxd/tcprelay.py'),
-        'IDEVICESYSLOG': 'idevicesyslog',
-        'SQLITE3': 'sqlite3',
+        'CAT': 'cat',
+        'CURL': 'curl',
         'DIFF': 'diff',
         'EOG': 'eog',
-        'GREP': 'grep',
         'FRIDA': 'frida',
         'FRIDA-TRACE': 'frida-trace',
-        'CAT': 'cat',
+        'GREP': 'grep',
+        'IDEVICESYSLOG': 'idevicesyslog',
         'MITMDUMP': 'mitmdump',
-        'OPENSSL': 'openssl',
-        'VIM': 'vim',
         'NANO': 'nano',
         'OPEN': 'open',
-        'CURL': 'curl'
+        'OPENSSL': 'openssl',
+        'SECURITY': 'security',
+        'SQLITE3': 'sqlite3',
+        'TCPRELAY': os.path.join(PATH_LIBS, 'usbmuxd/tcprelay.py'),
+        'VIM': 'vim',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -60,6 +65,7 @@ class Constants(object):
     DEVICE_PATH_APPLIST_iOS7 = '/var/mobile/Library/Caches/com.apple.mobile.installation.plist'
     DEVICE_PATH_APPLIST_iOS8 = '/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist'
     DEVICE_PATH_APPLIST_iOS9 = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
+    DEVICE_PATH_APPLIST_iOS10 = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
     DEVICE_PATH_BUNDLE_iOS7  = '/private/var/mobile/Applications/'
     DEVICE_PATH_BUNDLE_iOS8  = '/private/var/mobile/Containers/Bundle/Application/'
     DEVICE_PATH_BUNDLE_iOS9  = '/private/var/containers/Bundle/Application/'
@@ -72,6 +78,7 @@ class Constants(object):
     # DEVICE TOOLS
     FRIDA_PORT = 27042
     DEBUG_PORT = 12345
+    PREFERRED_ARCH = 'armv7'
     CA_MITM_URL = 'http://mitm.it/cert/pem'
     CA_BURP_URL = 'http://burp/cert'
     CYDIA_LIST = '/etc/apt/sources.list.d/cydia.list'
@@ -99,7 +106,6 @@ class Constants(object):
             'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': '', 'LOCAL': None, 'SETUP': None},
             'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': ['com.iphonecake.clutch2'], 'REPO': 'http://cydia.iphonecake.com/', 'LOCAL': None, 'SETUP': None},
             'CYCRIPT': {'COMMAND': 'cycript', 'PACKAGES': ['cycript'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
-            #'DEBUGSERVER': {'COMMAND': '/usr/bin/debugserver', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'debugserver_81'), 'SETUP': None},
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP'), 'SETUP': None},
             'FIND': {'COMMAND': 'find', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FRIDA': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
@@ -116,7 +122,6 @@ class Constants(object):
             'PERL': {'COMMAND': 'perl', 'PACKAGES': ['org.coolstar.perl', 'org.coolstar.iostoolchain'], 'REPO': 'http://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
             'PLUTIL': {'COMMAND': 'plutil', 'PACKAGES': ['com.ericasadun.utilities'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'PREFERENCELOADER': {'COMMAND': None, 'PACKAGES': ['preferenceloader'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
-            'SOCAT': {'COMMAND': 'socat', 'PACKAGES': ['socat'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'STRINGS': {'COMMAND': 'strings', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'SSLKILLSWITCH': {'COMMAND': None, 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "curl -ksL \"https://github.com/iSECPartners/ios-ssl-kill-switch/releases/download/release-0.6/com.isecpartners.nabla.sslkillswitch_v0.6-iOS_7.0.deb\" -o /var/root/kill.deb",

@@ -26,6 +26,9 @@ class Module(BaseModule):
         self.options['burp_ip'] = self.local_op.get_ip()
         self.options['burp_port'] = 8080
 
+    def module_pre(self):
+        return BaseModule.module_pre(self, bypass_app=True)
+
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================

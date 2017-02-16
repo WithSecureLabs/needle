@@ -1,10 +1,8 @@
 from __future__ import print_function
 import os
-import time
 import json
-import plistlib
+import time
 import textwrap
-from pprint import pprint
 
 from ..framework.framework import Framework, FrameworkException
 from ..framework.options import Options
@@ -160,29 +158,36 @@ class BaseModule(Framework):
         """Pretty print output coming from command execution. Also save it to file if specified"""
         def print_screen(content):
             content_type = type(content)
-            if content_type is dict or content_type is plistlib._InternalDict: pprint(content, indent=4)
-            elif content_type is list: map(print_screen, content)
-            else: print('\t%s' % content.strip())
+            if content_type is dict:
+                Utils.dict_print(content)
+            elif Utils.is_plist(content):
+                Utils.plist_print(content)
+            elif content_type is list:
+                map(print_screen, content)
+            else:
+                print('\t%s' % content.strip())
 
         def print_file(content):
             content_type = type(content)
-            if content_type is dict or content_type is plistlib._InternalDict:
-                try: json.dump(content, fp)
-                except TypeError: pass
+            if content_type is dict:
+                Utils.dict_write_to_file(content, fp)
+            elif Utils.is_plist(content):
+                Utils.plist_write_to_file(content, fp)
             elif content_type is list:
-                for line in content: fp.write('%s\n' % line)
+                map(print_file, content)
             else:
-                fp.write('%s\n' % content)
+                fp.write('%s\n' % content.strip())
 
         if txt:
             # Print to screen
-            if not silent: print_screen(txt)
+            if not silent:
+                print_screen(txt)
             # Saving to file
             if outfile:
                 if type(outfile) is not str:
                     self.printer.error("Please specify a valid path if you want to save to file")
                 else:
-                    self.printer.info("Saving output to file: %s" % outfile)
+                    self.printer.info("Saving output to file: {}".format(outfile))
                     with open(outfile, 'w') as fp:
                         print_file(txt)
 
@@ -281,13 +286,31 @@ class FridaScript(FridaModule):
         # Attaching to the process
         self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
+
+        # Preparing results
+        self.results = []
         return 1
 
     def on_message(self, message, data):
         try:
             if message:
-                print("[*] {0}".format(message["payload"]))
-                self.output.append(message["payload"])
+                try:
+                    pld = json.loads(message["payload"])
+                except:
+                    pld = message["payload"]
+                finally:
+                    self.results.append(pld)
         except Exception as e:
             print(message)
             print(e)
+
+    def print_cmd_output(self, silent=False):
+        # Print to console
+        if not silent:
+            if not self.results:
+                self.device.printer.warning('No results found!')
+            for key in self.results:
+                parsed = json.dumps(key, indent=4, sort_keys=True)
+                self.device.printer.notify(parsed)
+        # Print to file
+        BaseModule.print_cmd_output(self, self.results, self.options['output'], silent=True)

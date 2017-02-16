@@ -42,6 +42,7 @@ class CLI(Framework):
         self._init_home()
         self.show_banner()
         self.do_reload(None)
+        self._history_load()
 
     # ==================================================================================================================
     # INIT METHODS
@@ -50,14 +51,15 @@ class CLI(Framework):
         self.register_option('ip', Constants.GLOBAL_IP, True, 'IP address of the testing device (set to localhost to use USB)')
         self.register_option('port', Constants.GLOBAL_PORT, True, 'Port of the SSH agent on the testing device (needs to be != 22 to use USB)')
         self.register_option('username', Constants.GLOBAL_USERNAME, True, 'SSH Username of the testing device')
-        self.register_option('password', Constants.GLOBAL_PASSWORD, True, 'SSH Password of the testing device')
+        self.register_option('password', Constants.PASSWORD_MASK, True, 'SSH Password of the testing device')
+        self.register_option(Constants.PASSWORD_CLEAR, Constants.GLOBAL_PASSWORD, True, 'SSH Password of the testing device')
         self.register_option('pub_key_auth', Constants.GLOBAL_PUB_KEY_AUTH, True, 'Use public key auth to authenticate to the device. Key must be present in the ssh-agent if a passphrase is used')
         self.register_option('debug', Constants.GLOBAL_DEBUG, True, 'Enable debugging output')
         self.register_option('verbose', Constants.GLOBAL_VERBOSE, True, 'Enable verbose output')
         self.register_option('app', '', False, 'Bundle ID of the target application (e.g., com.example.app). Leave empty to launch wizard')
         self.register_option('setup_device', Constants.GLOBAL_SETUP_DEVICE, True, 'Set to true to enable auto-configuration of the device (installation of all the tools needed)')
         self.register_option('output_folder', Constants.GLOBAL_OUTPUT_FOLDER, True, 'Full path of the output folder, where to store the output of the modules')
-        #self.register_option('proxy', None, False, 'Proxy server (address:port)')
+        self.register_option('save_history', Constants.GLOBAL_SAVE_HISTORY, True, 'Persists command history across sessions')
 
     def _init_global_vars(self):
         # Setup Printer
