@@ -11,7 +11,8 @@ class Module(BaseModule):
             ('output', True, False, 'Full path of the output file')
         ),
         'comments': [
-            'Based on the process outlined in heapdump-ios: https://github.com/NetSPI/heapdump-ios'
+            'Make sure that the device is unlocked before you run this module',
+            'Based on the process outlined in heapdump-ios: https://github.com/NetSPI/heapdump-ios',
         ]
     }
 
@@ -21,7 +22,7 @@ class Module(BaseModule):
     def __init__(self, params):
         BaseModule.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_temp_path_for_file(self, "heap_dump.txt")
+        self.options['output'] = self.local_op.build_output_path_for_file("heap_dump.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -36,7 +37,7 @@ class Module(BaseModule):
         dir_dumps = self.device.remote_op.build_temp_path_for_file("gdb_dumps")
         fname_mach = self.device.remote_op.build_temp_path_for_file("gdb_mach")
         fname_ranges = self.device.remote_op.build_temp_path_for_file("gdb_ranges")
-        self.device.remote_op.command_blocking('echo "info mach-regions" > {fname}'.format(fname=fname_mach))
+        self.device.remote_op.write_file(fname_mach, "info mach-regions")
         if self.device.remote_op.dir_exist(dir_dumps): self.device.remote_op.dir_delete(dir_dumps)
         self.device.remote_op.dir_create(dir_dumps)
 
@@ -57,9 +58,8 @@ class Module(BaseModule):
 
         # Check if we have dumps
         self.printer.verbose("Checking if we have dumps...")
-        file_list = self.device.remote_op.dir_list_recursive(dir_dumps)
-        failure = filter(lambda x: 'total 0' in x, file_list)
-        if failure:
+        file_list = self.device.remote_op.dir_list(dir_dumps, recursive=True)
+        if not file_list:
             self.printer.error('It was not possible to attach to the process (known issue in iOS9. A Fix is coming soon)')
             return
 

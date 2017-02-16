@@ -4,7 +4,7 @@ from core.framework.module import BackgroundModule
 class Module(BackgroundModule):
     meta = {
         'name': 'Title',
-        'author': '@AUTHOR (@MWRLabs)',
+        'author': '@AUTHOR (@TWITTER)',
         'description': 'Description',
         'options': (
         ),

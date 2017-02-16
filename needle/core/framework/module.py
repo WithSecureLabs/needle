@@ -1,9 +1,8 @@
 from __future__ import print_function
 import os
-import time
 import json
+import time
 import textwrap
-from pprint import pprint
 
 from ..framework.framework import Framework, FrameworkException
 from ..framework.options import Options
@@ -103,7 +102,7 @@ class BaseModule(Framework):
         self._reload = 1
         return True
 
-    def do_run(self, params):
+    def do_run(self, params, func=None):
         """Runs the module."""
         try:
             self._validate_options()
@@ -111,7 +110,10 @@ class BaseModule(Framework):
             pre = self.module_pre()
             if pre is None: return
             # Execute the module
-            self.module_run()
+            if func:
+                func()
+            else:
+                self.module_run()
             # Execute POST
             self.module_post()
         except KeyboardInterrupt:
@@ -121,7 +123,12 @@ class BaseModule(Framework):
 
     def module_pre(self, bypass_app=False):
         """Execute before module_run"""
-        # If it's a StaticModule, bypass the checks
+        # Setup local output folder
+        if not self._local_ready:
+            self.printer.debug("Setup local output folder: {}".format(self._global_options['output_folder']))
+            self.local_op.output_folder_setup(self)
+            self._local_ready = Framework._local_ready = True
+        # If it's a StaticModule, bypass any other check
         if isinstance(self, StaticModule):
             self.printer.verbose("Static Module, connection not needed...")
             return 1
@@ -149,32 +156,47 @@ class BaseModule(Framework):
     # ==================================================================================================================
     def print_cmd_output(self, txt, outfile=None, silent=False):
         """Pretty print output coming from command execution. Also save it to file if specified"""
-        def print_screen():
-            if type(txt) is dict: pprint(txt, indent=4)
-            elif type(txt) is list: map(lambda x: print('\t%s' % x, end=''), txt)
-            else: print('\t%s' % txt)
-
-        def print_file():
-            if type(txt) is dict:
-                try: json.dump(txt, fp)
-                except TypeError: pass
-            elif type(txt) is list:
-                for line in txt: fp.write('%s\n' % line.strip())
+        def print_screen(content):
+            content_type = type(content)
+            if content_type is dict:
+                Utils.dict_print(content)
+            elif Utils.is_plist(content):
+                Utils.plist_print(content)
+            elif content_type is list:
+                map(print_screen, content)
             else:
-                fp.write('%s\n' % txt)
+                print('\t%s' % content.strip())
+
+        def print_file(content):
+            content_type = type(content)
+            if content_type is dict:
+                Utils.dict_write_to_file(content, fp)
+            elif Utils.is_plist(content):
+                Utils.plist_write_to_file(content, fp)
+            elif content_type is list:
+                map(print_file, content)
+            else:
+                fp.write('%s\n' % content.strip())
 
         if txt:
             # Print to screen
-            if not silent: print_screen()
+            if not silent:
+                print_screen(txt)
             # Saving to file
             if outfile:
                 if type(outfile) is not str:
                     self.printer.error("Please specify a valid path if you want to save to file")
                 else:
-                    self.printer.info("Saving output to file: %s" % outfile)
+                    self.printer.info("Saving output to file: {}".format(outfile))
                     with open(outfile, 'w') as fp:
-                        print_file()
+                        print_file(txt)
 
+    def validate_editor(self):
+        """Check that the user entered a recognised editor in the PROGRAM option by seeing if it exists in the TOOLS_LOCAL directory."""
+        if self.options['program'] in self.TOOLS_LOCAL:
+             self.editor = self.TOOLS_LOCAL[self.options['program']]
+        else:
+            raise FrameworkException('The Editing program specified ("{}") is not supported.'.format(self.options['program']))
 
 # ======================================================================================================================
 # OTHER TYPES OF MODULES
@@ -256,17 +278,39 @@ class FridaScript(FridaModule):
             self.printer.debug("Connected over Wi-Fi")
             device = frida.get_device_manager().enumerate_devices()[1]
 
-        # Spawn app
+        # Launching the app
         self.printer.info("Launching the app...")
-        pid = device.spawn([self.APP_METADATA['bundle_id']])
+        self.device.app.open(self.APP_METADATA['bundle_id'])
+        pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+
+        # Attaching to the process
+        self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
+
+        # Preparing results
+        self.results = []
         return 1
 
     def on_message(self, message, data):
         try:
             if message:
-                print("[*] {0}".format(message["payload"]))
-                self.output.append(message["payload"])
+                try:
+                    pld = json.loads(message["payload"])
+                except:
+                    pld = message["payload"]
+                finally:
+                    self.results.append(pld)
         except Exception as e:
             print(message)
             print(e)
+
+    def print_cmd_output(self, silent=False):
+        # Print to console
+        if not silent:
+            if not self.results:
+                self.device.printer.warning('No results found!')
+            for key in self.results:
+                parsed = json.dumps(key, indent=4, sort_keys=True)
+                self.device.printer.notify(parsed)
+        # Print to file
+        BaseModule.print_cmd_output(self, self.results, self.options['output'], silent=True)

@@ -2,7 +2,6 @@ import os
 import time
 import threading
 import subprocess
-import plistlib
 
 from ..utils.constants import Constants
 from ..utils.utils import Utils
@@ -43,6 +42,11 @@ class RemoteOperations(object):
         cmd = "cp {} {}".format(src, dst)
         self.command_blocking(cmd)
 
+    def file_move(self, src, dst):
+        src, dst = Utils.escape_path(src), Utils.escape_path(dst)
+        cmd = "mv {} {}".format(src, dst)
+        self.command_blocking(cmd)
+
     # ==================================================================================================================
     # DIRECTORIES
     # ==================================================================================================================
@@ -64,16 +68,22 @@ class RemoteOperations(object):
         def delete(path):
             cmd = 'rm -rf %s 2> /dev/null' % path
             self.command_blocking(cmd)
-        if force:
-            delete(path)
-        elif self.dir_exist(path):
-            path = Utils.escape_path(path)
-            delete(path)
-
-    def dir_list_recursive(self, path):
         path = Utils.escape_path(path)
-        cmd = 'ls -alR %s' % path
-        return self.command_blocking(cmd)
+        if force: delete(path)
+        elif self.dir_exist(path): delete(path)
+
+    def dir_list(self, path, recursive=False):
+        if not self.dir_exist(path):
+            return None
+        path = Utils.escape_path(path)
+        opts = '-aR' if recursive else ''
+        cmd = 'ls {opts} {path}'.format(opts=opts, path=path)
+        file_list = self.command_blocking(cmd)
+        return map(lambda x: x.strip(), file_list)
+
+    def dir_reset(self, path):
+        if self.dir_exist(path): self.dir_delete(path)
+        self.dir_create(path)
 
     # ==================================================================================================================
     # COMMANDS
@@ -117,6 +127,7 @@ class RemoteOperations(object):
         def daemon(module, cmd):
             """Daemon used to run the command so to avoid blocking the UI"""
             # Run command
+            cmd += ' & echo $!'
             out = self.command_blocking(cmd)
             # Parse PID of the process
             try:
@@ -150,7 +161,7 @@ class RemoteOperations(object):
     # ==================================================================================================================
     def download(self, src, dst, recursive=False):
         """Download a file from the device."""
-        src, dst = Utils.escape_path_scp(src), Utils.escape_path_scp(dst)
+        src, dst = Utils.escape_path_scp(src), Utils.escape_path(dst)
         self._device.printer.debug("Downloading: %s -> %s" % (src, dst))
 
         cmd = 'sshpass -p "{password}" scp {hostverification} -P {port}'.format(password=self._device._password,
@@ -199,23 +210,26 @@ class RemoteOperations(object):
         self.command_blocking(cmd)
 
     def parse_plist(self, plist):
-        """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
-        # Copy the plist
-        plist_temp = self.build_temp_path_for_file(plist.strip("'"))
-        plist_copy = Utils.escape_path(plist_temp)
-        self.file_copy(plist, plist_copy)
-        # Convert to xml
-        cmd = '{plutil} -convert xml1 {plist}'.format(plutil=self._device.DEVICE_TOOLS['PLUTIL'], plist=plist_copy)
-        self.command_blocking(cmd, internal=True)
-        # Cat the content
-        cmd = 'cat {}'.format(plist_copy)
-        out = self.command_blocking(cmd, internal=True)
-        # Parse it with plistlib
-        out = str(''.join(out).encode('utf-8'))
-        pl = plistlib.readPlistFromString(out)
-        return pl
+        """Given a plist file, copy it to temp folder, and run plutil on it."""
+        # Get a copy of the plist
+        plist_copy = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
+        self._device.printer.debug('Copying the plist to temp: {} -> {}'.format(plist, plist_copy))
+        self._device.pull(plist, plist_copy)
+        # Read the plist
+        content = Utils.plist_read_from_file(plist_copy)
+        return content
 
-    def read_file(self, fname):
+    def read_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""
+        if not self.file_exist(fname):
+            self._device.printer.error('File not found: {}'.format(fname))
+            return
         cmd = 'cat {fname}'.format(fname=fname)
+        if grep_args:
+            cmd += ' | grep {grep_args}'.format(grep_args=grep_args)
         return self.command_blocking(cmd, internal=True)
+
+    def write_file(self, fname, body):
+        """Given a filename, write body into it"""
+        cmd = "echo \"{content}\" > {dst}".format(content=body, dst=fname)
+        self.command_blocking(cmd)

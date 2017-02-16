@@ -1,4 +1,4 @@
-# needle
+![Needle](https://labs.mwrinfosecurity.com/assets/needle-logo-blue.jpg)
 
 [![Black Hat Arsenal](https://www.toolswatch.org/badges/arsenal/2016.svg)](https://www.blackhat.com/us-16/arsenal.html#needle)
 
@@ -28,6 +28,8 @@ See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation
 
 Usage instructions (for both standard users and contributors) can be found in the [project Wiki](https://github.com/mwrlabs/needle/wiki).
 
+A complete walkthrough on how to quickly get up to speed with Needle can be found on the MWR Labs website: [https://labs.mwrinfosecurity.com/blog/needle-how-to/](https://labs.mwrinfosecurity.com/blog/needle-how-to/)
+
 
 # License
 
@@ -36,4 +38,4 @@ Needle is released under a 3-clause BSD License. See the `LICENSE` file for full
 
 # Contact
 
-Feel free to submit issues or ping us on Twitter - [@lancinimarco](https://twitter.com/lancinimarco)
+Feel free to submit issues or ping us on Twitter - [@mwrneedle](https://twitter.com/mwrneedle), [@lancinimarco](https://twitter.com/lancinimarco)

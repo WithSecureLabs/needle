@@ -4,7 +4,7 @@ from core.framework.module import StaticModule
 class Module(StaticModule):
     meta = {
         'name': 'Title',
-        'author': '@AUTHOR (@MWRLabs)',
+        'author': '@AUTHOR (@TWITTER)',
         'description': 'Description',
         'options': (
         ),
@@ -18,4 +18,4 @@ class Module(StaticModule):
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        pass
+        self.printer.info("This is a template")

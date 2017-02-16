@@ -48,12 +48,12 @@ class Installer(object):
             if pk in self._packagelist:
                 self._device.printer.debug('[INSTALL] Already installed: %s.' % toolname)
             else:
-                self._device.printer.debug('[INSTALL] Installing %s via apt-get.' % toolname)
+                self._device.printer.verbose('[INSTALL] Installing %s via apt-get.' % toolname)
                 if repo: self.__apt_add_repo(repo)
                 self.__apt_install(pk)
 
     # ==================================================================================================================
-    # LOCAL INSTALL
+    # INSTALL LOCAL
     # ==================================================================================================================
     def __is_tool_available(self, tool):
         """Return true if the tool is installed on the device."""
@@ -66,13 +66,23 @@ class Installer(object):
         local, command = tool['LOCAL'], tool['COMMAND']
         name = Utils.extract_filename_from_path(command)
         if not self.__is_tool_available(name):
-            self._device.printer.debug('[INSTALL] Manually installing: %s' % toolname)
+            self._device.printer.verbose('[INSTALL] Manually installing: %s' % toolname)
             src = local
             dst = os.path.join('/usr/bin/', name)
             self._device.push(src, dst)
             self._device.remote_op.chmod_x(dst)
         else:
             self._device.printer.debug('[INSTALL] Tool already available: %s' % toolname)
+
+    # ==================================================================================================================
+    #  INSTALL COMMANDS
+    # ==================================================================================================================
+    def __install_commands(self, toolname, tool):
+        """Use a list of commands to install the tool"""
+        local, setup = tool['LOCAL'], tool['SETUP']
+        self._device.printer.verbose('[INSTALL] Manually installing: %s' % toolname)
+        for cmd in setup:
+            self._device.remote_op.command_blocking(cmd)
 
     # ==================================================================================================================
     # CHECKERS AND CONFIGURATORS
@@ -110,6 +120,9 @@ class Installer(object):
             elif tool['LOCAL']:
                 # Manual install
                 self.__install_local(toolname, tool)
+            elif tool['SETUP']:
+                # Use list of commands
+                self.__install_commands(toolname, tool)
             else:
                 self._device.printer.debug('Installation method not provided for %s. Skipping' % toolname)
         except Exception as e:

@@ -30,6 +30,7 @@ class Device(object):
     # App specific
     _is_iOS8 = False
     _is_iOS9 = False
+    _is_iOS10 = False
     _is_iOS7_or_less = False
     _applist = None
     _device_ready = False
@@ -47,12 +48,13 @@ class Device(object):
     # ==================================================================================================================
     # INIT
     # ==================================================================================================================
-    def __init__(self, ip, port, username, password, tools):
+    def __init__(self, ip, port, username, password, pub_key_auth, tools):
         # Setup params
         self._ip = ip
         self._port = port
         self._username = username
         self._password = password
+        self._pub_key_auth = bool(pub_key_auth)
         self._tools_local = tools
         # Init related objects
         self.app = App(self)
@@ -60,7 +62,6 @@ class Device(object):
         self.local_op = LocalOperations()
         self.remote_op = RemoteOperations(self)
         self.printer = Printer()
-        self.connect()
 
     # ==================================================================================================================
     # UTILS - USB
@@ -89,7 +90,9 @@ class Device(object):
             self.printer.verbose('Setting up SSH connection...')
             self.conn = paramiko.SSHClient()
             self.conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.conn.connect(self._ip, port=self._port, username=self._username, password=self._password)
+            self.conn.connect(self._ip, port=self._port, username=self._username, password=self._password,
+                              allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
+
         except paramiko.AuthenticationException as e:
             raise Exception('Authentication failed when connecting to %s. %s: %s' % (self._ip, type(e).__name__, e.message))
         except paramiko.SSHException as e:
@@ -105,8 +108,21 @@ class Device(object):
 
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
+        def hotfix_67():
+            # TODO: replace with a more long-term fix
+            import time
+            timeout = 30
+            endtime = time.time() + timeout
+            while not stdout.channel.eof_received:
+                time.sleep(1)
+                if time.time() > endtime:
+                    stdout.channel.close()
+                    break
+
         # Paramiko Exec Command
         stdin, stdout, stderr = self.conn.exec_command(cmd)
+        hotfix_67()
+
         # Parse STDOUT/ERR
         out = stdout.readlines()
         err = stderr.readlines()
@@ -171,8 +187,9 @@ class Device(object):
             self._is_iOS8 = True
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
             self._is_iOS9 = True
+        elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS10):
+            self._is_iOS10 = True
         else: self._is_iOS7_or_less = True
-
 
     def _list_apps(self):
         """List all the 3rd party apps installed on the device."""
@@ -180,7 +197,7 @@ class Device(object):
         def list_iOS_7():
             raise Exception('Support for iOS < 8 not yet implemented')
 
-        def list_iOS_89(applist):
+        def list_iOS_8(applist):
             # Refresh UICache in case an app was installed after the last reboot
             self.printer.verbose("Refreshing list of installed apps...")
             self.remote_op.command_blocking('/bin/su mobile -c /usr/bin/uicache', internal=True)
@@ -190,8 +207,9 @@ class Device(object):
 
         # Dispatch
         self._detect_ios_version()
-        if self._is_iOS8: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS8)
-        elif self._is_iOS9: list_iOS_89(Constants.DEVICE_PATH_APPLIST_iOS9)
+        if self._is_iOS8: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS8)
+        elif self._is_iOS9: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS9)
+        elif self._is_iOS10: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS10)
         else: list_iOS_7()
 
     def select_target_app(self):
