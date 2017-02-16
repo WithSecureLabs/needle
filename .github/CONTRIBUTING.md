@@ -116,7 +116,8 @@ Tell us what happens instead.
 
 Unsure where to begin contributing? You can start by looking through:
 
-* :mag_right: [open issues](https://github.com/mwrlabs/needle/issues)
+* :mag_right: **[Open Issues](https://github.com/mwrlabs/needle/issues)**
+* :memo: **New Features**: contact [Marco](https://github.com/marco-lancini) ([@lancinimarco](https://twitter.com/lancinimarco))
 
 
 
