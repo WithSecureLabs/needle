@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[MODULE]** Simple CLI Client (`various/agent_client`)
+
+#### Fixed
+
+#### Removed
+
+
+
+## [0.2.0] - 2017-02-16
+#### Added
 - **[CORE]** Preliminary support for iOS10
 - **[CORE]** Support for persisting command history across sessions
 - **[CORE]** Improved metadata parsing for extensions
