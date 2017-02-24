@@ -13,8 +13,6 @@ from local_operations import LocalOperations
 __author__ = Constants.AUTHOR
 __email__ = Constants.EMAIL
 __website__ = Constants.WEBSITE
-execfile(os.path.join(sys.path[0], 'VERSION'))                  # set the __version__ variable based on the VERSION file
-
 
 # ======================================================================================================================
 # CLI
@@ -50,6 +48,7 @@ class CLI(Framework):
     def _init_global_options(self):
         self.register_option('ip', Constants.GLOBAL_IP, True, 'IP address of the testing device (set to localhost to use USB)')
         self.register_option('port', Constants.GLOBAL_PORT, True, 'Port of the SSH agent on the testing device (needs to be != 22 to use USB)')
+        self.register_option('agent_port', Constants.GLOBAL_AGENT_PORT, True, 'Port on which the Needle Agent is listening')
         self.register_option('username', Constants.GLOBAL_USERNAME, True, 'SSH Username of the testing device')
         self.register_option('password', Constants.PASSWORD_MASK, True, 'SSH Password of the testing device')
         self.register_option(Constants.PASSWORD_CLEAR, Constants.GLOBAL_PASSWORD, True, 'SSH Password of the testing device')
@@ -90,7 +89,7 @@ class CLI(Framework):
         '''
         banner_len = len(max(banner.split('\n'), key=len))
         print(banner)
-        print('{msg:^{lgh}}'.format(msg='%s %s v%s [%s]%s' % (Colors.G, self._name, __version__, __website__, Colors.N),
+        print('{msg:^{lgh}}'.format(msg='%s %s v%s [%s]%s' % (Colors.G, self._name, Constants.VERSION, __website__, Colors.N),
                                     lgh=banner_len+8+8))
         print('{msg:^{lgh}}'.format(msg='%s[%s]%s' % (Colors.B, __author__, Colors.N),
                                     lgh=banner_len+8+8))

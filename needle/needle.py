@@ -8,6 +8,7 @@ sys.dont_write_bytecode = True
 
 from core.framework import cli
 from core.utils.printer import Colors
+from core.utils.constants import Constants
 
 
 # ======================================================================================================================
@@ -43,7 +44,7 @@ def launch_ui(args):
 # ======================================================================================================================
 def main():
     description = '%%(prog)s - %s %s' % (cli.__author__, cli.__email__)
-    parser = argparse.ArgumentParser(description=description, version=cli.__version__)
+    parser = argparse.ArgumentParser(description=description, version=Constants.VERSION)
     parser.add_argument('-r', help='load commands from a resource file', metavar='filename', dest='script_file', action='store')
     args = parser.parse_args()
     launch_ui(args)
