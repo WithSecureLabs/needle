@@ -65,7 +65,7 @@ class Constants(object):
     DEVICE_PATH_APPLIST_iOS7 = '/var/mobile/Library/Caches/com.apple.mobile.installation.plist'
     DEVICE_PATH_APPLIST_iOS8 = '/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist'
     DEVICE_PATH_APPLIST_iOS9 = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
-    DEVICE_PATH_APPLIST_iOS10 = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
+    DEVICE_PATH_DB_iOS10     = '/User/Library/FrontBoard/applicationState.db'
     DEVICE_PATH_BUNDLE_iOS7  = '/private/var/mobile/Applications/'
     DEVICE_PATH_BUNDLE_iOS8  = '/private/var/mobile/Containers/Bundle/Application/'
     DEVICE_PATH_BUNDLE_iOS9  = '/private/var/containers/Bundle/Application/'
@@ -104,7 +104,7 @@ class Constants(object):
 
             # PROGRAMS
             'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': '', 'LOCAL': None, 'SETUP': None},
-            'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': ['com.iphonecake.clutch2'], 'REPO': 'http://cydia.iphonecake.com/', 'LOCAL': None, 'SETUP': None},
+            'CLUTCH': {'COMMAND': 'Clutch', 'PACKAGES': ['com.iphonecake.clutch2'], 'REPO': 'http://cydia.iphonecake.com/', 'LOCAL': None, 'SETUP': None},
             'CYCRIPT': {'COMMAND': 'cycript', 'PACKAGES': ['cycript'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP'), 'SETUP': None},
             'FIND': {'COMMAND': 'find', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},

@@ -1,4 +1,7 @@
 import os
+import sqlite3
+import biplist
+
 from ..utils.constants import Constants
 from ..utils.utils import Utils
 
@@ -20,19 +23,51 @@ class App(object):
 
     def _retrieve_metadata(self):
         """Parse MobileInstallation.plist and the app's local Info.plist, and extract metadata."""
+         
         # Content of the MobileInstallation plist
-        plist_mobile_installation = self._device._applist[self._app]
-        metadata_mobile_installation = self.__parse_plist_mobile_installation(plist_mobile_installation)
+        if self._device._is_iOS10:
+            self._device.printer.verbose("iOS 10 is broken :(") 
+            print self._app
+            module_id = self._device._applist[self._app]
+            dbconn = sqlite3.connect(self._device.APP_DB_PATH)
+            dbcur = dbconn.cursor()
+            dbcur.execute("SELECT value from kvs where application_identifier = ? AND key = ?", (module_id,1))
+            row = dbcur.fetchone()
+            currentplist = biplist.readPlistFromString(row[0])
+            nextplist = biplist.readPlistFromString(currentplist)
+            bundle_directory = nextplist['$objects'][3]
+            data_directory = nextplist['$objects'][4]
+            binary_directory = nextplist['$objects'][5] 
+            plist_info_path = Utils.escape_path('%s/Info.plist' % bundle_directory)
+            plist_info = self._device.remote_op.parse_plist(plist_info_path)
+            metadata_info = self.__parse_plist_info(plist_info)
+            
 
-        # Content of the app's local Info.plist
-        plist_info_path = Utils.escape_path('%s/Info.plist' % plist_mobile_installation['Path'])
-        plist_info = self._device.remote_op.parse_plist(plist_info_path)
-        metadata_info = self.__parse_plist_info(plist_info)
+            # Compose binary path
+            binary_name = metadata_info['bundle_exe']
+            #print binary_name 
+            binary_path = Utils.escape_path('%s/%s'%(bundle_directory,binary_name))
+            #print binary_path 
+            uuid = binary_directory.rsplit('/', 1)[-1]
+            name = binary_path.rsplit('/', 1)[-1]
+           
+            #extract entitlements
+            entitlements = self.__get_entitlements(binary_path) 
+            
+            
+            dbconn.close()               
+        else: 
+            plist_mobile_installation = self._device._applist[self._app]
+            metadata_mobile_installation = self.__parse_plist_mobile_installation(plist_mobile_installation)
+            # Content of the app's local Info.plist
+            plist_info_path = Utils.escape_path('%s/Info.plist' % plist_mobile_installation['Path'])
+            plist_info = self._device.remote_op.parse_plist(plist_info_path)
+            metadata_info = self.__parse_plist_info(plist_info)
 
-        # Compose binary path
-        binary_directory = metadata_mobile_installation['binary_directory']
-        binary_name = metadata_info['bundle_exe']
-        binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
+            # Compose binary path
+            binary_directory = metadata_mobile_installation['binary_directory']
+            binary_name = metadata_info['bundle_exe']
+            binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
 
         # Detect architectures
         architectures = self.__detect_architectures(binary_path)
@@ -41,13 +76,29 @@ class App(object):
         extensions = self.get_extensions(binary_directory)
 
         # Pack into a dict
-        metadata = {
-            'binary_path': binary_path,
-            'binary_name': binary_name,
-            'architectures': architectures,
-            'extensions': extensions,
-        }
-        metadata = Utils.merge_dicts(metadata, metadata_mobile_installation, metadata_info)
+        if self._device._is_iOS10:
+            # Pack into a dict
+            metadata = {
+                'uuid': uuid,
+                'name': name,
+                'bundle_directory': bundle_directory,
+                'data_directory': data_directory,
+                'binary_directory': binary_directory,
+                'entitlements': entitlements,
+                'binary_path': binary_path,
+                'binary_name': binary_name,
+                'architectures': architectures,
+                'extensions': extensions,
+            } 
+            metadata = Utils.merge_dicts(metadata, metadata_info)
+        else: 
+            metadata = {
+                'binary_path': binary_path,
+                'binary_name': binary_name,
+                'architectures': architectures,
+                'extensions': extensions,
+            }
+            metadata = Utils.merge_dicts(metadata, metadata_mobile_installation, metadata_info)
         return metadata
 
     def __parse_plist_mobile_installation(self, plist):
@@ -120,6 +171,14 @@ class App(object):
         res = msg.rsplit(': ')[-1].split(' ')
         return res
 
+    def __get_entitlements(self,binary):
+        """Use ldid to get binary entitlements"""
+        #run ldid
+        cmd  = '{ldid} -e {binary}'.format(ldid=Constants.DEVICE_TOOLS['LDID'], binary=binary)
+        out = self._device.remote_op.command_blocking(cmd, internal=True)
+        msg = ''.join(out) 
+        return biplist.readPlistFromString(msg.encode("ascii"))   
+         
     # ==================================================================================================================
     # EXTENSION SUPPORT
     # ==================================================================================================================
