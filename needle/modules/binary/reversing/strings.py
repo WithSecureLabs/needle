@@ -61,7 +61,7 @@ class Module(BaseModule):
                 bin=self.device.DEVICE_TOOLS['FIND'],
                 folder=self.APP_METADATA['binary_directory'],
                 length=self.options['length'],
-                query=query)
+                query=query)        
         out_2 = self.device.remote_op.command_blocking(cmd_2)
 
         # Processing output

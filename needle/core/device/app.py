@@ -54,15 +54,7 @@ class App(object):
             #extract entitlements
             entitlements = self.__get_entitlements(binary_path) 
             
-            # Pack into a dict
-            metadata = {
-                'uuid': uuid,
-                'name': name,
-                'bundle_directory': bundle_directory,
-                'data_directory': data_directory,
-                'binary_directory': binary_directory,
-                'entitlements': entitlements,
-            }
+            
             dbconn.close()               
         else: 
             plist_mobile_installation = self._device._applist[self._app]
@@ -84,15 +76,28 @@ class App(object):
         extensions = self.get_extensions(binary_directory)
 
         # Pack into a dict
-        metadata = {
-            'binary_path': binary_path,
-            'binary_name': binary_name,
-            'architectures': architectures,
-            'extensions': extensions,
-        }
         if self._device._is_iOS10:
+            # Pack into a dict
+            metadata = {
+                'uuid': uuid,
+                'name': name,
+                'bundle_directory': bundle_directory,
+                'data_directory': data_directory,
+                'binary_directory': binary_directory,
+                'entitlements': entitlements,
+                'binary_path': binary_path,
+                'binary_name': binary_name,
+                'architectures': architectures,
+                'extensions': extensions,
+            } 
             metadata = Utils.merge_dicts(metadata, metadata_info)
-        else:
+        else: 
+            metadata = {
+                'binary_path': binary_path,
+                'binary_name': binary_name,
+                'architectures': architectures,
+                'extensions': extensions,
+            }
             metadata = Utils.merge_dicts(metadata, metadata_mobile_installation, metadata_info)
         return metadata
 
