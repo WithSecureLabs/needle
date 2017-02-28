@@ -23,5 +23,5 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         cmd = self.options['command']
-        out = self.device.agent.command(cmd)
+        out = self.device.agent.exec_command_agent(cmd)
         self.print_cmd_output(out)
