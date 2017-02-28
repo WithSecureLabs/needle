@@ -1,7 +1,7 @@
 from __future__ import print_function
 import paramiko
 from sshtunnel import SSHTunnelForwarder
-
+import sqlite3 # required for iOS 10 functionatality
 from app import App
 from installer import Installer
 from remote_operations import RemoteOperations
@@ -37,6 +37,8 @@ class Device(object):
     # On-Device Paths
     TEMP_FOLDER = Constants.DEVICE_PATH_TEMP_FOLDER
     DEVICE_TOOLS = Constants.DEVICE_TOOLS
+    # On-Server Paths
+    APP_DB_PATH = "/tmp/applicationState.db" #for iOS 10
     # Reference to External Objects
     conn = None
     app = None
@@ -187,7 +189,7 @@ class Device(object):
             self._is_iOS8 = True
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
             self._is_iOS9 = True
-        elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS10):
+        elif self.remote_op.file_exist(Constants.DEVICE_PATH_DB_iOS10):
             self._is_iOS10 = True
         else: self._is_iOS7_or_less = True
 
@@ -205,11 +207,25 @@ class Device(object):
             pl = self.remote_op.parse_plist(applist)
             self._applist = pl["User"]
 
+        def list_iOS_10(applist):
+            self.printer.verbose("Respring if an application is not listed to rebuild the application db")
+            if self._applist == None:
+                self._applist = dict()  
+            self.printer.verbose("fetching application state db to %s"%(self.APP_DB_PATH))
+            #fetch the current database to parse
+            self.pull(applist,self.APP_DB_PATH)              
+            #open the loaded db
+            conn = sqlite3.connect(self.APP_DB_PATH) 
+            c = conn.cursor()
+            c.execute("SELECT id,application_identifier FROM application_identifier_tab")
+            for row in c:
+                self._applist[row[1]] = row[0] #key = application name
+            c.close() 
         # Dispatch
         self._detect_ios_version()
         if self._is_iOS8: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS8)
         elif self._is_iOS9: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS9)
-        elif self._is_iOS10: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS10)
+        elif self._is_iOS10: list_iOS_10(Constants.DEVICE_PATH_DB_iOS10)
         else: list_iOS_7()
 
     def select_target_app(self):

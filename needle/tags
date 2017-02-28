@@ -1,0 +1,852 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+APPLE_APP_SITE_ASSOCIATION	modules/binary/info/universal_links.py	/^    APPLE_APP_SITE_ASSOCIATION = 'apple-app-site-association'$/;"	v	class:Module
+APP_METADATA	core/framework/framework.py	/^    APP_METADATA = None$/;"	v	class:Framework
+ASN1	libs/ADVTrustStore/TrustManager.py	/^class ASN1:$/;"	c
+AUTHOR	core/utils/constants.py	/^    AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'$/;"	v	class:Constants
+App	core/device/app.py	/^class App(object):$/;"	c
+B	core/utils/printer.py	/^    B = '\\033[34m'  # blue$/;"	v	class:Colors
+BackgroundModule	core/framework/module.py	/^class BackgroundModule(BaseModule):$/;"	c
+BaseModule	core/framework/module.py	/^class BaseModule(Framework):$/;"	c
+BinaryProtocol	libs/usbmuxd/usbmux.py	/^class BinaryProtocol(object):$/;"	c
+C	core/utils/printer.py	/^    C = '\\033[36m'  # cyan$/;"	v	class:Colors
+CA_BURP_URL	core/utils/constants.py	/^    CA_BURP_URL = 'http:\/\/burp\/cert'$/;"	v	class:Constants
+CA_MITM_URL	core/utils/constants.py	/^    CA_MITM_URL = 'http:\/\/mitm.it\/cert\/pem'$/;"	v	class:Constants
+CHECKS	modules/static/code_checks.py	/^    CHECKS = {$/;"	v	class:Module
+CHECKSUMS	modules/binary/info/checksums.py	/^    CHECKSUMS = [$/;"	v	class:Module
+CLI	core/framework/cli.py	/^class CLI(Framework):$/;"	c
+CYDIA_LIST	core/utils/constants.py	/^    CYDIA_LIST = '\/etc\/apt\/sources.list.d\/cydia.list'$/;"	v	class:Constants
+Certificate	libs/ADVTrustStore/TrustManager.py	/^class Certificate:$/;"	c
+ClassApplication	libs/ADVTrustStore/TrustManager.py	/^    ClassApplication = 0x40$/;"	v	class:ASN1
+ClassContext	libs/ADVTrustStore/TrustManager.py	/^    ClassContext = 0x80$/;"	v	class:ASN1
+ClassPrivate	libs/ADVTrustStore/TrustManager.py	/^    ClassPrivate = 0xc0$/;"	v	class:ASN1
+ClassUniversal	libs/ADVTrustStore/TrustManager.py	/^    ClassUniversal = 0x00$/;"	v	class:ASN1
+Colors	core/utils/printer.py	/^class Colors(object):$/;"	c
+Constants	core/utils/constants.py	/^class Constants(object):$/;"	c
+DEBUG_PORT	core/utils/constants.py	/^    DEBUG_PORT = 12345$/;"	v	class:Constants
+DEVICE_PATH_APPLIST_iOS10	core/utils/constants.py	/^    DEVICE_PATH_APPLIST_iOS10 = '\/private\/var\/installd\/Library\/MobileInstallation\/LastLaunchServicesMap.plist'$/;"	v	class:Constants
+DEVICE_PATH_APPLIST_iOS7	core/utils/constants.py	/^    DEVICE_PATH_APPLIST_iOS7 = '\/var\/mobile\/Library\/Caches\/com.apple.mobile.installation.plist'$/;"	v	class:Constants
+DEVICE_PATH_APPLIST_iOS8	core/utils/constants.py	/^    DEVICE_PATH_APPLIST_iOS8 = '\/var\/mobile\/Library\/MobileInstallation\/LastLaunchServicesMap.plist'$/;"	v	class:Constants
+DEVICE_PATH_APPLIST_iOS9	core/utils/constants.py	/^    DEVICE_PATH_APPLIST_iOS9 = '\/private\/var\/installd\/Library\/MobileInstallation\/LastLaunchServicesMap.plist'$/;"	v	class:Constants
+DEVICE_PATH_BUNDLE_iOS7	core/utils/constants.py	/^    DEVICE_PATH_BUNDLE_iOS7  = '\/private\/var\/mobile\/Applications\/'$/;"	v	class:Constants
+DEVICE_PATH_BUNDLE_iOS8	core/utils/constants.py	/^    DEVICE_PATH_BUNDLE_iOS8  = '\/private\/var\/mobile\/Containers\/Bundle\/Application\/'$/;"	v	class:Constants
+DEVICE_PATH_BUNDLE_iOS9	core/utils/constants.py	/^    DEVICE_PATH_BUNDLE_iOS9  = '\/private\/var\/containers\/Bundle\/Application\/'$/;"	v	class:Constants
+DEVICE_PATH_DATA_iOS8	core/utils/constants.py	/^    DEVICE_PATH_DATA_iOS8    = '\/private\/var\/mobile\/Containers\/Data\/Application\/'$/;"	v	class:Constants
+DEVICE_PATH_DATA_iOS9	core/utils/constants.py	/^    DEVICE_PATH_DATA_iOS9    = '\/private\/var\/mobile\/Containers\/Data\/Application\/'$/;"	v	class:Constants
+DEVICE_PATH_FRIDA_CACHE	core/utils/constants.py	/^    DEVICE_PATH_FRIDA_CACHE  = '\/Library\/Caches\/frida-*'$/;"	v	class:Constants
+DEVICE_PATH_HOSTS	core/utils/constants.py	/^    DEVICE_PATH_HOSTS        = '\/etc\/hosts'$/;"	v	class:Constants
+DEVICE_PATH_TEMP_FOLDER	core/utils/constants.py	/^    DEVICE_PATH_TEMP_FOLDER  = '\/var\/root\/needle\/'$/;"	v	class:Constants
+DEVICE_PATH_TRUST_STORE	core/utils/constants.py	/^    DEVICE_PATH_TRUST_STORE  = '\/private\/var\/Keychains\/TrustStore.sqlite3'$/;"	v	class:Constants
+DEVICE_SETUP	core/utils/constants.py	/^    DEVICE_SETUP = {$/;"	v	class:Constants
+DEVICE_TOOLS	core/device/device.py	/^    DEVICE_TOOLS = Constants.DEVICE_TOOLS$/;"	v	class:Device
+DEVICE_TOOLS	core/utils/constants.py	/^    DEVICE_TOOLS = dict([(k, v['COMMAND']) for k, v in DEVICE_SETUP['TOOLS'].iteritems() if v['COMMAND'] is not None])$/;"	v	class:Constants
+DebugModule	core/framework/module.py	/^class DebugModule(BaseModule):$/;"	c
+Decoder	libs/ADVTrustStore/TrustManager.py	/^class Decoder(object):$/;"	c
+Device	core/device/device.py	/^class Device(object):$/;"	c
+EMAIL	core/utils/constants.py	/^    EMAIL = 'marco.lancini[at]mwrinfosecurity.com'$/;"	v	class:Constants
+EXIT	modules/dynamic/detection/jailbreak_detection.py	/^    EXIT = False$/;"	v	class:Module
+Encoder	libs/ADVTrustStore/TrustManager.py	/^class Encoder(object):$/;"	c
+Error	libs/ADVTrustStore/TrustManager.py	/^class Error(Exception):$/;"	c
+FILE_HISTORY	core/utils/constants.py	/^    FILE_HISTORY = os.path.join(FOLDER_HOME, 'needle_history')$/;"	v	class:Constants
+FOLDER_BACKUP	core/utils/constants.py	/^    FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')$/;"	v	class:Constants
+FOLDER_HOME	core/utils/constants.py	/^    FOLDER_HOME = os.path.join(os.path.expanduser('~'), NAME_FOLDER)$/;"	v	class:Constants
+FOLDER_TEMP	core/utils/constants.py	/^    FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')$/;"	v	class:Constants
+FRIDA_PORT	core/utils/constants.py	/^    FRIDA_PORT = 27042$/;"	v	class:Constants
+FilePath	libs/binarycookiereader/binarycookiereader.py	/^FilePath=sys.argv[1]$/;"	v
+Framework	core/framework/framework.py	/^class Framework(cmd.Cmd):$/;"	c
+FrameworkException	core/framework/framework.py	/^class FrameworkException(Exception):$/;"	c
+FridaModule	core/framework/module.py	/^class FridaModule(BaseModule):$/;"	c
+FridaScript	core/framework/module.py	/^class FridaScript(FridaModule):$/;"	c
+G	core/utils/printer.py	/^    G = '\\033[32m'  # green$/;"	v	class:Colors
+GLOBAL_DEBUG	core/utils/constants.py	/^    GLOBAL_DEBUG = False$/;"	v	class:Constants
+GLOBAL_IP	core/utils/constants.py	/^    GLOBAL_IP = '127.0.0.1'$/;"	v	class:Constants
+GLOBAL_OUTPUT_FOLDER	core/utils/constants.py	/^    GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')$/;"	v	class:Constants
+GLOBAL_PASSWORD	core/utils/constants.py	/^    GLOBAL_PASSWORD = 'alpine'$/;"	v	class:Constants
+GLOBAL_PORT	core/utils/constants.py	/^    GLOBAL_PORT = '2222'$/;"	v	class:Constants
+GLOBAL_PUB_KEY_AUTH	core/utils/constants.py	/^    GLOBAL_PUB_KEY_AUTH = True$/;"	v	class:Constants
+GLOBAL_SAVE_HISTORY	core/utils/constants.py	/^    GLOBAL_SAVE_HISTORY = True$/;"	v	class:Constants
+GLOBAL_SETUP_DEVICE	core/utils/constants.py	/^    GLOBAL_SETUP_DEVICE = False$/;"	v	class:Constants
+GLOBAL_USERNAME	core/utils/constants.py	/^    GLOBAL_USERNAME = 'root'$/;"	v	class:Constants
+GLOBAL_VERBOSE	core/utils/constants.py	/^    GLOBAL_VERBOSE = True$/;"	v	class:Constants
+HOST	libs/usbmuxd/tcprelay.py	/^HOST = "localhost"$/;"	v
+Installer	core/device/installer.py	/^class Installer(object):$/;"	c
+KEYCHAIN_PLISTS	modules/storage/data/keychain_dump.py	/^    KEYCHAIN_PLISTS = ['cert.plist', 'genp.plist', 'inet.plist', 'keys.plist']$/;"	v	class:Module
+LOCAL_PLISTS	modules/storage/data/keychain_dump.py	/^    LOCAL_PLISTS = []$/;"	v	class:Module
+LocalOperations	core/framework/local_operations.py	/^class LocalOperations(object):$/;"	c
+Module	modules/_templates/template_background.py	/^class Module(BackgroundModule):$/;"	c
+Module	modules/_templates/template_base.py	/^class Module(BaseModule):$/;"	c
+Module	modules/_templates/template_frida.py	/^class Module(FridaModule):$/;"	c
+Module	modules/_templates/template_frida_script.py	/^class Module(FridaScript):$/;"	c
+Module	modules/_templates/template_static.py	/^class Module(StaticModule):$/;"	c
+Module	modules/binary/info/checksums.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/info/compilation_checks.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/info/metadata.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/info/provisioning_profile.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/info/universal_links.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/installation/install.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/installation/pull_ipa.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/reversing/class_dump.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/reversing/class_dump_frida_enum-all-methods.py	/^class Module(FridaScript):$/;"	c
+Module	modules/binary/reversing/class_dump_frida_enum-classes.py	/^class Module(FridaScript):$/;"	c
+Module	modules/binary/reversing/class_dump_frida_find-class-enum-methods.py	/^class Module(FridaScript):$/;"	c
+Module	modules/binary/reversing/shared_libraries.py	/^class Module(BaseModule):$/;"	c
+Module	modules/binary/reversing/strings.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/delete_ca.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/export_ca.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/import_ca.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/install_ca_burp.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/install_ca_mitm.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/list_ca.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/certs/view_cert.py	/^class Module(BaseModule):$/;"	c
+Module	modules/comms/proxy/pinning_bypass_frida.py	/^class Module(FridaScript):$/;"	c
+Module	modules/comms/proxy/proxy_regular.py	/^class Module(BaseModule):$/;"	c
+Module	modules/dynamic/detection/jailbreak_detection.py	/^class Module(BaseModule):$/;"	c
+Module	modules/dynamic/ipc/open_uri.py	/^class Module(BaseModule):$/;"	c
+Module	modules/dynamic/memory/heap_dump.py	/^class Module(BaseModule):$/;"	c
+Module	modules/dynamic/monitor/files.py	/^class Module(BackgroundModule):$/;"	c
+Module	modules/dynamic/monitor/pasteboard.py	/^class Module(BackgroundModule):$/;"	c
+Module	modules/dynamic/monitor/syslog.py	/^class Module(BackgroundModule):$/;"	c
+Module	modules/dynamic/watch/syslog.py	/^class Module(BaseModule):$/;"	c
+Module	modules/hooking/cycript/cycript_shell.py	/^class Module(BaseModule):$/;"	c
+Module	modules/hooking/cycript/cycript_touchid.py	/^class Module(BaseModule):$/;"	c
+Module	modules/hooking/frida/frida_launcher.py	/^class Module(FridaScript):$/;"	c
+Module	modules/hooking/frida/frida_shell.py	/^class Module(FridaModule):$/;"	c
+Module	modules/hooking/frida/frida_trace.py	/^class Module(FridaModule):$/;"	c
+Module	modules/hooking/frida/script_anti-hooking-check.py	/^class Module(FridaScript):$/;"	c
+Module	modules/hooking/frida/script_dump-ui.py	/^class Module(FridaScript):$/;"	c
+Module	modules/hooking/theos/list_tweaks.py	/^class Module(BaseModule):$/;"	c
+Module	modules/hooking/theos/theos_tweak.py	/^class Module(BaseModule):$/;"	c
+Module	modules/static/code_checks.py	/^class Module(StaticModule):$/;"	c
+Module	modules/storage/backup/icloud_content_frida.py	/^class Module(FridaScript):$/;"	c
+Module	modules/storage/caching/keyboard_autocomplete.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/caching/screenshot.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/container.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/files_binarycookies.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/files_cachedb.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/files_plist.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/files_sql.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/keychain_dump.py	/^class Module(BaseModule):$/;"	c
+Module	modules/storage/data/keychain_dump_frida.py	/^class Module(FridaScript):$/;"	c
+Module	modules/various/clean_storage.py	/^class Module(BaseModule):$/;"	c
+Module	modules/various/hosts.py	/^class Module(BaseModule):$/;"	c
+Module	modules/various/list_apps.py	/^class Module(BaseModule):$/;"	c
+MuxConnection	libs/usbmuxd/usbmux.py	/^class MuxConnection(object):$/;"	c
+MuxDevice	libs/usbmuxd/usbmux.py	/^class MuxDevice(object):$/;"	c
+MuxError	libs/usbmuxd/usbmux.py	/^class MuxError(Exception):$/;"	c
+MuxVersionError	libs/usbmuxd/usbmux.py	/^class MuxVersionError(MuxError):$/;"	c
+N	core/utils/printer.py	/^    N = '\\033[m'    # native$/;"	v	class:Colors
+NAME	core/utils/constants.py	/^    NAME = 'Needle'$/;"	v	class:Constants
+NAME_CLI	core/utils/constants.py	/^    NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)$/;"	v	class:Constants
+NAME_FOLDER	core/utils/constants.py	/^    NAME_FOLDER = '.needle'$/;"	v	class:Constants
+O	core/utils/printer.py	/^    O = '\\033[33m'  # orange$/;"	v	class:Colors
+Options	core/framework/options.py	/^class Options(dict):$/;"	c
+PASSWORD_CLEAR	core/utils/constants.py	/^    PASSWORD_CLEAR = 'password_clear'$/;"	v	class:Constants
+PASSWORD_MASK	core/utils/constants.py	/^    PASSWORD_MASK = '********'$/;"	v	class:Constants
+PATH_DEVICETOOLS	core/utils/constants.py	/^    PATH_DEVICETOOLS = os.path.join(PATH_LIBS, 'devicetools')$/;"	v	class:Constants
+PATH_LIBS	core/utils/constants.py	/^    PATH_LIBS = os.path.join(sys.path[0], 'libs')$/;"	v	class:Constants
+PATH_TOOLS_LOCAL	core/utils/constants.py	/^    PATH_TOOLS_LOCAL = {$/;"	v	class:Constants
+PID	modules/dynamic/detection/jailbreak_detection.py	/^    PID = None$/;"	v	class:Module
+PID	modules/dynamic/monitor/files.py	/^    PID = None$/;"	v	class:Module
+PID	modules/dynamic/monitor/pasteboard.py	/^    PID = None$/;"	v	class:Module
+PID	modules/dynamic/monitor/syslog.py	/^    PID = None$/;"	v	class:Module
+PREFERRED_ARCH	core/utils/constants.py	/^    PREFERRED_ARCH = 'armv7'$/;"	v	class:Constants
+PlistProtocol	libs/usbmuxd/usbmux.py	/^class PlistProtocol(BinaryProtocol):$/;"	c
+PrintableString	libs/ADVTrustStore/TrustManager.py	/^    PrintableString = 0x13$/;"	v	class:ASN1
+Printer	core/utils/printer.py	/^class Printer(object):$/;"	c
+R	core/utils/printer.py	/^    R = '\\033[31m'  # red$/;"	v	class:Colors
+RES	modules/binary/info/checksums.py	/^    RES = {}$/;"	v	class:Module
+RemoteOperations	core/device/remote_operations.py	/^class RemoteOperations(object):$/;"	c
+SafeStreamSocket	libs/usbmuxd/usbmux.py	/^class SafeStreamSocket:$/;"	c
+Sequence	libs/ADVTrustStore/TrustManager.py	/^    Sequence = 0x10$/;"	v	class:ASN1
+Set	libs/ADVTrustStore/TrustManager.py	/^    Set = 0x11$/;"	v	class:ASN1
+SocketRelay	libs/usbmuxd/tcprelay.py	/^class SocketRelay(object):$/;"	c
+StaticModule	core/framework/module.py	/^class StaticModule(BaseModule):$/;"	c
+TCPRelay	libs/usbmuxd/tcprelay.py	/^class TCPRelay(SocketServer.BaseRequestHandler):$/;"	c
+TCPServer	libs/usbmuxd/tcprelay.py	/^class TCPServer(SocketServer.TCPServer):$/;"	c
+TEMP_FOLDER	core/device/device.py	/^    TEMP_FOLDER = Constants.DEVICE_PATH_TEMP_FOLDER$/;"	v	class:Device
+THEOS_FOLDER	core/utils/constants.py	/^    THEOS_FOLDER = '\/private\/var\/theos\/'$/;"	v	class:Constants
+TOOLS_LOCAL	core/framework/framework.py	/^    TOOLS_LOCAL = Constants.PATH_TOOLS_LOCAL$/;"	v	class:Framework
+TYPE_CONNECT	libs/usbmuxd/usbmux.py	/^	TYPE_CONNECT = "Connect"$/;"	v	class:PlistProtocol
+TYPE_CONNECT	libs/usbmuxd/usbmux.py	/^	TYPE_CONNECT = 2$/;"	v	class:BinaryProtocol
+TYPE_DEVICE_ADD	libs/usbmuxd/usbmux.py	/^	TYPE_DEVICE_ADD = "Attached"$/;"	v	class:PlistProtocol
+TYPE_DEVICE_ADD	libs/usbmuxd/usbmux.py	/^	TYPE_DEVICE_ADD = 4$/;"	v	class:BinaryProtocol
+TYPE_DEVICE_REMOVE	libs/usbmuxd/usbmux.py	/^	TYPE_DEVICE_REMOVE = "Detached" #???$/;"	v	class:PlistProtocol
+TYPE_DEVICE_REMOVE	libs/usbmuxd/usbmux.py	/^	TYPE_DEVICE_REMOVE = 5$/;"	v	class:BinaryProtocol
+TYPE_LISTEN	libs/usbmuxd/usbmux.py	/^	TYPE_LISTEN = "Listen"$/;"	v	class:PlistProtocol
+TYPE_LISTEN	libs/usbmuxd/usbmux.py	/^	TYPE_LISTEN = 3$/;"	v	class:BinaryProtocol
+TYPE_PLIST	libs/usbmuxd/usbmux.py	/^	TYPE_PLIST = 8$/;"	v	class:PlistProtocol
+TYPE_RESULT	libs/usbmuxd/usbmux.py	/^	TYPE_RESULT = "Result"$/;"	v	class:PlistProtocol
+TYPE_RESULT	libs/usbmuxd/usbmux.py	/^	TYPE_RESULT = 1$/;"	v	class:BinaryProtocol
+ThreadedTCPServer	libs/usbmuxd/tcprelay.py	/^class ThreadedTCPServer(SocketServer.ThreadingMixIn, TCPServer):$/;"	c
+TrustStore	libs/ADVTrustStore/TrustManager.py	/^class TrustStore:$/;"	c
+TypeConstructed	libs/ADVTrustStore/TrustManager.py	/^    TypeConstructed = 0x20$/;"	v	class:ASN1
+TypePrimitive	libs/ADVTrustStore/TrustManager.py	/^    TypePrimitive = 0x00$/;"	v	class:ASN1
+USBMux	libs/usbmuxd/usbmux.py	/^class USBMux(object):$/;"	c
+Utils	core/utils/utils.py	/^class Utils(object):$/;"	c
+VERSION	libs/usbmuxd/usbmux.py	/^	VERSION = 0$/;"	v	class:BinaryProtocol
+VERSION	libs/usbmuxd/usbmux.py	/^	VERSION = 1$/;"	v	class:PlistProtocol
+WATCH_TIME	modules/dynamic/detection/jailbreak_detection.py	/^    WATCH_TIME = 10$/;"	v	class:Module
+WEBSITE	core/utils/constants.py	/^    WEBSITE = 'mwr.to\/needle'$/;"	v	class:Constants
+__apt_add_repo	core/device/installer.py	/^    def __apt_add_repo(self, repo):$/;"	m	class:Installer	file:
+__apt_install	core/device/installer.py	/^    def __apt_install(self, package):$/;"	m	class:Installer	file:
+__apt_update	core/device/installer.py	/^    def __apt_update(self):$/;"	m	class:Installer	file:
+__author__	core/framework/cli.py	/^__author__ = Constants.AUTHOR$/;"	v
+__bypass_wizard	modules/hooking/theos/theos_tweak.py	/^    def __bypass_wizard(self):$/;"	m	class:Module	file:
+__check_flag	modules/binary/info/compilation_checks.py	/^    def __check_flag(self, line, flagname, flag):$/;"	m	class:Module	file:
+__delitem__	core/framework/options.py	/^    def __delitem__(self, name):$/;"	m	class:Options	file:
+__detect_architectures	core/device/app.py	/^    def __detect_architectures(self, binary):$/;"	m	class:App	file:
+__email__	core/framework/cli.py	/^__email__ = Constants.EMAIL$/;"	v
+__extract_field	core/device/app.py	/^    def __extract_field(self, plist, field):$/;"	m	class:App	file:
+__init__	core/device/app.py	/^    def __init__(self, device):$/;"	m	class:App
+__init__	core/device/device.py	/^    def __init__(self, ip, port, username, password, pub_key_auth, tools):$/;"	m	class:Device
+__init__	core/device/installer.py	/^    def __init__(self, device):$/;"	m	class:Installer
+__init__	core/device/remote_operations.py	/^    def __init__(self, device):$/;"	m	class:RemoteOperations
+__init__	core/framework/cli.py	/^    def __init__(self):$/;"	m	class:CLI
+__init__	core/framework/framework.py	/^    def __init__(self, params):$/;"	m	class:Framework
+__init__	core/framework/local_operations.py	/^    def __init__(self):$/;"	m	class:LocalOperations
+__init__	core/framework/module.py	/^    def __init__(self, params):$/;"	m	class:BackgroundModule
+__init__	core/framework/module.py	/^    def __init__(self, params):$/;"	m	class:BaseModule
+__init__	core/framework/module.py	/^    def __init__(self, params):$/;"	m	class:DebugModule
+__init__	core/framework/module.py	/^    def __init__(self, params):$/;"	m	class:FridaModule
+__init__	core/framework/module.py	/^    def __init__(self, params):$/;"	m	class:StaticModule
+__init__	core/framework/options.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Options
+__init__	libs/ADVTrustStore/TrustManager.py	/^    def __init__(self):$/;"	m	class:Certificate
+__init__	libs/ADVTrustStore/TrustManager.py	/^    def __init__(self):$/;"	m	class:Decoder
+__init__	libs/ADVTrustStore/TrustManager.py	/^    def __init__(self):$/;"	m	class:Encoder
+__init__	libs/ADVTrustStore/TrustManager.py	/^    def __init__(self, path, title=None):$/;"	m	class:TrustStore
+__init__	libs/usbmuxd/tcprelay.py	/^	def __init__(self, a, b, maxbuf=65535):$/;"	m	class:SocketRelay
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, address, family):$/;"	m	class:SafeStreamSocket
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, devid, usbprod, serial, location):$/;"	m	class:MuxDevice
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, socket):$/;"	m	class:BinaryProtocol
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, socket):$/;"	m	class:PlistProtocol
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, socketpath, protoclass):$/;"	m	class:MuxConnection
+__init__	libs/usbmuxd/usbmux.py	/^	def __init__(self, socketpath=None):$/;"	m	class:USBMux
+__init__	modules/_templates/template_base.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/_templates/template_frida_script.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/binary/info/checksums.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/binary/info/provisioning_profile.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/binary/info/universal_links.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/binary/installation/pull_ipa.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/binary/reversing/class_dump.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/binary/reversing/class_dump_frida_enum-all-methods.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/binary/reversing/class_dump_frida_enum-classes.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/binary/reversing/class_dump_frida_find-class-enum-methods.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/binary/reversing/strings.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/comms/certs/export_ca.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/comms/certs/install_ca_burp.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/comms/certs/view_cert.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/comms/proxy/pinning_bypass_frida.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/comms/proxy/proxy_regular.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/dynamic/memory/heap_dump.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/dynamic/monitor/files.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/dynamic/monitor/pasteboard.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/dynamic/monitor/syslog.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/dynamic/watch/syslog.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/hooking/frida/frida_launcher.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/hooking/frida/script_dump-ui.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/hooking/theos/theos_tweak.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/static/code_checks.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/backup/icloud_content_frida.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/storage/caching/keyboard_autocomplete.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/caching/screenshot.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/container.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/files_binarycookies.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/files_cachedb.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/files_plist.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/files_sql.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/keychain_dump.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/storage/data/keychain_dump_frida.py	/^    def __init__(self, params):$/;"	f
+__init__	modules/various/clean_storage.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init__	modules/various/hosts.py	/^    def __init__(self, params):$/;"	m	class:Module
+__init_const	modules/hooking/theos/theos_tweak.py	/^    def __init_const(self):$/;"	m	class:Module	file:
+__install_commands	core/device/installer.py	/^    def __install_commands(self, toolname, tool):$/;"	m	class:Installer	file:
+__install_local	core/device/installer.py	/^    def __install_local(self, toolname, tool):$/;"	m	class:Installer	file:
+__install_package	core/device/installer.py	/^    def __install_package(self, toolname, tool):$/;"	m	class:Installer	file:
+__instance	core/utils/printer.py	/^    __instance = None$/;"	v	class:Printer
+__is_tool_available	core/device/installer.py	/^    def __is_tool_available(self, tool):$/;"	m	class:Installer	file:
+__new__	core/utils/printer.py	/^    def __new__(cls, *args, **kwargs):$/;"	m	class:Printer	file:
+__parse_plist_info	core/device/app.py	/^    def __parse_plist_info(self, plist):$/;"	m	class:App	file:
+__parse_plist_mobile_installation	core/device/app.py	/^    def __parse_plist_mobile_installation(self, plist):$/;"	m	class:App	file:
+__run_otool	modules/binary/info/compilation_checks.py	/^    def __run_otool(self, query, grep=None):$/;"	m	class:Module	file:
+__setitem__	core/framework/options.py	/^    def __setitem__(self, name, value):$/;"	m	class:Options	file:
+__str__	libs/usbmuxd/usbmux.py	/^	def __str__(self):$/;"	m	class:MuxDevice	file:
+__website__	core/framework/cli.py	/^__website__ = Constants.WEBSITE$/;"	v
+__wizard	modules/hooking/theos/theos_tweak.py	/^    def __wizard(self):$/;"	m	class:Module	file:
+_add_record	libs/ADVTrustStore/TrustManager.py	/^    def _add_record(self, sha1, subj, tset, data):$/;"	m	class:TrustStore
+_applist	core/device/device.py	/^    _applist = None$/;"	v	class:Device
+_autoconvert	core/framework/options.py	/^    def _autoconvert(self, value):$/;"	m	class:Options
+_boolify	core/framework/options.py	/^    def _boolify(self, value):$/;"	m	class:Options
+_check_arc	modules/binary/info/compilation_checks.py	/^    def _check_arc(self):$/;"	m	class:Module
+_check_cryptid	modules/binary/info/compilation_checks.py	/^    def _check_cryptid(self):$/;"	m	class:Module
+_check_pie	modules/binary/info/compilation_checks.py	/^    def _check_pie(self):$/;"	m	class:Module
+_check_prerequisites	core/device/installer.py	/^    def _check_prerequisites(self):$/;"	m	class:Installer
+_check_stack_canaries	modules/binary/info/compilation_checks.py	/^    def _check_stack_canaries(self):$/;"	m	class:Module
+_compute_diff	modules/static/code_checks.py	/^    def _compute_diff(self):$/;"	m	class:Module
+_configure_tool	core/device/installer.py	/^    def _configure_tool(self, toolname):$/;"	m	class:Installer
+_connect_ssh	core/device/device.py	/^    def _connect_ssh(self):$/;"	m	class:Device
+_connection_new	core/framework/framework.py	/^    def _connection_new(self):$/;"	m	class:Framework
+_debug_server	core/device/device.py	/^    _debug_server = None$/;"	v	class:Device
+_detect_ios_version	core/device/device.py	/^    def _detect_ios_version(self):$/;"	m	class:Device
+_device_ready	core/device/device.py	/^    _device_ready = False$/;"	v	class:Device
+_device_ready	core/framework/framework.py	/^    _device_ready = False$/;"	v	class:Framework
+_disconnect_ssh	core/device/device.py	/^    def _disconnect_ssh(self):$/;"	m	class:Device
+_download_folder	modules/storage/data/container.py	/^    def _download_folder(self, directory):$/;"	m	class:Module
+_emit	libs/ADVTrustStore/TrustManager.py	/^    def _emit(self, s):$/;"	m	class:Encoder
+_emit_length	libs/ADVTrustStore/TrustManager.py	/^    def _emit_length(self, length):$/;"	m	class:Encoder
+_emit_length_long	libs/ADVTrustStore/TrustManager.py	/^    def _emit_length_long(self, length):$/;"	m	class:Encoder
+_emit_length_short	libs/ADVTrustStore/TrustManager.py	/^    def _emit_length_short(self, length):$/;"	m	class:Encoder
+_emit_tag	libs/ADVTrustStore/TrustManager.py	/^    def _emit_tag(self, nr, typ, cls):$/;"	m	class:Encoder
+_emit_tag_long	libs/ADVTrustStore/TrustManager.py	/^    def _emit_tag_long(self, nr, typ, cls):$/;"	m	class:Encoder
+_emit_tag_short	libs/ADVTrustStore/TrustManager.py	/^    def _emit_tag_short(self, nr, typ, cls):$/;"	m	class:Encoder
+_end_of_input	libs/ADVTrustStore/TrustManager.py	/^    def _end_of_input(self):$/;"	m	class:Decoder
+_exchange	libs/usbmuxd/usbmux.py	/^	def _exchange(self, req, payload={}):$/;"	m	class:MuxConnection
+_exec_command_ssh	core/device/device.py	/^    def _exec_command_ssh(self, cmd, internal):$/;"	m	class:Device
+_extract_lines	modules/static/code_checks.py	/^    def _extract_lines(self, fnames, searchfor):$/;"	m	class:Module
+_frida_server	core/device/device.py	/^    _frida_server = None$/;"	v	class:Device
+_get_show_names	core/framework/framework.py	/^    def _get_show_names(self):$/;"	m	class:Framework
+_get_source	core/framework/module.py	/^    def _get_source(self, params, query=None):$/;"	m	class:BaseModule
+_getreply	libs/usbmuxd/usbmux.py	/^	def _getreply(self):$/;"	m	class:MuxConnection
+_global_options	core/framework/framework.py	/^    _global_options = Options()$/;"	v	class:Framework
+_grep	modules/static/code_checks.py	/^    def _grep(self, what, awk=False):$/;"	m	class:Module
+_history_load	core/framework/framework.py	/^    def _history_load(self):$/;"	m	class:Framework
+_history_save	core/framework/framework.py	/^    def _history_save(self):$/;"	m	class:Framework
+_init_data	libs/ADVTrustStore/TrustManager.py	/^    def _init_data(self):$/;"	m	class:Certificate
+_init_global_options	core/framework/cli.py	/^    def _init_global_options(self):$/;"	m	class:CLI
+_init_global_vars	core/framework/cli.py	/^    def _init_global_vars(self):$/;"	m	class:CLI
+_init_home	core/framework/cli.py	/^    def _init_home(self):$/;"	m	class:CLI
+_ip	core/device/device.py	/^    _ip = ''$/;"	v	class:Device
+_is_iOS10	core/device/device.py	/^    _is_iOS10 = False$/;"	v	class:Device
+_is_iOS7_or_less	core/device/device.py	/^    _is_iOS7_or_less = False$/;"	v	class:Device
+_is_iOS8	core/device/device.py	/^    _is_iOS8 = False$/;"	v	class:Device
+_is_iOS9	core/device/device.py	/^    _is_iOS9 = False$/;"	v	class:Device
+_jobs	core/framework/framework.py	/^    _jobs = []$/;"	v	class:Framework
+_list_apps	core/device/device.py	/^    def _list_apps(self):$/;"	m	class:Device
+_load	core/framework/framework.py	/^    _load = 0$/;"	v	class:Framework
+_loadBlob	libs/ADVTrustStore/TrustManager.py	/^    def _loadBlob(self, baseName, name):$/;"	m	class:TrustStore
+_load_module	core/framework/cli.py	/^    def _load_module(self, dirpath, filename):$/;"	m	class:CLI
+_load_modules	core/framework/cli.py	/^    def _load_modules(self):$/;"	m	class:CLI
+_loaded_modules	core/framework/framework.py	/^    _loaded_modules = {}$/;"	v	class:Framework
+_local_ready	core/framework/framework.py	/^    _local_ready = False$/;"	v	class:Framework
+_monitor_fs_start	modules/dynamic/detection/jailbreak_detection.py	/^    def _monitor_fs_start(self):$/;"	m	class:Module
+_pack	libs/usbmuxd/usbmux.py	/^	def _pack(self, req, payload):$/;"	m	class:BinaryProtocol
+_pack	libs/usbmuxd/usbmux.py	/^	def _pack(self, req, payload):$/;"	m	class:PlistProtocol
+_parse_changed_files	modules/dynamic/detection/jailbreak_detection.py	/^    def _parse_changed_files(self):$/;"	m	class:Module
+_parse_cydia_list	core/device/installer.py	/^    def _parse_cydia_list(self):$/;"	m	class:Installer
+_parse_device_options	core/framework/framework.py	/^    def _parse_device_options(self):$/;"	m	class:Framework
+_password	core/device/device.py	/^    _password = ''$/;"	v	class:Device
+_port	core/device/device.py	/^    _port = ''$/;"	v	class:Device
+_portforward	core/device/device.py	/^    _portforward = None$/;"	v	class:Device
+_portforward_debug_start	core/device/device.py	/^    def _portforward_debug_start(self):$/;"	m	class:Device
+_portforward_debug_stop	core/device/device.py	/^    def _portforward_debug_stop(self):$/;"	m	class:Device
+_portforward_frida_start	core/device/device.py	/^    def _portforward_frida_start(self):$/;"	m	class:Device
+_portforward_frida_stop	core/device/device.py	/^    def _portforward_frida_stop(self):$/;"	m	class:Device
+_portforward_usb_start	core/device/device.py	/^    def _portforward_usb_start(self):$/;"	m	class:Device
+_portforward_usb_stop	core/device/device.py	/^    def _portforward_usb_stop(self):$/;"	m	class:Device
+_print_ats	modules/binary/info/metadata.py	/^    def _print_ats(self, ats, ident=0):$/;"	m	class:Module
+_print_entitlements	modules/binary/info/metadata.py	/^    def _print_entitlements(self, ents):$/;"	m	class:Module
+_print_rows	modules/storage/data/files_cachedb.py	/^    def _print_rows(self, fname):$/;"	m	class:Module
+_print_rows	modules/storage/data/files_sql.py	/^    def _print_rows(self, fname):$/;"	m	class:Module
+_print_structure	modules/storage/data/container.py	/^    def _print_structure(self, directory):$/;"	m	class:Module
+_print_url_handlers	modules/binary/info/metadata.py	/^    def _print_url_handlers(self, handlers, ident=0):$/;"	m	class:Module
+_process_subject	libs/ADVTrustStore/TrustManager.py	/^    def _process_subject(self, input, output, indent=0):$/;"	m	class:Certificate
+_processpacket	libs/usbmuxd/usbmux.py	/^	def _processpacket(self):$/;"	m	class:MuxConnection
+_read_byte	libs/ADVTrustStore/TrustManager.py	/^    def _read_byte(self):$/;"	m	class:Decoder
+_read_bytes	libs/ADVTrustStore/TrustManager.py	/^    def _read_bytes(self, count):$/;"	m	class:Decoder
+_read_length	libs/ADVTrustStore/TrustManager.py	/^    def _read_length(self):$/;"	m	class:Decoder
+_read_tag	libs/ADVTrustStore/TrustManager.py	/^    def _read_tag(self):$/;"	m	class:Decoder
+_read_value	libs/ADVTrustStore/TrustManager.py	/^    def _read_value(self, nr, length):$/;"	m	class:Decoder
+_record	core/framework/framework.py	/^    _record = None$/;"	v	class:Framework
+_refresh_package_list	core/device/installer.py	/^    def _refresh_package_list(self):$/;"	m	class:Installer
+_retrieve_apple_app_site_association	modules/binary/info/universal_links.py	/^    def _retrieve_apple_app_site_association(self, domain):$/;"	m	class:Module
+_retrieve_extensions	core/device/app.py	/^    def _retrieve_extensions(self, plugin_dir):$/;"	m	class:App
+_retrieve_metadata	core/device/app.py	/^    def _retrieve_metadata(self):$/;"	m	class:App
+_saveBlob	libs/ADVTrustStore/TrustManager.py	/^    def _saveBlob(self, baseName, name, data):$/;"	m	class:TrustStore
+_script	core/framework/framework.py	/^    _script = 0$/;"	v	class:Framework
+_spawn_device	core/framework/framework.py	/^    def _spawn_device(self):$/;"	m	class:Framework
+_tools_local	core/device/device.py	/^    _tools_local = None$/;"	v	class:Device
+_tweak_disinstall	modules/hooking/theos/theos_tweak.py	/^    def _tweak_disinstall(self):$/;"	m	class:Module
+_tweak_edit	modules/hooking/theos/theos_tweak.py	/^    def _tweak_edit(self):$/;"	m	class:Module
+_tweak_install	modules/hooking/theos/theos_tweak.py	/^    def _tweak_install(self):$/;"	m	class:Module
+_tweak_view	modules/hooking/theos/theos_tweak.py	/^    def _tweak_view(self):$/;"	m	class:Module
+_unpack	libs/usbmuxd/usbmux.py	/^	def _unpack(self, resp, payload):$/;"	m	class:BinaryProtocol
+_unpack	libs/usbmuxd/usbmux.py	/^	def _unpack(self, resp, payload):$/;"	m	class:PlistProtocol
+_username	core/device/device.py	/^    _username = ''$/;"	v	class:Device
+_validate_options	core/framework/framework.py	/^    def _validate_options(self):$/;"	m	class:Framework
+add_certificate	libs/ADVTrustStore/TrustManager.py	/^    def add_certificate(self, certificate):$/;"	m	class:TrustStore
+alive	libs/usbmuxd/tcprelay.py	/^		alive = False$/;"	v
+alive	libs/usbmuxd/tcprelay.py	/^alive = True$/;"	v
+allow_reuse_address	libs/usbmuxd/tcprelay.py	/^	allow_reuse_address = True$/;"	v	class:TCPServer
+analyze_file	modules/storage/data/files_binarycookies.py	/^    def analyze_file(self, fname):$/;"	m	class:Module
+analyze_file	modules/storage/data/files_cachedb.py	/^    def analyze_file(self, fname):$/;"	m	class:Module
+analyze_file	modules/storage/data/files_sql.py	/^    def analyze_file(self, fname):$/;"	m	class:Module
+analyze_strings	modules/binary/reversing/strings.py	/^    def analyze_strings(self, str_list):$/;"	m	class:Module
+app	core/device/device.py	/^    app = None$/;"	v	class:Device
+app_check	core/framework/framework.py	/^    def app_check(self):$/;"	m	class:Framework
+binary_file	libs/binarycookiereader/binarycookiereader.py	/^    binary_file=open(FilePath,'rb')$/;"	v
+build_output_path_for_file	core/framework/local_operations.py	/^    def build_output_path_for_file(self, fname, module, path=None):$/;"	m	class:LocalOperations
+build_temp_path_for_file	core/device/remote_operations.py	/^    def build_temp_path_for_file(self, fname):$/;"	m	class:RemoteOperations
+build_temp_path_for_file	core/framework/local_operations.py	/^    def build_temp_path_for_file(self, fname, module, path=None):$/;"	m	class:LocalOperations
+can_open_url	modules/binary/info/universal_links.py	/^    def can_open_url(self, url):$/;"	m	class:Module
+cat_file	core/framework/local_operations.py	/^    def cat_file(self, fname, grep_args=None):$/;"	m	class:LocalOperations
+chmod_x	core/device/remote_operations.py	/^    def chmod_x(self, fname):$/;"	m	class:RemoteOperations
+choose_boolean	core/utils/menu.py	/^def choose_boolean(message):$/;"	f
+choose_from_list	core/utils/menu.py	/^def choose_from_list(options, choose=True):$/;"	f
+choose_from_list_data_protection	core/utils/menu.py	/^def choose_from_list_data_protection(options, choose=True):$/;"	f
+class_dump	modules/binary/reversing/class_dump.py	/^    def class_dump(self):$/;"	m	class:Module
+clean_frida	modules/various/clean_storage.py	/^    def clean_frida(self):$/;"	m	class:Module
+cleanup	core/device/device.py	/^    def cleanup(self):$/;"	m	class:Device
+close	libs/usbmuxd/usbmux.py	/^	def close(self):$/;"	m	class:MuxConnection
+command_background_start	core/device/remote_operations.py	/^    def command_background_start(self, module, cmd):$/;"	m	class:RemoteOperations
+command_background_start	core/framework/local_operations.py	/^    def command_background_start(self, cmd):$/;"	m	class:LocalOperations
+command_background_stop	core/device/remote_operations.py	/^    def command_background_stop(self, pid):$/;"	m	class:RemoteOperations
+command_background_stop	core/framework/local_operations.py	/^    def command_background_stop(self, procname):$/;"	m	class:LocalOperations
+command_blocking	core/device/remote_operations.py	/^    def command_blocking(self, cmd, internal=True):$/;"	m	class:RemoteOperations
+command_blocking	core/framework/local_operations.py	/^    def command_blocking(self, cmd):$/;"	m	class:LocalOperations
+command_interactive	core/device/remote_operations.py	/^    def command_interactive(self, cmd):$/;"	m	class:RemoteOperations
+command_interactive	core/framework/local_operations.py	/^    def command_interactive(self, cmd):$/;"	m	class:LocalOperations
+command_interactive_tty	core/device/remote_operations.py	/^    def command_interactive_tty(self, cmd):$/;"	m	class:RemoteOperations
+command_subproc_start	core/framework/local_operations.py	/^    def command_subproc_start(self, cmd):$/;"	m	class:LocalOperations
+command_subproc_stop	core/framework/local_operations.py	/^    def command_subproc_stop(self, proc):$/;"	m	class:LocalOperations
+complete_keys	core/framework/framework.py	/^    def complete_keys(self, text, line, *ignored):$/;"	m	class:Framework
+complete_load	core/framework/framework.py	/^    def complete_load(self, text, *ignored):$/;"	m	class:Framework
+complete_set	core/framework/framework.py	/^    def complete_set(self, text, *ignored):$/;"	m	class:Framework
+complete_show	core/framework/framework.py	/^    def complete_show(self, text, line, *ignored):$/;"	m	class:Framework
+complete_unset	core/framework/framework.py	/^    complete_unset = complete_set$/;"	v	class:Framework
+complete_use	core/framework/framework.py	/^    complete_use = complete_load$/;"	v	class:Framework
+compute_checksum	modules/binary/info/checksums.py	/^    def compute_checksum(self, kind):$/;"	m	class:Module
+configure	core/device/installer.py	/^    def configure(self):$/;"	m	class:Installer
+conn	core/device/device.py	/^    conn = None$/;"	v	class:Device
+connect	core/device/device.py	/^    def connect(self):$/;"	m	class:Device
+connect	libs/usbmuxd/usbmux.py	/^	def connect(self, device, port):$/;"	m	class:MuxConnection
+connect	libs/usbmuxd/usbmux.py	/^	def connect(self, device, port):$/;"	m	class:USBMux
+connection_check	core/framework/framework.py	/^    def connection_check(self):$/;"	m	class:Framework
+convert_path_to_filename	core/device/app.py	/^    def convert_path_to_filename(self, fname, app_metadata):$/;"	m	class:App
+cookie	libs/binarycookiereader/binarycookiereader.py	/^        cookie=StringIO(page.read(cookiesize))              #read the complete cookie$/;"	v
+cookie	libs/binarycookiereader/binarycookiereader.py	/^    cookie=''$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^            cookie_flags=''$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^            cookie_flags='HttpOnly'$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^            cookie_flags='Secure'$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^            cookie_flags='Secure; HttpOnly'$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^            cookie_flags='Unknown'$/;"	v
+cookie_flags	libs/binarycookiereader/binarycookiereader.py	/^        cookie_flags=''$/;"	v
+cookie_offsets	libs/binarycookiereader/binarycookiereader.py	/^    cookie_offsets=[]$/;"	v
+cookiesize	libs/binarycookiereader/binarycookiereader.py	/^        cookiesize=unpack('<i',page.read(4))[0]             #fetch cookie size$/;"	v
+create_date	libs/binarycookiereader/binarycookiereader.py	/^        create_date=strftime("%a, %d %b %Y ",gmtime(create_date_epoch))[:-1]$/;"	v
+create_date_epoch	libs/binarycookiereader/binarycookiereader.py	/^        create_date_epoch=unpack('<d',cookie.read(8))[0]+978307200           #Cookies creation time$/;"	v
+create_timestamp_file	core/device/remote_operations.py	/^    def create_timestamp_file(self, fname):$/;"	m	class:RemoteOperations
+daemon	core/device/remote_operations.py	/^        def daemon(module, cmd):$/;"	f	function:RemoteOperations.command_background_start
+daemon	core/framework/local_operations.py	/^        def daemon(cmd):$/;"	f	function:LocalOperations.command_background_start
+debug	core/utils/printer.py	/^    def debug(self, msg):$/;"	m	class:Printer
+decode_nested_plist	core/utils/utils.py	/^        def decode_nested_plist(inner_plist):$/;"	f	function:Utils.plist_read_from_file
+decrypt	core/device/app.py	/^    def decrypt(self, app_metadata):$/;"	m	class:App
+default	core/framework/framework.py	/^    def default(self, line):$/;"	m	class:Framework
+delete	core/device/remote_operations.py	/^        def delete(path):$/;"	f	function:RemoteOperations.dir_delete
+delete_certificates	libs/ADVTrustStore/TrustManager.py	/^    def delete_certificates(self):$/;"	m	class:TrustStore
+delete_temp_file	core/framework/local_operations.py	/^    def delete_temp_file(self, fname, module):$/;"	m	class:LocalOperations
+detect_crash_files	modules/dynamic/detection/jailbreak_detection.py	/^    def detect_crash_files(self):$/;"	m	class:Module
+detect_type	modules/static/code_checks.py	/^    def detect_type(self):$/;"	m	class:Module
+device	core/framework/framework.py	/^    device = None$/;"	v	class:Framework
+dict_print	core/utils/utils.py	/^    def dict_print(text):$/;"	m	class:Utils
+dict_write_to_file	core/utils/utils.py	/^    def dict_write_to_file(text, fp):$/;"	m	class:Utils
+diff_crash_files	modules/dynamic/detection/jailbreak_detection.py	/^    def diff_crash_files(self):$/;"	m	class:Module
+dir_copy	core/framework/local_operations.py	/^    def dir_copy(self, src, dst):$/;"	m	class:LocalOperations
+dir_create	core/device/remote_operations.py	/^    def dir_create(self, path):$/;"	m	class:RemoteOperations
+dir_create	core/framework/local_operations.py	/^    def dir_create(self, path):$/;"	m	class:LocalOperations
+dir_delete	core/device/remote_operations.py	/^    def dir_delete(self, path, force=False):$/;"	m	class:RemoteOperations
+dir_delete	core/framework/local_operations.py	/^    def dir_delete(self, path):$/;"	m	class:LocalOperations
+dir_exist	core/device/remote_operations.py	/^    def dir_exist(self, path):$/;"	m	class:RemoteOperations
+dir_exist	core/framework/local_operations.py	/^    def dir_exist(self, path):$/;"	m	class:LocalOperations
+dir_is_empty	core/framework/local_operations.py	/^    def dir_is_empty(self, path):$/;"	m	class:LocalOperations
+dir_list	core/device/remote_operations.py	/^    def dir_list(self, path, recursive=False):$/;"	m	class:RemoteOperations
+dir_reset	core/device/remote_operations.py	/^    def dir_reset(self, path):$/;"	m	class:RemoteOperations
+dir_reset	core/framework/local_operations.py	/^    def dir_reset(self, path):$/;"	m	class:LocalOperations
+disconnect	core/device/device.py	/^    def disconnect(self):$/;"	m	class:Device
+disinstall	modules/hooking/theos/theos_tweak.py	/^        def disinstall():$/;"	f	function:Module.do_disinstall
+do_back	core/framework/framework.py	/^    def do_back(self, params):$/;"	m	class:Framework
+do_disinstall	modules/hooking/theos/theos_tweak.py	/^    def do_disinstall(self, params):$/;"	m	class:Module
+do_edit	modules/hooking/theos/theos_tweak.py	/^    def do_edit(self, params):$/;"	m	class:Module
+do_exec_command	core/framework/framework.py	/^    def do_exec_command(self, params):$/;"	m	class:Framework
+do_exit	core/framework/framework.py	/^    def do_exit(self, params):$/;"	m	class:Framework
+do_grep	modules/static/code_checks.py	/^        def do_grep(what, where, select):$/;"	f	function:Module._grep
+do_info	core/framework/framework.py	/^    def do_info(self, params):$/;"	m	class:Framework
+do_install	modules/hooking/theos/theos_tweak.py	/^    def do_install(self, params):$/;"	m	class:Module
+do_jobs	core/framework/framework.py	/^    def do_jobs(self, params):$/;"	m	class:Framework
+do_kill	core/framework/framework.py	/^    def do_kill(self, params):$/;"	m	class:Framework
+do_load	core/framework/cli.py	/^    def do_load(self, params):$/;"	m	class:CLI
+do_load	core/framework/framework.py	/^    def do_load(self, params):$/;"	m	class:Framework
+do_pull	core/framework/framework.py	/^    def do_pull(self, params):$/;"	m	class:Framework
+do_push	core/framework/framework.py	/^    def do_push(self, params):$/;"	m	class:Framework
+do_reload	core/framework/cli.py	/^    def do_reload(self, params):$/;"	m	class:CLI
+do_reload	core/framework/module.py	/^    def do_reload(self, params):$/;"	m	class:BaseModule
+do_resource	core/framework/framework.py	/^    def do_resource(self, params):$/;"	m	class:Framework
+do_run	core/framework/module.py	/^    def do_run(self, params, func=None):$/;"	m	class:BaseModule
+do_search	core/framework/framework.py	/^    def do_search(self, params):$/;"	m	class:Framework
+do_set	core/framework/framework.py	/^    def do_set(self, params):$/;"	m	class:Framework
+do_shell	core/framework/framework.py	/^    def do_shell(self, params):$/;"	m	class:Framework
+do_shell_local	core/framework/framework.py	/^    def do_shell_local(self, params):$/;"	m	class:Framework
+do_show	core/framework/framework.py	/^    def do_show(self, params):$/;"	m	class:Framework
+do_unset	core/framework/framework.py	/^    def do_unset(self, params):$/;"	m	class:Framework
+do_use	core/framework/cli.py	/^    do_use = do_load$/;"	v	class:CLI
+do_use	core/framework/framework.py	/^    do_use = do_load$/;"	v	class:Framework
+do_view	modules/hooking/theos/theos_tweak.py	/^    def do_view(self, params):$/;"	m	class:Module
+download	core/device/remote_operations.py	/^    def download(self, src, dst, recursive=False):$/;"	m	class:RemoteOperations
+edit	modules/hooking/theos/theos_tweak.py	/^        def edit():$/;"	f	function:Module.do_edit
+emptyline	core/framework/framework.py	/^    def emptyline(self):$/;"	m	class:Framework
+endofcookie	libs/binarycookiereader/binarycookiereader.py	/^        endofcookie=cookie.read(8)                          #end of cookie$/;"	v
+enter	libs/ADVTrustStore/TrustManager.py	/^    def enter(self):$/;"	m	class:Decoder
+enter	libs/ADVTrustStore/TrustManager.py	/^    def enter(self, nr, cls):$/;"	m	class:Encoder
+eof	libs/ADVTrustStore/TrustManager.py	/^    def eof(self):$/;"	m	class:Decoder
+error	core/utils/printer.py	/^    def error(self, msg):$/;"	m	class:Printer
+escape_path	core/utils/utils.py	/^    def escape_path(path):$/;"	m	class:Utils
+escape_path_scp	core/utils/utils.py	/^    def escape_path_scp(path):$/;"	m	class:Utils
+execute_test	modules/static/code_checks.py	/^    def execute_test(self, category, list_of_checks):$/;"	m	class:Module
+expiry_date	libs/binarycookiereader/binarycookiereader.py	/^        expiry_date=strftime("%a, %d %b %Y ",gmtime(expiry_date_epoch))[:-1] #978307200 is unix epoch of  1\/Jan\/2001 \/\/[:-1] strips the last space$/;"	v
+expiry_date_epoch	libs/binarycookiereader/binarycookiereader.py	/^        expiry_date_epoch= unpack('<d',cookie.read(8))[0]+978307200          #Expiry date is in Mac epoch format: Starts from 1\/Jan\/2001$/;"	v
+export_certificates	libs/ADVTrustStore/TrustManager.py	/^    def export_certificates(self, base_filename):$/;"	m	class:TrustStore
+export_certificates_data	libs/ADVTrustStore/TrustManager.py	/^    def export_certificates_data(self, base_filename):$/;"	m	class:TrustStore
+extract_filename_from_path	core/utils/utils.py	/^    def extract_filename_from_path(path):$/;"	m	class:Utils
+extract_paths_from_string	core/utils/utils.py	/^    def extract_paths_from_string(str):$/;"	m	class:Utils
+file_copy	core/device/remote_operations.py	/^    def file_copy(self, src, dst):$/;"	m	class:RemoteOperations
+file_create	core/device/remote_operations.py	/^    def file_create(self, path):$/;"	m	class:RemoteOperations
+file_create	core/framework/local_operations.py	/^    def file_create(self, path):$/;"	m	class:LocalOperations
+file_delete	core/device/remote_operations.py	/^    def file_delete(self, path):$/;"	m	class:RemoteOperations
+file_delete	core/framework/local_operations.py	/^    def file_delete(self, path):$/;"	m	class:LocalOperations
+file_exist	core/device/remote_operations.py	/^    def file_exist(self, path):$/;"	m	class:RemoteOperations
+file_exist	core/framework/local_operations.py	/^    def file_exist(self, path):$/;"	m	class:LocalOperations
+file_header	libs/binarycookiereader/binarycookiereader.py	/^file_header=binary_file.read(4)                             #File Magic String:cook$/;"	v
+file_move	core/device/remote_operations.py	/^    def file_move(self, src, dst):$/;"	m	class:RemoteOperations
+flags	libs/binarycookiereader/binarycookiereader.py	/^        flags=unpack('<i',cookie.read(4))[0]                #Cookie flags:  1=secure, 4=httponly, 5=secure+httponly$/;"	v
+get_data	libs/ADVTrustStore/TrustManager.py	/^    def get_data(self):$/;"	m	class:Certificate
+get_dataprotection	core/device/app.py	/^    def get_dataprotection(self, filelist):$/;"	m	class:App
+get_extensions	core/device/app.py	/^    def get_extensions(self, binary_directory):$/;"	m	class:App
+get_fingerprint	libs/ADVTrustStore/TrustManager.py	/^    def get_fingerprint(self):$/;"	m	class:Certificate
+get_ip	core/framework/local_operations.py	/^    def get_ip(self):$/;"	m	class:LocalOperations
+get_metadata	core/device/app.py	/^    def get_metadata(self, app_name):$/;"	m	class:App
+get_site_associations	modules/binary/info/universal_links.py	/^    def get_site_associations(self, domain):$/;"	m	class:Module
+get_subject	libs/ADVTrustStore/TrustManager.py	/^    def get_subject(self):$/;"	m	class:Certificate
+get_subject_ASN1	libs/ADVTrustStore/TrustManager.py	/^    def get_subject_ASN1(self):$/;"	m	class:Certificate
+getpacket	libs/usbmuxd/usbmux.py	/^	def getpacket(self):$/;"	m	class:BinaryProtocol
+getpacket	libs/usbmuxd/usbmux.py	/^	def getpacket(self):$/;"	m	class:PlistProtocol
+handle	libs/usbmuxd/tcprelay.py	/^	def handle(self):$/;"	m	class:SocketRelay
+handle	libs/usbmuxd/tcprelay.py	/^	def handle(self):$/;"	m	class:TCPRelay
+haveplist	libs/usbmuxd/usbmux.py	/^	haveplist = False$/;"	v
+haveplist	libs/usbmuxd/usbmux.py	/^	haveplist = True$/;"	v
+help_jobs	core/framework/framework.py	/^    def help_jobs(self):$/;"	m	class:Framework
+help_kill	core/framework/framework.py	/^    def help_kill(self):$/;"	m	class:Framework
+help_load	core/framework/framework.py	/^    def help_load(self):$/;"	m	class:Framework
+help_resource	core/framework/framework.py	/^    def help_resource(self):$/;"	m	class:Framework
+help_search	core/framework/framework.py	/^    def help_search(self):$/;"	m	class:Framework
+help_set	core/framework/framework.py	/^    def help_set(self):$/;"	m	class:Framework
+help_shell	core/framework/framework.py	/^    def help_shell(self):$/;"	m	class:Framework
+help_shell_local	core/framework/framework.py	/^    def help_shell_local(self):$/;"	m	class:Framework
+help_show	core/framework/framework.py	/^    def help_show(self):$/;"	m	class:Framework
+help_unset	core/framework/framework.py	/^    def help_unset(self):$/;"	m	class:Framework
+help_use	core/framework/framework.py	/^    help_use = help_load$/;"	v	class:Framework
+hotfix_67	core/device/device.py	/^        def hotfix_67():$/;"	f	function:Device._exec_command_ssh
+import_certificate_data	libs/ADVTrustStore/TrustManager.py	/^    def import_certificate_data(self, base_filename):$/;"	m	class:TrustStore
+info	core/utils/printer.py	/^    def info(self, msg):$/;"	m	class:Printer
+init_option	core/framework/options.py	/^    def init_option(self, name, value=None, required=False, description=''):$/;"	m	class:Options
+install	modules/hooking/theos/theos_tweak.py	/^        def install():$/;"	f	function:Module.do_install
+installer	core/device/device.py	/^    installer = None$/;"	v	class:Device
+is_data_signed	modules/binary/info/universal_links.py	/^    def is_data_signed(self,data):$/;"	m	class:Module
+is_debug	core/utils/printer.py	/^    is_debug = None$/;"	v	class:Printer
+is_plist	core/utils/utils.py	/^    def is_plist(text):$/;"	m	class:Utils
+is_usb	core/device/device.py	/^    def is_usb(self):$/;"	m	class:Device
+is_valid	libs/ADVTrustStore/TrustManager.py	/^    def is_valid(self):$/;"	m	class:TrustStore
+is_verbose	core/utils/printer.py	/^    is_verbose = None$/;"	v	class:Printer
+json_serial	core/utils/utils.py	/^        def json_serial(obj):$/;"	f	function:Utils.dict_write_to_file
+kill_proc	core/device/remote_operations.py	/^    def kill_proc(self, procname):$/;"	m	class:RemoteOperations
+launch_ui	needle.py	/^def launch_ui(args):$/;"	f
+leave	libs/ADVTrustStore/TrustManager.py	/^    def leave(self):$/;"	m	class:Decoder
+leave	libs/ADVTrustStore/TrustManager.py	/^    def leave(self):$/;"	m	class:Encoder
+list_certificates	libs/ADVTrustStore/TrustManager.py	/^    def list_certificates(self):$/;"	m	class:TrustStore
+list_iOS_7	core/device/device.py	/^        def list_iOS_7():$/;"	f	function:Device._list_apps
+list_iOS_8	core/device/device.py	/^        def list_iOS_8(applist):$/;"	f	function:Device._list_apps
+listen	libs/usbmuxd/usbmux.py	/^	def listen(self):$/;"	m	class:MuxConnection
+load_PEMfile	libs/ADVTrustStore/TrustManager.py	/^    def load_PEMfile(self, certificate_path):$/;"	m	class:Certificate
+load_data	libs/ADVTrustStore/TrustManager.py	/^    def load_data(self, data):$/;"	m	class:Certificate
+local_op	core/device/device.py	/^    local_op = None$/;"	v	class:Device
+local_op	core/framework/framework.py	/^    local_op = None$/;"	v	class:Framework
+lport	libs/usbmuxd/tcprelay.py	/^			lport = int(lport)$/;"	v
+main	needle.py	/^def main():$/;"	f
+merge_dicts	core/utils/utils.py	/^    def merge_dicts(*dict_args):$/;"	m	class:Utils
+meta	core/framework/module.py	/^    meta = {}$/;"	v	class:BaseModule
+meta	modules/_templates/template_background.py	/^    meta = {$/;"	v	class:Module
+meta	modules/_templates/template_base.py	/^    meta = {$/;"	v	class:Module
+meta	modules/_templates/template_frida.py	/^    meta = {$/;"	v	class:Module
+meta	modules/_templates/template_frida_script.py	/^    meta = {$/;"	v	class:Module
+meta	modules/_templates/template_static.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/info/checksums.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/info/compilation_checks.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/info/metadata.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/info/provisioning_profile.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/info/universal_links.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/installation/install.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/installation/pull_ipa.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/class_dump.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/class_dump_frida_enum-all-methods.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/class_dump_frida_enum-classes.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/class_dump_frida_find-class-enum-methods.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/shared_libraries.py	/^    meta = {$/;"	v	class:Module
+meta	modules/binary/reversing/strings.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/delete_ca.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/export_ca.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/import_ca.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/install_ca_burp.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/install_ca_mitm.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/list_ca.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/certs/view_cert.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/proxy/pinning_bypass_frida.py	/^    meta = {$/;"	v	class:Module
+meta	modules/comms/proxy/proxy_regular.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/detection/jailbreak_detection.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/ipc/open_uri.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/memory/heap_dump.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/monitor/files.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/monitor/pasteboard.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/monitor/syslog.py	/^    meta = {$/;"	v	class:Module
+meta	modules/dynamic/watch/syslog.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/cycript/cycript_shell.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/cycript/cycript_touchid.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/frida/frida_launcher.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/frida/frida_shell.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/frida/frida_trace.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/frida/script_anti-hooking-check.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/frida/script_dump-ui.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/theos/list_tweaks.py	/^    meta = {$/;"	v	class:Module
+meta	modules/hooking/theos/theos_tweak.py	/^    meta = {$/;"	v	class:Module
+meta	modules/static/code_checks.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/backup/icloud_content_frida.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/caching/keyboard_autocomplete.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/caching/screenshot.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/container.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/files_binarycookies.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/files_cachedb.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/files_plist.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/files_sql.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/keychain_dump.py	/^    meta = {$/;"	v	class:Module
+meta	modules/storage/data/keychain_dump_frida.py	/^    meta = {$/;"	v	class:Module
+meta	modules/various/clean_storage.py	/^    meta = {$/;"	v	class:Module
+meta	modules/various/hosts.py	/^    meta = {$/;"	v	class:Module
+meta	modules/various/list_apps.py	/^    meta = {$/;"	v	class:Module
+module_kill	modules/_templates/template_background.py	/^    def module_kill(self):$/;"	m	class:Module
+module_kill	modules/dynamic/monitor/files.py	/^    def module_kill(self):$/;"	m	class:Module
+module_kill	modules/dynamic/monitor/pasteboard.py	/^    def module_kill(self):$/;"	m	class:Module
+module_kill	modules/dynamic/monitor/syslog.py	/^    def module_kill(self):$/;"	m	class:Module
+module_post	core/framework/module.py	/^    def module_post(self):$/;"	m	class:BackgroundModule
+module_post	core/framework/module.py	/^    def module_post(self):$/;"	m	class:BaseModule
+module_post	core/framework/module.py	/^    def module_post(self):$/;"	m	class:DebugModule
+module_post	core/framework/module.py	/^    def module_post(self):$/;"	m	class:FridaModule
+module_post	modules/_templates/template_frida_script.py	/^    def module_post(self):$/;"	f
+module_post	modules/binary/reversing/class_dump_frida_enum-all-methods.py	/^    def module_post(self):$/;"	f
+module_post	modules/binary/reversing/class_dump_frida_enum-classes.py	/^    def module_post(self):$/;"	f
+module_post	modules/binary/reversing/class_dump_frida_find-class-enum-methods.py	/^    def module_post(self):$/;"	f
+module_post	modules/comms/proxy/pinning_bypass_frida.py	/^    def module_post(self):$/;"	f
+module_post	modules/storage/backup/icloud_content_frida.py	/^    def module_post(self):$/;"	f
+module_post	modules/storage/data/keychain_dump_frida.py	/^    def module_post(self):$/;"	f
+module_pre	core/framework/module.py	/^    def module_pre(self):$/;"	m	class:DebugModule
+module_pre	core/framework/module.py	/^    def module_pre(self):$/;"	m	class:FridaModule
+module_pre	core/framework/module.py	/^    def module_pre(self):$/;"	m	class:FridaScript
+module_pre	core/framework/module.py	/^    def module_pre(self, bypass_app=False):$/;"	m	class:BaseModule
+module_pre	modules/binary/installation/install.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/delete_ca.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/export_ca.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/import_ca.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/install_ca_burp.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/install_ca_mitm.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/list_ca.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/certs/view_cert.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/comms/proxy/proxy_regular.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/dynamic/monitor/syslog.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/dynamic/watch/syslog.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/hooking/frida/frida_trace.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/hooking/theos/list_tweaks.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/storage/caching/keyboard_autocomplete.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/storage/data/keychain_dump.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/various/clean_storage.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/various/hosts.py	/^    def module_pre(self):$/;"	m	class:Module
+module_pre	modules/various/list_apps.py	/^    def module_pre(self):$/;"	m	class:Module
+module_run	core/framework/module.py	/^    def module_run(self):$/;"	m	class:BaseModule
+module_run	modules/_templates/template_background.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/_templates/template_base.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/_templates/template_frida.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/_templates/template_frida_script.py	/^    def module_run(self):$/;"	f
+module_run	modules/_templates/template_static.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/info/checksums.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/info/compilation_checks.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/info/metadata.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/info/provisioning_profile.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/info/universal_links.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/installation/install.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/installation/pull_ipa.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/reversing/class_dump.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/reversing/class_dump_frida_enum-all-methods.py	/^    def module_run(self):$/;"	f
+module_run	modules/binary/reversing/class_dump_frida_enum-classes.py	/^    def module_run(self):$/;"	f
+module_run	modules/binary/reversing/class_dump_frida_find-class-enum-methods.py	/^    def module_run(self):$/;"	f
+module_run	modules/binary/reversing/shared_libraries.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/binary/reversing/strings.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/delete_ca.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/export_ca.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/import_ca.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/install_ca_burp.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/install_ca_mitm.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/list_ca.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/certs/view_cert.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/comms/proxy/pinning_bypass_frida.py	/^    def module_run(self):$/;"	f
+module_run	modules/comms/proxy/proxy_regular.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/detection/jailbreak_detection.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/ipc/open_uri.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/memory/heap_dump.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/monitor/files.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/monitor/pasteboard.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/monitor/syslog.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/dynamic/watch/syslog.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/cycript/cycript_shell.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/cycript/cycript_touchid.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/frida/frida_launcher.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/frida/frida_shell.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/frida/frida_trace.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/frida/script_anti-hooking-check.py	/^    def module_run(self):$/;"	f
+module_run	modules/hooking/frida/script_dump-ui.py	/^    def module_run(self):$/;"	f
+module_run	modules/hooking/theos/list_tweaks.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/hooking/theos/theos_tweak.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/static/code_checks.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/backup/icloud_content_frida.py	/^    def module_run(self):$/;"	f
+module_run	modules/storage/caching/keyboard_autocomplete.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/caching/screenshot.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/container.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/files_binarycookies.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/files_cachedb.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/files_plist.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/files_sql.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/keychain_dump.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/storage/data/keychain_dump_frida.py	/^    def module_run(self):$/;"	f
+module_run	modules/various/clean_storage.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/various/hosts.py	/^    def module_run(self):$/;"	m	class:Module
+module_run	modules/various/list_apps.py	/^    def module_run(self):$/;"	m	class:Module
+mux	libs/usbmuxd/usbmux.py	/^	mux = USBMux()$/;"	v	class:USBMux
+n	libs/binarycookiereader/binarycookiereader.py	/^            n=cookie.read(1)$/;"	v
+n	libs/binarycookiereader/binarycookiereader.py	/^        n=cookie.read(1)$/;"	v
+name	libs/binarycookiereader/binarycookiereader.py	/^            name=name+str(n)$/;"	v
+name	libs/binarycookiereader/binarycookiereader.py	/^        name=''$/;"	v
+nameoffset	libs/binarycookiereader/binarycookiereader.py	/^        nameoffset=unpack('<i',cookie.read(4))[0]           #cookie name offset from cookie starting point$/;"	v
+notify	core/utils/printer.py	/^    def notify(self, msg):$/;"	m	class:Printer
+num_cookies	libs/binarycookiereader/binarycookiereader.py	/^    num_cookies=unpack('<i',page.read(4))[0]                #Number of cookies in each page, first 4 bytes after the page header in every page.$/;"	v
+num_pages	libs/binarycookiereader/binarycookiereader.py	/^num_pages=unpack('>i',binary_file.read(4))[0]               #Number of pages in the binary file: 4 bytes$/;"	v
+on_message	core/framework/module.py	/^    def on_message(self, message, data):$/;"	m	class:FridaScript
+on_message	modules/hooking/frida/script_dump-ui.py	/^    def on_message(self, message, data):$/;"	f
+onecmd	core/framework/framework.py	/^    def onecmd(self, line):$/;"	m	class:Framework
+open	core/device/app.py	/^    def open(self, bundle_id):$/;"	m	class:App
+output	libs/ADVTrustStore/TrustManager.py	/^    def output(self):$/;"	m	class:Encoder
+output_folder_backup	core/framework/local_operations.py	/^    def output_folder_backup(self, module):$/;"	m	class:LocalOperations
+output_folder_setup	core/framework/local_operations.py	/^    def output_folder_setup(self, module):$/;"	m	class:LocalOperations
+pa	libs/binarycookiereader/binarycookiereader.py	/^            pa=cookie.read(1)$/;"	v
+pa	libs/binarycookiereader/binarycookiereader.py	/^        pa=cookie.read(1)$/;"	v
+page	libs/binarycookiereader/binarycookiereader.py	/^    page=StringIO(page)                                     #Converts the string to a file. So that we can use read\/write operations easily.$/;"	v
+page_sizes	libs/binarycookiereader/binarycookiereader.py	/^page_sizes=[]$/;"	v
+pages	libs/binarycookiereader/binarycookiereader.py	/^pages=[]$/;"	v
+parse_crash_files	modules/dynamic/detection/jailbreak_detection.py	/^    def parse_crash_files(self):$/;"	m	class:Module
+parse_plist	core/device/remote_operations.py	/^    def parse_plist(self, plist):$/;"	m	class:RemoteOperations
+parser	libs/usbmuxd/tcprelay.py	/^parser = OptionParser(usage="usage: %prog [OPTIONS] RemotePort[:LocalPort] [RemotePort[:LocalPort]]...")$/;"	v
+path	libs/binarycookiereader/binarycookiereader.py	/^            path=path+str(pa)$/;"	v
+path	libs/binarycookiereader/binarycookiereader.py	/^        path=''$/;"	v
+path_app	core/framework/framework.py	/^    path_app = ''$/;"	v	class:Framework
+path_core	core/framework/framework.py	/^    path_core = ''$/;"	v	class:Framework
+path_home	core/framework/framework.py	/^    path_home = ''$/;"	v	class:Framework
+path_home_temp	core/framework/framework.py	/^    path_home_temp = ''$/;"	v	class:Framework
+path_libs	core/framework/framework.py	/^    path_libs = ''$/;"	v	class:Framework
+path_modules	core/framework/framework.py	/^    path_modules = ''$/;"	v	class:Framework
+pathoffset	libs/binarycookiereader/binarycookiereader.py	/^        pathoffset=unpack('<i',cookie.read(4))[0]           #cookie path offset from cookie starting point$/;"	v
+peek	libs/ADVTrustStore/TrustManager.py	/^    def peek(self):$/;"	m	class:Decoder
+plist_print	core/utils/utils.py	/^    def plist_print(text):$/;"	m	class:Utils
+plist_read_from_file	core/utils/utils.py	/^    def plist_read_from_file(path):$/;"	m	class:Utils
+plist_read_from_string	core/utils/utils.py	/^    def plist_read_from_string(text):$/;"	m	class:Utils
+plist_write_to_file	core/utils/utils.py	/^    def plist_write_to_file(text, fp):$/;"	m	class:Utils
+ports	libs/usbmuxd/tcprelay.py	/^ports = []$/;"	v
+precmd	core/framework/framework.py	/^    def precmd(self, line):$/;"	m	class:Framework
+print_checksums	modules/binary/info/checksums.py	/^    def print_checksums(self):$/;"	m	class:Module
+print_cmd_output	core/framework/module.py	/^    def print_cmd_output(self, silent=False):$/;"	m	class:FridaScript
+print_cmd_output	core/framework/module.py	/^    def print_cmd_output(self, txt, outfile=None, silent=False):$/;"	m	class:BaseModule
+print_exception	core/framework/framework.py	/^    def print_exception(self, line=''):$/;"	m	class:Framework
+print_file	core/framework/module.py	/^        def print_file(content):$/;"	f	function:BaseModule.print_cmd_output
+print_findings	modules/static/code_checks.py	/^    def print_findings(self):$/;"	m	class:Module
+print_heading	core/framework/framework.py	/^    def print_heading(self, line, level=1):$/;"	m	class:Framework
+print_question	core/utils/menu.py	/^def print_question(txt):$/;"	f
+print_results	modules/binary/info/universal_links.py	/^    def print_results(self):$/;"	m	class:Module
+print_screen	core/framework/module.py	/^        def print_screen(content):$/;"	f	function:BaseModule.print_cmd_output
+print_table	core/framework/framework.py	/^    def print_table(self, data, header=[], title=''):$/;"	m	class:Framework
+printer	core/device/device.py	/^    printer = None$/;"	v	class:Device
+process	libs/usbmuxd/usbmux.py	/^	def process(self, timeout=None):$/;"	m	class:MuxConnection
+process	libs/usbmuxd/usbmux.py	/^	def process(self, timeout=None):$/;"	m	class:USBMux
+prompt	core/framework/framework.py	/^    prompt = Constants.NAME_CLI$/;"	v	class:Framework
+pull	core/device/device.py	/^    def pull(self, src, dst):$/;"	m	class:Device
+pull_ts	modules/comms/certs/delete_ca.py	/^    def pull_ts(self):$/;"	m	class:Module
+pull_ts	modules/comms/certs/export_ca.py	/^    def pull_ts(self):$/;"	m	class:Module
+pull_ts	modules/comms/certs/import_ca.py	/^    def pull_ts(self):$/;"	m	class:Module
+pull_ts	modules/comms/certs/list_ca.py	/^    def pull_ts(self):$/;"	m	class:Module
+push	core/device/device.py	/^    def push(self, src, dst):$/;"	m	class:Device
+query_yes_no	libs/ADVTrustStore/TrustManager.py	/^def query_yes_no(question, default="yes"):$/;"	f
+read	libs/ADVTrustStore/TrustManager.py	/^    def read(self):$/;"	m	class:Decoder
+read_file	core/device/remote_operations.py	/^    def read_file(self, fname, grep_args=None):$/;"	m	class:RemoteOperations
+recv	libs/usbmuxd/usbmux.py	/^	def recv(self, size):$/;"	m	class:SafeStreamSocket
+regex_escape_str	core/utils/utils.py	/^    def regex_escape_str(text):$/;"	m	class:Utils
+regex_remove_control_chars	core/utils/utils.py	/^    def regex_remove_control_chars(text):$/;"	m	class:Utils
+register_option	core/framework/framework.py	/^    def register_option(self, name, value, required, description):$/;"	m	class:Framework
+remote_op	core/device/device.py	/^    remote_op = None$/;"	v	class:Device
+retrieve_files	modules/storage/data/keychain_dump.py	/^    def retrieve_files(self):$/;"	m	class:Module
+rport	libs/usbmuxd/tcprelay.py	/^			rport = int(rport)$/;"	v
+run_check	modules/static/code_checks.py	/^        def run_check(what):$/;"	f	function:Module.execute_test
+save_PEMfile	libs/ADVTrustStore/TrustManager.py	/^    def save_PEMfile(self, certificate_path):$/;"	m	class:Certificate
+save_file	modules/storage/data/files_binarycookies.py	/^    def save_file(self, remote_name, local_name, analyze=False):$/;"	m	class:Module
+save_file	modules/storage/data/files_cachedb.py	/^    def save_file(self, remote_name, local_name, analyze=False):$/;"	m	class:Module
+save_file	modules/storage/data/files_plist.py	/^    def save_file(self, remote_name, local_name, silent):$/;"	m	class:Module
+save_file	modules/storage/data/files_sql.py	/^    def save_file(self, remote_name, local_name, analyze=False):$/;"	m	class:Module
+search_pid	core/device/app.py	/^    def search_pid(self, appname):$/;"	m	class:App
+select_target_app	core/device/device.py	/^    def select_target_app(self):$/;"	m	class:Device
+send	libs/usbmuxd/usbmux.py	/^	def send(self, msg):$/;"	m	class:SafeStreamSocket
+sendpacket	libs/usbmuxd/usbmux.py	/^	def sendpacket(self, req, tag, payload={}):$/;"	m	class:BinaryProtocol
+sendpacket	libs/usbmuxd/usbmux.py	/^	def sendpacket(self, req, tag, payload={}):$/;"	m	class:PlistProtocol
+serialize	core/framework/options.py	/^    def serialize(self):$/;"	m	class:Options
+server	libs/usbmuxd/tcprelay.py	/^	server = serverclass((HOST, lport), TCPRelay)$/;"	v
+serverclass	libs/usbmuxd/tcprelay.py	/^	serverclass = ThreadedTCPServer$/;"	v	class:ThreadedTCPServer
+serverclass	libs/usbmuxd/tcprelay.py	/^serverclass = TCPServer$/;"	v
+servers	libs/usbmuxd/tcprelay.py	/^servers=[]$/;"	v
+set_debug	core/utils/printer.py	/^    def set_debug(self, val):$/;"	m	class:Printer
+set_verbose	core/utils/printer.py	/^    def set_verbose(self, val):$/;"	m	class:Printer
+setup	core/device/device.py	/^    def setup(self, install_tools=True):$/;"	m	class:Device
+shell	core/device/device.py	/^    def shell(self):$/;"	m	class:Device
+show_banner	core/framework/cli.py	/^    def show_banner(self):$/;"	m	class:CLI
+show_globals	core/framework/module.py	/^    def show_globals(self):$/;"	m	class:BaseModule
+show_image	modules/storage/caching/screenshot.py	/^    def show_image(self, sc):$/;"	m	class:Module
+show_info	core/framework/module.py	/^    def show_info(self):$/;"	m	class:BaseModule
+show_modules	core/framework/framework.py	/^    def show_modules(self, param):$/;"	m	class:Framework
+show_options	core/framework/framework.py	/^    def show_options(self, options=None):$/;"	m	class:Framework
+show_source	core/framework/module.py	/^    def show_source(self):$/;"	m	class:BaseModule
+start	libs/ADVTrustStore/TrustManager.py	/^    def start(self):$/;"	m	class:Encoder
+start	libs/ADVTrustStore/TrustManager.py	/^    def start(self, data):$/;"	m	class:Decoder
+thin_binary	core/device/app.py	/^    def thin_binary(self, fname_binary, arch=Constants.PREFERRED_ARCH):$/;"	m	class:App
+to_unicode	core/utils/utils.py	/^    def to_unicode(obj, encoding='utf-8'):$/;"	m	class:Utils
+to_unicode_str	core/utils/utils.py	/^    def to_unicode_str(obj, encoding='utf-8'):$/;"	m	class:Utils
+u	libs/binarycookiereader/binarycookiereader.py	/^            u=cookie.read(1)$/;"	v
+u	libs/binarycookiereader/binarycookiereader.py	/^        u=cookie.read(1)$/;"	v
+unpack_ipa	core/device/app.py	/^    def unpack_ipa(self, app_metadata, ipa_fname):$/;"	m	class:App
+upload	core/device/remote_operations.py	/^    def upload(self, src, dst, recursive=True):$/;"	m	class:RemoteOperations
+url	libs/binarycookiereader/binarycookiereader.py	/^            url=url+str(u)$/;"	v
+url	libs/binarycookiereader/binarycookiereader.py	/^        url=''$/;"	v
+urloffset	libs/binarycookiereader/binarycookiereader.py	/^        urloffset=unpack('<i',cookie.read(4))[0]            #cookie domain offset from cookie starting point$/;"	v
+va	libs/binarycookiereader/binarycookiereader.py	/^            va=cookie.read(1)$/;"	v
+va	libs/binarycookiereader/binarycookiereader.py	/^        va=cookie.read(1)$/;"	v
+validate_editor	core/framework/module.py	/^    def validate_editor(self):$/;"	m	class:BaseModule
+value	libs/binarycookiereader/binarycookiereader.py	/^            value=value+str(va)$/;"	v
+value	libs/binarycookiereader/binarycookiereader.py	/^        value=''$/;"	v
+valueoffset	libs/binarycookiereader/binarycookiereader.py	/^        valueoffset=unpack('<i',cookie.read(4))[0]          #cookie value offset from cookie starting point$/;"	v
+verbose	core/utils/printer.py	/^    def verbose(self, msg):$/;"	m	class:Printer
+verify_signature	modules/binary/info/universal_links.py	/^    def verify_signature(self, data, verify=True):$/;"	m	class:Module
+view	modules/hooking/theos/theos_tweak.py	/^        def view():$/;"	f	function:Module.do_view
+warning	core/utils/printer.py	/^    def warning(self, msg):$/;"	m	class:Printer
+write	libs/ADVTrustStore/TrustManager.py	/^    def write(self, value, nr, typ, cls):$/;"	m	class:Encoder
+write_file	core/device/remote_operations.py	/^    def write_file(self, fname, body):$/;"	m	class:RemoteOperations
+write_file	core/framework/local_operations.py	/^    def write_file(self, fname, body):$/;"	m	class:LocalOperations
