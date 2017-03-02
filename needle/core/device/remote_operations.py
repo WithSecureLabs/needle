@@ -210,7 +210,7 @@ class RemoteOperations(object):
         self.command_blocking(cmd)
 
     def parse_plist(self, plist):
-        """Given a plist file, copy it to temp folder, and run plutil on it."""
+        """Given a plist file, copy it to temp folder and parse it."""
         # Get a copy of the plist
         plist_copy = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
         self._device.printer.debug('Copying the plist to temp: {} -> {}'.format(plist, plist_copy))
