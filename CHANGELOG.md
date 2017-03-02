@@ -6,12 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[AGENT]** Released Needle Agent
+- **[CORE]** iOS 10 Support
+- **[CORE]** Overhaul of the Core
+- **[CORE]** Possibility to disable modules if running incompatible version of iOS
 - **[MODULE]** Simple CLI Client (`various/agent_client`)
-
-#### Fixed
+- **[SUPPORT]** Updated documentation
 
 #### Removed
-
+- **[CORE]** Dependencies superseded by the Needle Agent
 
 
 ## [0.2.0] - 2017-02-16
