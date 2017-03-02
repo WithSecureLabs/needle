@@ -116,6 +116,11 @@ class Utils(object):
         except TypeError as e:
             raise Exception(e)
 
+    @staticmethod
+    def string_to_json(text):
+        """Convert a string to a JSON."""
+        return json.loads(text)
+
     # ==================================================================================================================
     # PLIST UTILS
     # ==================================================================================================================
