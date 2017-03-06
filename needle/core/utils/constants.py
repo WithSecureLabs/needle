@@ -51,12 +51,14 @@ class Constants(object):
         'IDEVICESYSLOG': 'idevicesyslog',
         'MITMDUMP': 'mitmdump',
         'NANO': 'nano',
+        'NC': 'nc',
         'OPEN': 'open',
         'OPENSSL': 'openssl',
         'SECURITY': 'security',
         'SQLITE3': 'sqlite3',
         'TCPRELAY': os.path.join(PATH_LIBS, 'usbmuxd/tcprelay.py'),
         'VIM': 'vim',
+        'WIRESHARK': 'wireshark',
     }
     DISABLE_HOST_VERIFICATION = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
@@ -115,6 +117,7 @@ class Constants(object):
             'KEYCHAIN_DUMP': {'COMMAND': 'keychain_dump', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychain_dump'), 'SETUP': None},
             'LDID': {'COMMAND': 'ldid', 'PACKAGES': ['ldid'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'LIPO': {'COMMAND': 'lipo', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
+            'NC': {'COMMAND': 'nc', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'ONDEVICECONSOLE': {'COMMAND': 'ondeviceconsole', 'PACKAGES': ['com.eswick.ondeviceconsole'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'OPEN': {'COMMAND': 'open', 'PACKAGES': ['com.conradkramer.open'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'OTOOL': {'COMMAND': 'otool', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
@@ -128,6 +131,7 @@ class Constants(object):
                 "dpkg -i /var/root/kill.deb && rm -f /var/root/kill.deb",
                 "killall -HUP SpringBoard"
             ]},
+            'TCPDUMP': {'COMMAND': 'tcpdump', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "ln -s /usr/local/bin/perl /usr/bin/perl",
                 "GIT_SSL_NO_VERIFY=true git clone --recursive https://github.com/theos/theos.git %s" % THEOS_FOLDER,

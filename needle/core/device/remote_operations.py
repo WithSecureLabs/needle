@@ -120,13 +120,19 @@ class RemoteOperations(object):
         out = subprocess.call(cmd, shell=True)
         return out
 
-    def command_background_start(self, module, cmd):
+    def command_background_start(self, module, cmd, stream=False):
         """Run a background command: run it in a new thread and resume execution immediately."""
         self._device.printer.debug('[REMOTE CMD] Remote Background Command: %s' % cmd)
 
         def daemon(module, cmd):
             """Daemon used to run the command so to avoid blocking the UI"""
             # Run command
+            # If the output of the command needs to be streamed back to needle, adding ' & echo $!' is going
+            # to block the whole procedure. No pid is saved for stream-oriented commands
+            # TODO: use another thread to save the pid of stream-oriented commands
+            if stream:
+                out = self.command_blocking(cmd)
+                return 1
             cmd += ' & echo $!'
             out = self.command_blocking(cmd)
             # Parse PID of the process

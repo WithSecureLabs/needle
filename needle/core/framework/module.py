@@ -198,6 +198,13 @@ class BaseModule(Framework):
         else:
             raise FrameworkException('The Editing program specified ("{}") is not supported.'.format(self.options['program']))
 
+    def validate_net_traffic_viewer(self):
+        """Check that the user entered a recognised net traffic viewer in the PROGRAM option by seeing if it exists in the TOOLS_LOCAL directory."""
+        if self.options['program'] in self.TOOLS_LOCAL:
+             self.net_traffic_viewer = self.TOOLS_LOCAL[self.options['program']]
+        else:
+            raise FrameworkException('The net traffic viewer specified ("{}") is not supported.'.format(self.options['program']))
+
 # ======================================================================================================================
 # OTHER TYPES OF MODULES
 # ======================================================================================================================
