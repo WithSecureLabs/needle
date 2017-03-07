@@ -31,7 +31,8 @@ class Device(object):
     _is_iOS8 = False
     _is_iOS9 = False
     _is_iOS10 = False
-    _is_iOS7_or_less = False
+    _is_iOS7 = False
+    _is_iOS6_or_less = False
     _applist = None
     _device_ready = False
     # On-Device Paths
@@ -183,19 +184,21 @@ class Device(object):
     # ==================================================================================================================
     def _detect_ios_version(self):
         """Detect the iOS version running on the device."""
+        if self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS7):
+            self._is_iOS7 = True
         if self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS8):
             self._is_iOS8 = True
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS9):
             self._is_iOS9 = True
         elif self.remote_op.file_exist(Constants.DEVICE_PATH_APPLIST_iOS10):
             self._is_iOS10 = True
-        else: self._is_iOS7_or_less = True
+        else: self._is_iOS6_or_less = True
 
     def _list_apps(self):
         """List all the 3rd party apps installed on the device."""
 
-        def list_iOS_7():
-            raise Exception('Support for iOS < 8 not yet implemented')
+        def list_iOS_6():
+            raise Exception('Support for iOS < 7 not yet implemented')
 
         def list_iOS_8(applist):
             # Refresh UICache in case an app was installed after the last reboot
@@ -204,13 +207,14 @@ class Device(object):
             # Parse plist file
             pl = self.remote_op.parse_plist(applist)
             self._applist = pl["User"]
-
+            
         # Dispatch
         self._detect_ios_version()
-        if self._is_iOS8: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS8)
+        if self._is_iOS7: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS7)
+        elif self._is_iOS8: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS8)
         elif self._is_iOS9: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS9)
         elif self._is_iOS10: list_iOS_8(Constants.DEVICE_PATH_APPLIST_iOS10)
-        else: list_iOS_7()
+        else: list_iOS_6()
 
     def select_target_app(self):
         """List all 3rd party apps installed and let the user choose which one to target"""
