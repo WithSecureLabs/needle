@@ -36,7 +36,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_touch_id_bypass.txt", self)
 
     # ==================================================================================================================
     # RUN
