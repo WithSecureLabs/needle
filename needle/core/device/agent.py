@@ -54,29 +54,12 @@ class NeedleAgent(object):
         self._telnet = TelnetClient(self._ip, self._port)
 
     # ==================================================================================================================
-    # UTILS
-    # ==================================================================================================================
-    def _check_version(self):
-        """Check that the core and the agent are running the same version."""
-        self._device.printer.debug("{} Checking versions...".format(Constants.AGENT_TAG))
-        client_version = Constants.VERSION
-        agent_version = self._telnet.read_result(mark=Constants.AGENT_VERSION_MARK).strip()
-
-        if client_version != agent_version:
-            self._device.printer.error("Mismatching Versions")
-            self._device.printer.error("\tClient (core) version: {}".format(client_version))
-            self._device.printer.error("\tAgent version: {}".format(agent_version))
-            self._device.printer.error("Please be sure versions are aligned before continuing")
-            raise Exception("Mismatching Versions")
-
-    # ==================================================================================================================
     # EXPORTED COMMANDS
     # ==================================================================================================================
     def connect(self):
         self._device.printer.verbose("{} Connecting to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
         self._telnet.connect()
         self._telnet.read_until(Constants.AGENT_WELCOME)
-        self._check_version()
         self._device.printer.notify("{} Successfully connected to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
 
     def disconnect(self):
