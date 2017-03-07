@@ -3,7 +3,7 @@ from core.framework.module import FridaScript
 
 class Module(FridaScript):
     meta = {
-        'name': 'Frida jailbreak detection bypass',
+        'name': 'Frida Jailbreak Detection Bypass',
         'author': 'Henry Hoggard',
         'description': 'Hooks native function calls to hide common jailbreak packages and binaries. Also hooks ObjC jailbreak detection classes',
         'options': (
@@ -132,7 +132,7 @@ Interceptor.attach(f, {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_jb_detection_bypass.txt", self)
 
     # ==================================================================================================================
     # RUN
