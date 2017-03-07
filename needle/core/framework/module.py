@@ -280,12 +280,13 @@ class FridaScript(FridaModule):
 
         # Launching the app
         self.printer.info("Launching the app...")
-        self.device.app.open(self.APP_METADATA['bundle_id'])
-        pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+        pid = device.spawn([self.APP_METADATA['bundle_id']])
 
         # Attaching to the process
         self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
+        device.resume(pid)
+
 
         # Preparing results
         self.results = []
