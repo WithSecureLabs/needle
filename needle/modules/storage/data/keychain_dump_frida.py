@@ -13,6 +13,65 @@ class Module(FridaScript):
 
     JS = '''\
 if (ObjC.available) {
+
+    function StringFromNSStringUTF8(nsstring){
+      var bytearray = nsstring.dataUsingEncoding_(4);
+      return Memory.readUtf8String(bytearray.bytes(),bytearray.length());
+    }
+
+    var SecAccessControlGetConstraints = new NativeFunction(ptr(Module.findExportByName("Security","SecAccessControlGetConstraints")),'pointer',['pointer']);
+
+    function decodeACL(entry){
+        var finalDecodedValue = "";
+        if (entry.containsKey_("accc")){
+          var accessControls = ObjC.Object(SecAccessControlGetConstraints(entry.objectForKey_("accc")));
+          if (accessControls.handle != 0x00){
+            var accessControlEnumerator = accessControls.keyEnumerator();
+            var accessControlItemKey;
+            var finalUserPresence = "";
+            while ((accessControlItemKey = accessControlEnumerator.nextObject()) !== null) {
+              var accessControlItem = accessControls.objectForKey_(accessControlItemKey);
+
+              switch (StringFromNSStringUTF8(accessControlItemKey)) {
+                  case "dacl":
+                    return "Default ACL";
+                  case "osgn":
+                    finalDecodedValue += "PrivateKeyUsage "
+                  case "od":
+                      var constraints = accessControlItem;
+                      var constraitEnumerator = constraints.keyEnumerator();
+                      var constraintItemKey;
+                      while ((constraintItemKey = constraitEnumerator.nextObject()) !== null){
+                          switch (StringFromNSStringUTF8(constraintItemKey)) {
+                            case "cpo":
+                              finalDecodedValue += " UserPresence "
+                              break;
+                            case "cup":
+                              finalDecodedValue += " DevicePasscode "
+                              break;
+                            case "pkofn":
+                              finalDecodedValue += (constraints.objectForKey_("pkofn") == 1 ? " Or " : " And ")
+                              break;
+                            case "cbio":
+                              finalDecodedValue += ((constraints.objectForKey_("cbio").count()) == 1 ? " TouchIDAny " : " TouchIDCurrentSet ")
+                              break;
+                            default:
+                              break;
+                          }
+                      }
+                      break;
+                  case "prp":
+                    finalDecodedValue += "ApplicationPassword"
+                    break;
+                  default:
+                    break;
+                }
+            }
+        }
+      }
+      return finalDecodedValue;
+  }
+
   var constants = {
     "ck":"kSecAttrAccessibleAfterFirstUnlock",
     "ak":"kSecAttrAccessibleWhenUnlocked",
@@ -60,7 +119,7 @@ if (ObjC.available) {
                 Data: ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()).valueOf(),
                 EntitlementGroup: entry.objectForKey_("agrp").valueOf(),
                 Protection: constants[entry.objectForKey_("pdmn")].valueOf(),
-                UserPresence: entry.objectForKey_("musr") ? "Yes" : "No",
+                AccessControls: decodeACL(entry),
                 CreationTime: entry.objectForKey_("cdat").valueOf(),
                 Account: entry.objectForKey_("acct").valueOf(),
                 Service: entry.objectForKey_("svce").valueOf(),
