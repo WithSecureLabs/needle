@@ -11,7 +11,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Overhaul of the Core
 - **[CORE]** Possibility to disable modules if running incompatible version of iOS
 - **[MODULE]** Simple CLI Client (`various/agent_client`)
+- **[MODULE]** Frida Jailbreak Detection Bypass (`hooking/frida/script_jailbreak-detection-bypass.py`) _[from @HenryHoggard]_
+- **[MODULE]** Frida Touch Id Bypass (`hooking/frida/script_touch-id-bypass`) _[from @HenryHoggard]_
 - **[SUPPORT]** Updated documentation
+
+#### Fixed
+- **[MODULE]** Fix `storage/data/keychain_dump_frida` ACL Parsing _[from @bernard-wagner]_
+- **[MODULE]** Frida modules spawn app with Frida instead of UIOpen _[from @HenryHoggard]_
+- **[MODULE]** Frida enumerate methods performance enhancement _[from @HenryHoggard]_
 
 #### Removed
 - **[CORE]** Dependencies superseded by the Needle Agent
