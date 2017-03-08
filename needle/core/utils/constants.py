@@ -12,7 +12,7 @@ class Constants(object):
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
     EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
-    VERSION = '1.0'
+    VERSION = '1.0.0'
 
     # Name variables
     NAME = 'Needle'
