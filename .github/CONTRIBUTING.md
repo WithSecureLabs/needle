@@ -27,7 +27,7 @@ When you are creating a bug report, please [include as many details as possible]
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which component](#needle-architecture) your bug is related to, create an issue and provide the following information.
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined which component your bug is related to, create an issue and provide the following information.
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
@@ -85,7 +85,7 @@ When you are creating an enhancement suggestion, please [include as many details
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which component](#needle-architecture) your enhancement suggestions is related to, create an issue and provide the following information:
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined which component your enhancement suggestions is related to, create an issue and provide the following information:
 
 * _Use a clear and descriptive title_ for the issue to identify the suggestion.
 * _Provide a step-by-step description of the suggested enhancement_ in as many details as possible.
