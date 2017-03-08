@@ -28,7 +28,7 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         # Build the cURL command
-        cmd = '{curl} --insecure https://{url} '.format(curl=self.TOOLS_LOCAL['CURL'], url=self.options['url'])
+        cmd = '{curl} --insecure https://{url} '.format(curl=self.device.DEVICE_TOOLS['CURL'], url=self.options['url'])
         if self.options['proxy']:
             cmd += ' -x {} '.format(self.options['proxy'])
 
