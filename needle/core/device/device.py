@@ -243,7 +243,7 @@ class Device(object):
 
     def cleanup(self):
         """Remove temp folder from device."""
-        self.printer.debug("Cleaning up temp folder: %s" % self.TEMP_FOLDER)
+        self.printer.debug("Cleaning up remote temp folder: %s" % self.TEMP_FOLDER)
         self.remote_op.dir_delete(self.TEMP_FOLDER)
 
     def shell(self):

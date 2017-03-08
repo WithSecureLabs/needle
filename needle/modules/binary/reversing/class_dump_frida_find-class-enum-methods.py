@@ -14,17 +14,9 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    for(var className in ObjC.classes) {
-        if(ObjC.classes.hasOwnProperty(className)) {
-            if(className == "%s") {
-                console.log("Found target class : " + className);
-                console.log("Methods found : ")
-                var methods = ObjC.classes.%s.$methods
-                for (var i = 0; i < methods.length; i++) {
-                    send(JSON.stringify({class:className.toString(), method:methods[i].toString()}));
-                }
-            }
-        }
+    var methods = ObjC.classes.%s.$methods;
+    for (var i = 0; i < methods.length; i++) {
+        send(JSON.stringify({class:'%s', method:methods[i].toString()}));
     }
 } else {
     console.log("Objective-C Runtime is not available!");
@@ -45,7 +37,7 @@ if(ObjC.available) {
     def module_run(self):
         # Build the payload string
         target_class = self.options['target_class']
-        payload = self.JS % (target_class, target_class)
+        payload = self.JS % (target_class,target_class)
 
         # Run the payload
         try:

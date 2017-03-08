@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Dependencies superseded by the Needle Agent
 
 
+
 ## [0.2.0] - 2017-02-16
 #### Added
 - **[CORE]** Preliminary support for iOS10
