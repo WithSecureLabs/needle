@@ -31,15 +31,11 @@ class TelnetClient(object):
     def exec_command(self, cmd):
         self.session.write("{}{}".format(cmd, self.CRLF))
 
-    def read_result(self, mark=Constants.AGENT_RESULT_MARK):
-        self.session.read_until(mark)
-        res = []
-        tn = self.session.read_eager()
-        while tn != "":
-            res.append(tn)
-            tn = self.session.read_eager()
-        res_clean = map(str.strip, res)
-        return "".join(res_clean)
+    def read_result(self):
+        self.session.read_until(Constants.AGENT_OUTPUT_START)
+        tn = self.session.read_until(Constants.AGENT_OUTPUT_END)
+        res_clean = tn[:-len(Constants.AGENT_OUTPUT_END)]
+        return res_clean
 
 
 # ======================================================================================================================
