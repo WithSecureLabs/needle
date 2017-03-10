@@ -6,6 +6,7 @@ import textwrap
 
 from ..framework.framework import Framework, FrameworkException
 from ..framework.options import Options
+from ..utils.constants import Constants
 from ..utils.printer import Colors
 from ..utils.utils import Utils
 
@@ -136,6 +137,10 @@ class BaseModule(Framework):
         if self.connection_check() is None: return None
         # Setup device
         self.device.setup(self._global_options['setup_device'])
+        # Check if the module has been disabled for the current iOS version
+        disabled_for_version = Constants.MODULES_DISABLED.get(self.device._ios_version)
+        if disabled_for_version and self._modulename in disabled_for_version:
+            raise FrameworkException('This module is not currently supported by the iOS version of the device in use (iOS {})'.format(self.device._ios_version))
         # If not specified to bypass app check
         if not bypass_app:
             # Check target app, otherwise launch wizard
@@ -280,12 +285,13 @@ class FridaScript(FridaModule):
 
         # Launching the app
         self.printer.info("Launching the app...")
-        self.device.app.open(self.APP_METADATA['bundle_id'])
-        pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+        pid = device.spawn([self.APP_METADATA['bundle_id']])
 
         # Attaching to the process
         self.printer.info("Attaching to process: %s" % pid)
         self.session = device.attach(pid)
+        device.resume(pid)
+
 
         # Preparing results
         self.results = []
