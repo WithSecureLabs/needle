@@ -2,7 +2,6 @@ import os
 import time
 import threading
 import subprocess
-import plistlib
 
 from ..utils.constants import Constants
 from ..utils.utils import Utils
@@ -210,52 +209,15 @@ class RemoteOperations(object):
         cmd = 'chmod +x %s' % fname
         self.command_blocking(cmd)
 
-    def parse_plist(self, plist, convert=True, sanitize=True):
-        """Given a plist file, copy it to temp folder, convert it to XML, and run plutil on it."""
-        def sanitize_plist(pl):
-            self._device.printer.debug('Sanitizing content from: {}'.format(pl))
-            # Reading original content
-            local_plist = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
-            self.download(pl, local_plist)
-            with open(local_plist, 'rb') as fp:
-                text = fp.read()
-            # Writing back sanitized content
-            with open(local_plist, 'wb') as fp:
-                text_clean = Utils.regex_remove_control_chars(text)
-                fp.write(text_clean)
-            self.upload(local_plist, pl)
-        # Copy the plist
-        plist_copy = Utils.escape_path(self.build_temp_path_for_file(plist.strip("'")))
-        self._device.printer.debug('Copy the plist to temp: {} -> {}'.format(plist, plist_copy))
-        self.file_copy(plist, plist_copy)
-        # Convert to xml
-        if convert:
-            self._device.printer.debug('Converting plist to XML: {}'.format(plist_copy))
-            cmd = '{plutil} -convert xml1 {plist}'.format(plutil=self._device.DEVICE_TOOLS['PLUTIL'], plist=plist_copy)
-            self.command_blocking(cmd, internal=True)
-        # Get the content
-        self._device.printer.debug('Extracting content from: {}'.format(plist_copy))
-        # Sanitize (possible to have NULL bytes)
-        if sanitize:
-            # TODO: FIX
-            #sanitize_plist(plist_copy)
-            pass
-        # Cat the content
-        cmd = 'cat {}'.format(plist_copy)
-        out = self.command_blocking(cmd, internal=True)
-        content = str(''.join(out).encode('utf-8'))
-        # Parse it with plistlib
-        self._device.printer.debug('Parsing plist content')
-        try:
-            pl = plistlib.readPlistFromString(content)
-        except Exception as err:
-            if 'not well-formed (invalid token)' in err.message:
-                self._device.printer.error('Error occured whilst parsing plist')
-                self._device.printer.debug('This error is probably due to an invalid character in the plist file')
-                self._device.printer.debug('The invalid character needs to be added to array "chars_to_remove" in'
-                                           ' function "sanitize_plist" within "remote_operations.py')
-            raise Exception(err)
-        return pl
+    def parse_plist(self, plist):
+        """Given a plist file, copy it to temp folder and parse it."""
+        # Get a copy of the plist
+        plist_copy = self._device.local_op.build_temp_path_for_file('plist', None, path=Constants.FOLDER_TEMP)
+        self._device.printer.debug('Copying the plist to temp: {} -> {}'.format(plist, plist_copy))
+        self._device.pull(plist, plist_copy)
+        # Read the plist
+        content = Utils.plist_read_from_file(plist_copy)
+        return content
 
     def read_file(self, fname, grep_args=None):
         """Given a filename, prints its content on screen."""

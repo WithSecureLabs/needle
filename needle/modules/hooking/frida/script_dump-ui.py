@@ -1,4 +1,4 @@
-from core.framework.module import FridaScript
+from core.framework.module import FridaScript, BaseModule
 
 
 class Module(FridaScript):
@@ -13,7 +13,7 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    ObjC.schedule(ObjC.mainQueue, () => {
+    ObjC.schedule(ObjC.mainQueue, function() {
         const window = ObjC.classes.UIWindow.keyWindow();
         const ui = window.recursiveDescription().toString();
         send(ui);
@@ -29,8 +29,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_dumpui.txt", self)
-        self.output = []
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_dump_ui.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -44,7 +43,14 @@ if(ObjC.available) {
             script.on('message', self.on_message)
             script.load()
         except Exception as e:
-            self.printer.warning("Script terminated abruptly")
+            self.printer.warning("Script terminated abruptly:")
+            self.printer.warning(e)
 
-        # Save to file
-        self.print_cmd_output(self.output, self.options['output'], silent=True)
+    def on_message(self, message, data):
+        try:
+            if message:
+                print("[*] {0}".format(message["payload"]))
+                self.results.append(message["payload"])
+        except Exception as e:
+            print(message)
+            print(e)

@@ -1,6 +1,11 @@
 import os
 import re
-
+import io
+import json
+import biplist
+import plistlib
+from pprint import pprint
+from datetime import datetime
 
 # ======================================================================================================================
 # GENERAL UTILS
@@ -86,3 +91,77 @@ class Utils(object):
         for dictionary in dict_args:
             result.update(dictionary)
         return result
+
+    @staticmethod
+    def dict_print(text):
+        """Print a dictionary to screen."""
+        pprint(text, indent=4)
+
+    @staticmethod
+    def dict_write_to_file(text, fp):
+        """Print a dictionary to file."""
+
+        def json_serial(obj):
+            """
+            JSON serializer for objects not serializable by default
+            Currently handles:
+            - datetime objects (based on: http://stackoverflow.com/a/22238613/7011779)
+            - biplist.Uid based on just getting the representation of the object
+            """
+            # datetime
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+            # biplist.Uid
+            if isinstance(obj, biplist.Uid):
+                return repr(obj)
+            raise TypeError("Type not serializable")
+
+        try:
+            json.dump(text, fp, indent=4, default=json_serial)
+        except TypeError as e:
+            raise Exception(e)
+
+    @staticmethod
+    def string_to_json(text):
+        """Convert a string to a JSON."""
+        return json.loads(text)
+
+    # ==================================================================================================================
+    # PLIST UTILS
+    # ==================================================================================================================
+    @staticmethod
+    def is_plist(text):
+        """Checks if text is a plist."""
+        content_type = type(text)
+        return content_type is plistlib._InternalDict
+
+    @staticmethod
+    def plist_print(text):
+        """Print a plist to screen."""
+        Utils.dict_print(text)
+
+    @staticmethod
+    def plist_read_from_file(path):
+        """Recursively read a plist from a file."""
+        def decode_nested_plist(inner_plist):
+            """This method is designed to allow recursively decoding a plist file."""
+            if hasattr(inner_plist,'iteritems'):
+                for k, v in inner_plist.iteritems():
+                    if isinstance(v, biplist.Data):
+                        inner_plist[k] = Utils.plist_read_from_string(v)
+            return inner_plist
+        try:
+            plist = biplist.readPlist(path)
+            return decode_nested_plist(plist)
+        except (biplist.InvalidPlistException, biplist.NotBinaryPlistException), e:
+            raise Exception("Failed to parse plist file: {}".format(e))
+
+    @staticmethod
+    def plist_read_from_string(text):
+        """Recursively read a plist from a file."""
+        return Utils.plist_read_from_file(io.BytesIO(text))
+
+    @staticmethod
+    def plist_write_to_file(text, fp):
+        """Write a plist to file."""
+        Utils.dict_write_to_file(text, fp)

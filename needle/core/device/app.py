@@ -1,5 +1,4 @@
 import os
-
 from ..utils.constants import Constants
 from ..utils.utils import Utils
 
@@ -21,94 +20,85 @@ class App(object):
 
     def _retrieve_metadata(self):
         """Parse MobileInstallation.plist and the app's local Info.plist, and extract metadata."""
-
-
-        # Content of the MobileInstallation plist
-        plist_mobile_installation = self._device._applist[self._app]
-        metadata_mobile_installation = self.__parse_plist_mobile_installation(plist_mobile_installation)
+        # Parse output from the agent
+        metadata_agent = self.__parse_from_agent()
 
         # Content of the app's local Info.plist
-        plist_info_path = Utils.escape_path('%s/Info.plist' % plist_mobile_installation['Path'])
+        plist_info_path = Utils.escape_path('%s/Info.plist' % metadata_agent['binary_directory'])
+
+        print(plist_info_path)
+
         plist_info = self._device.remote_op.parse_plist(plist_info_path)
         metadata_info = self.__parse_plist_info(plist_info)
 
+        # Compose binary path
+        binary_directory = metadata_agent['binary_directory']
+        binary_name = metadata_info['bundle_exe']
+        binary_path = Utils.escape_path(os.path.join(binary_directory, binary_name))
+
         # Detect architectures
-        architectures = self.__detect_architectures(metadata_mobile_installation['binary_path'])
+        architectures = self.__detect_architectures(binary_path)
 
         # App Extensions
-        extensions = self.get_extensions(metadata_mobile_installation['binary_directory'])
+        extensions = self.get_extensions(binary_directory)
 
         # Pack into a dict
         metadata = {
+            'binary_path': binary_path,
+            'binary_name': binary_name,
             'architectures': architectures,
             'extensions': extensions,
         }
-        metadata = Utils.merge_dicts(metadata, metadata_mobile_installation, metadata_info)
+        metadata = Utils.merge_dicts(metadata, metadata_agent, metadata_info)
         return metadata
 
-    def __parse_plist_mobile_installation(self, plist):
-        # Parse the MobileInstallation plist
-        uuid = plist['BundleContainer'].rsplit('/', 1)[-1]
-        name = plist['Path'].rsplit('/', 1)[-1]
-        bundle_id = plist['CFBundleIdentifier']
-        bundle_directory = plist['BundleContainer']
-        data_directory = plist['Container']
-        binary_directory = plist['Path']
-        try:
-            entitlements = plist['Entitlements']
-        except:
-            entitlements = None
-        # Compose binary path
-        binary_folder = binary_directory
-        binary_name = os.path.splitext(binary_folder.rsplit('/', 1)[-1])[0]
-        binary_path = Utils.escape_path(os.path.join(binary_folder, binary_name))
+    def __parse_from_agent(self):
+        agent_info = self._device._applist[self._app]
+
+        # Parse the JSON
+        name             = self.__extract_field(agent_info, 'DisplayName').encode('ascii','replace')
+        bundle_id        = self.__extract_field(agent_info, 'BundleIdentifier')
+        data_directory   = self.__extract_field(agent_info, 'DataContainer', path=True)
+        bundle_directory = self.__extract_field(agent_info, 'BundleContainer', path=True)
+        binary_directory = self.__extract_field(agent_info, 'BundleURL', path=True)
+        app_version      = self.__extract_field(agent_info, 'BundleVersion')
+        sdk_version      = self.__extract_field(agent_info, 'SDKVersion')
+        entitlements     = self.__extract_field(agent_info, 'Entitlements')
+        minimum_os       = self.__extract_field(agent_info, 'MinimumOS')
+        team_id          = self.__extract_field(agent_info, 'TeamID')
+        uuid = bundle_directory.rsplit('/', 1)[-1]
+
         # Pack into a dict
         metadata = {
-            'uuid': uuid,
             'name': name,
             'bundle_id': bundle_id,
-            'bundle_directory': bundle_directory,
             'data_directory': data_directory,
+            'bundle_directory': bundle_directory,
             'binary_directory': binary_directory,
+            'app_version': app_version,
+            'sdk_version': sdk_version,
             'entitlements': entitlements,
-            'binary_path': binary_path,
-            'binary_name': binary_name,
+            'minimum_os': minimum_os,
+            'team_id': team_id,
+            'uuid': uuid
         }
         return metadata
 
     def __parse_plist_info(self, plist):
         # Parse the Info.plist file
-        sdk_version = plist['DTSDKName']
-        minimum_os = plist['MinimumOSVersion']
-        bundle_id = plist['CFBundleIdentifier']
-        bundle_displayname = plist['CFBundleDisplayName']
-        bundle_exe = plist['CFBundleExecutable']
-        bundle_package_type = plist['CFBundlePackageType']
-        app_version_long  = plist['CFBundleVersion']
-        app_version_short = plist['CFBundleShortVersionString']
-        app_version = '{} ({})'.format(app_version_long, app_version_short)
+        bundle_exe = self.__extract_field(plist, 'CFBundleExecutable')
+        bundle_package_type = self.__extract_field(plist, 'CFBundlePackageType')
+        platform_version = self.__extract_field(plist, 'DTPlatformVersion')
+        ats_settings = self.__extract_field(plist, 'NSAppTransportSecurity')
         try:
-            platform_version = plist['DTPlatformVersion']
-        except:
-            platform_version = None
-        try:
-            url_handlers = [url['CFBundleURLSchemes'][0] for url in plist['CFBundleURLTypes']]
+            url_handlers = [url['CFBundleURLSchemes'] for url in plist['CFBundleURLTypes']]
         except:
             url_handlers = None
-        try:
-            ats_settings = plist['NSAppTransportSecurity']
-        except:
-            ats_settings = None
         # Pack into a dict
         metadata = {
             'platform_version': platform_version,
-            'sdk_version': sdk_version,
-            'minimum_os': minimum_os,
-            'bundle_id': bundle_id,
-            'bundle_displayname': bundle_displayname,
             'bundle_exe': bundle_exe,
             'bundle_package_type': bundle_package_type,
-            'app_version': app_version,
             'url_handlers': url_handlers,
             'ats_settings': ats_settings,
         }
@@ -124,6 +114,18 @@ class App(object):
         res = msg.rsplit(': ')[-1].split(' ')
         return res
 
+    def __extract_field(self, data, field, path=False):
+        """Extract the specified entry from the plist file. Returns empty string if not present."""
+        try:
+            temp = data[field]
+            if path:
+                prefix = 'file://'
+                if temp.startswith(prefix):
+                    temp = temp[len(prefix):]
+            return temp
+        except:
+            return ""
+
     # ==================================================================================================================
     # EXTENSION SUPPORT
     # ==================================================================================================================
@@ -133,7 +135,7 @@ class App(object):
         if self._device.remote_op.dir_exist(plugin_dir):
             return self._retrieve_extensions(plugin_dir)
         else:
-            self._device.printer.verbose("No Plugins found")
+            self._device.printer.debug("No Plugins found")
             return None
 
     def _retrieve_extensions(self, plugin_dir):
@@ -217,11 +219,26 @@ class App(object):
                                                       bundle=app_metadata['bundle_id'],
                                                       out=fname_decrypted)
             out = self._device.remote_op.command_blocking(cmd)
-        self._device.printer.verbose("Decrypted IPA stored at: %s" % fname_decrypted)
+        self._device.printer.debug("Decrypted IPA stored at: %s" % fname_decrypted)
 
         # Unzip IPA and get binary path
         fname_binary = self.unpack_ipa(app_metadata, fname_decrypted)
         return fname_binary
+
+        # Thin the binary
+        #fname_thinned = self.thin_binary(fname_binary)
+        #return fname_thinned
+
+    def thin_binary(self, fname_binary, arch=Constants.PREFERRED_ARCH):
+        self._device.printer.info("Thinning the binary...")
+        fname_thinned = self._device.remote_op.build_temp_path_for_file('thinned')
+        cmd = '{bin} -thin {arch} -output {output} {binary}'.format(bin=self._device.DEVICE_TOOLS['LIPO'],
+                                                                    arch=arch,
+                                                                    output=fname_thinned,
+                                                                    binary=fname_binary)
+        self._device.remote_op.command_blocking(cmd)
+        self._device.printer.debug("Thinned IPA stored at: %s" % fname_thinned)
+        return fname_thinned
 
     # ==================================================================================================================
     # UNPACK AN IPA FILE

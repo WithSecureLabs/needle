@@ -59,7 +59,7 @@ class Module(BaseModule):
 
         # Parse dumped plist files and merge them into a single data structure
         self.printer.info("Parsing the content...")
-        parsed = [self.device.remote_op.parse_plist(item, convert=False, sanitize=True) for item in self.KEYCHAIN_PLISTS]
+        parsed = [self.device.remote_op.parse_plist(item) for item in self.KEYCHAIN_PLISTS]
         flatten = []
         for el in parsed: flatten += el
 
