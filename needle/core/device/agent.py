@@ -1,41 +1,51 @@
 from __future__ import print_function
-import telnetlib
+import socket
+import asyncore
 
 from ..utils.constants import Constants
 
 
 # ======================================================================================================================
-# TELNET CLIENT
+# ASYNC CLIENT
 # ======================================================================================================================
-class TelnetClient(object):
+class AsyncClient(asyncore.dispatcher):
     def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.timeout = Constants.AGENT_TELNET_TIMEOUT
-        self.CRLF = Constants.AGENT_TELNET_CRLF
-        self.session = None
+        asyncore.dispatcher.__init__(self)
+        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connect((host, port))
+        self.buffer = ''
+        self.read = False
 
-    def connect(self):
-        try:
-            self.session = telnetlib.Telnet(self.host, self.port, self.timeout)
-        except:
-            raise Exception("Timeout while establishing a connection with the agent. Have you started it?")
+    def readable(self):
+        return True
 
-    def disconnect(self):
-        if self.session:
-            self.session.close()
+    def writable(self):
+        return (len(self.buffer) > 0)
 
-    def read_until(self, str):
-        self.session.read_until(str)
+    def handle_connect(self):
+        pass
 
-    def exec_command(self, cmd):
-        self.session.write("{}{}".format(cmd, self.CRLF))
+    def handle_close(self):
+        self.close()
 
-    def read_result(self):
-        self.session.read_until(Constants.AGENT_OUTPUT_START)
-        tn = self.session.read_until(Constants.AGENT_OUTPUT_END)
-        res_clean = tn[:-len(Constants.AGENT_OUTPUT_END)]
-        return res_clean
+    def handle_read(self):
+        """Read output from socket."""
+        self.setblocking(True)
+        data = ""
+        while True:
+            temp = self.recv(8192)
+            if Constants.AGENT_OUTPUT_END in temp:
+                data += temp[:temp.find(Constants.AGENT_OUTPUT_END)]
+                break
+            data += temp
+        self.setblocking(False)
+        return data
+
+    def handle_write(self, cmd):
+        """Write command to socket."""
+        self.buffer = cmd
+        sent = self.send(self.buffer + '\r\n')
+        self.buffer = self.buffer[sent:]
 
 
 # ======================================================================================================================
@@ -47,26 +57,24 @@ class NeedleAgent(object):
         self._device = device
         self._ip = self._device._ip
         self._port = self._device._agent_port
-        self._telnet = TelnetClient(self._ip, self._port)
+        self.client = None
 
     # ==================================================================================================================
     # EXPORTED COMMANDS
     # ==================================================================================================================
     def connect(self):
         self._device.printer.verbose("{} Connecting to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
-        self._telnet.connect()
-        self._telnet.read_until(Constants.AGENT_WELCOME)
+        self.client = AsyncClient(self._ip, self._port)
         self._device.printer.notify("{} Successfully connected to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
 
     def disconnect(self):
         self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
-        self._telnet.disconnect()
 
     def exec_command_agent(self, cmd):
         self._device.printer.debug("{} Executing command: {}".format(Constants.AGENT_TAG, cmd))
-        self._telnet.exec_command(cmd)
+        self.client.handle_write(cmd)
         return self.read_result()
 
     def read_result(self):
-        self._device.printer.debug("{} Attempting to reading result".format(Constants.AGENT_TAG))
-        return self._telnet.read_result()
+        self._device.printer.debug("{} Parsing result".format(Constants.AGENT_TAG))
+        return self.client.handle_read()

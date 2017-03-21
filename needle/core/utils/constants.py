@@ -12,7 +12,7 @@ class Constants(object):
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
     EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
-    VERSION = '1.0.1'
+    VERSION = '1.0.2'
 
     # Name variables
     NAME = 'Needle'
@@ -44,12 +44,9 @@ class Constants(object):
     PASSWORD_MASK = '********'
 
     # AGENT CONSTANTS
-    AGENT_TELNET_CRLF = '\r\n\r\n'
-    AGENT_TELNET_TIMEOUT = 120
     AGENT_TAG = "[AGENT]"
     AGENT_WELCOME = "Welcome to Needle Agent"
     AGENT_VERSION_MARK = "VERSION: "
-    AGENT_OUTPUT_START = ":OUTPUT_START: "
     AGENT_OUTPUT_END = " :OUTPUT_END:"
     AGENT_CMD_STOP = "stop"
     AGENT_CMD_OS_VERSION = "os_version"
