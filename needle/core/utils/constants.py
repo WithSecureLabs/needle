@@ -156,7 +156,7 @@ class Constants(object):
             'OTOOL': {'COMMAND': 'otool', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'PBWATCHER': {'COMMAND': 'pbwatcher', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'pbwatcher'), 'SETUP': None},
             'PERL': {'COMMAND': 'perl', 'PACKAGES': ['org.coolstar.perl', 'org.coolstar.iostoolchain'], 'REPO': 'http://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
-            'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-ftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
+            'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-sftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
             'UIOPEN': {'COMMAND': 'uiopen', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
         }
     }
