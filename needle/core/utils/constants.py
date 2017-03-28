@@ -95,19 +95,10 @@ class Constants(object):
     # DEVICE
     # ==================================================================================================================
     # DEVICE PATHS
-    DEVICE_PATH_TEMP_FOLDER      = '/var/root/needle/'
-    DEVICE_PATH_APPLIST_iOS7     = '/var/mobile/Library/Caches/com.apple.mobile.installation.plist'
-    DEVICE_PATH_APPLIST_iOS8     = '/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist'
-    DEVICE_PATH_APPLIST_iOS9     = '/private/var/installd/Library/MobileInstallation/LastLaunchServicesMap.plist'
-    DEVICE_PATH_BUNDLE_iOS7      = '/private/var/mobile/Applications/'
-    DEVICE_PATH_BUNDLE_iOS8      = '/private/var/mobile/Containers/Bundle/Application/'
-    DEVICE_PATH_BUNDLE_iOS9      = '/private/var/containers/Bundle/Application/'
-    DEVICE_PATH_DATA_iOS8        = '/private/var/mobile/Containers/Data/Application/'
-    DEVICE_PATH_DATA_iOS9        = '/private/var/mobile/Containers/Data/Application/'
-    DEVICE_PATH_TRUST_STORE      = '/private/var/Keychains/TrustStore.sqlite3'
-    DEVICE_PATH_FRIDA_CACHE      = '/Library/Caches/frida-*'
-    DEVICE_PATH_HOSTS            = '/etc/hosts'
-    DEVICE_PATH_EFFECTIVE_CONFIG = '/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist'
+    DEVICE_PATH_TEMP_FOLDER  = '/var/root/needle/'
+    DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
+    DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
+    DEVICE_PATH_HOSTS        = '/etc/hosts'
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
@@ -165,7 +156,7 @@ class Constants(object):
             'OTOOL': {'COMMAND': 'otool', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'PBWATCHER': {'COMMAND': 'pbwatcher', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'pbwatcher'), 'SETUP': None},
             'PERL': {'COMMAND': 'perl', 'PACKAGES': ['org.coolstar.perl', 'org.coolstar.iostoolchain'], 'REPO': 'http://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
-            'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-ftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
+            'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-sftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
             'UIOPEN': {'COMMAND': 'uiopen', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
         }
     }

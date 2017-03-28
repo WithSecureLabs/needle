@@ -45,11 +45,6 @@ class Utils(object):
         # Error
         return None, None
 
-    @staticmethod
-    def extract_directory_from_path(fullpath):
-        """Returns the directory of a given full file path."""
-        return os.path.dirname(fullpath)
-
     # ==================================================================================================================
     # UNICODE STRINGS UTILS
     # ==================================================================================================================
