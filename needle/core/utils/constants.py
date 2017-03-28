@@ -97,7 +97,6 @@ class Constants(object):
     # DEVICE
     # ==================================================================================================================
     # DEVICE PATHS
-<<<<<<< HEAD
     DEVICE_PATH_TEMP_FOLDER      = '/var/root/needle/'
     DEVICE_PATH_APPLIST_iOS7     = '/var/mobile/Library/Caches/com.apple.mobile.installation.plist'
     DEVICE_PATH_APPLIST_iOS8     = '/var/mobile/Library/MobileInstallation/LastLaunchServicesMap.plist'
@@ -111,12 +110,6 @@ class Constants(object):
     DEVICE_PATH_FRIDA_CACHE      = '/Library/Caches/frida-*'
     DEVICE_PATH_HOSTS            = '/etc/hosts'
     DEVICE_PATH_EFFECTIVE_CONFIG = '/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist'
-=======
-    DEVICE_PATH_TEMP_FOLDER  = '/var/root/needle/'
-    DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
-    DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
-    DEVICE_PATH_HOSTS        = '/etc/hosts'
->>>>>>> upstream/develop
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
