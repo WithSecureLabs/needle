@@ -6,6 +6,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+#### Fixed
+#### Removed
+
+
+
+## [1.0.1] - 2017-03-15
+#### Fixed
+- Improved communication with the Agent
+
+
+
+## [1.0.0] - 2017-03-10
+#### Added
 - **[AGENT]** Released Needle Agent
 - **[CORE]** iOS 10 Support
 - **[CORE]** Overhaul of the Core
