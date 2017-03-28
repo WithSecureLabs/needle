@@ -232,7 +232,8 @@ class Device(object):
         self.printer.debug("Creating temp folder: %s" % self.TEMP_FOLDER)
         self.remote_op.dir_create(self.TEMP_FOLDER)
         # Detect OS version
-        self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
+        if not self._ios_version:
+            self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
         # Install tools
         if install_tools:
             if not self._device_ready:

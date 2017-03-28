@@ -11,9 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## [1.0.2] - 2017-03-21
+#### Fixed
+- **[AGENT]** Improved communication with the Agent
+- **[AGENT]** Replaced `telnetlib` with `asyncore`
+
+
+
 ## [1.0.1] - 2017-03-15
 #### Fixed
-- Improved communication with the Agent
+- **[AGENT]** Improved communication with the Agent
 
 
 
