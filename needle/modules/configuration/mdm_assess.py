@@ -3,13 +3,15 @@ from core.framework.framework import FrameworkException
 from core.device.device import Device
 from core.utils.utils import Utils
 from core.utils.constants import Constants
-from plistlib import readPlist,_InternalDict
 
 class Module(BaseModule):
     meta = {
         'name': 'MDM Assess Effective',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description': 'Configuration Assessment Module',
+        'description':  'This module will extract and compare the configuration '\
+                        'of the device against a supplied configuration file, and present a '\
+                        'summary of any conflicts found between the two configurations along '\
+                        'with recomended changes.',
         'options': (
             ('template', True, True, 'Configuration template. [Plist]'),
             ('output', True, True,  'Full path of the output folder.'),
@@ -45,16 +47,14 @@ class Module(BaseModule):
     # Parse Plist configuration data into dict
     def structure_data(self, config_file):
         try:
-            readPlist(config_file)
-            config, merged = readPlist(config_file), {}
+            config, merged = Utils.plist_read_from_file(config_file), {}
             for k in config.keys(): 
                 merged.update(config[k])
             return merged
         except:
             # If not, print error and exit
-            self.printer.error('Invalid configuration file!')
-            self.printer.verbose('Invalid file: %s' % config_file)
-            raise FrameworkException()
+            self.printer.error('Invalid file: %s' % config_file)
+            raise FrameworkException('Invalid configuration file!')
 
 
     # Compare two config files
@@ -90,7 +90,7 @@ class Module(BaseModule):
                     self.printer.warning('[WEAK] %s' % attribute)
 
                     # If attribute consists of multiple dict values, process and output
-                    if type(current[k]) is _InternalDict and len(current[k]) > 1:
+                    if Utils.is_plist(current[k]) and len(current[k]) > 1:
                         for k1, v1 in current[k].items():
                             attribute = '\t%s: %s' % (
                                 (str(k1).replace('range', '')).ljust(9), str(v1))
@@ -103,7 +103,7 @@ class Module(BaseModule):
                                 continue
 
                             # Print config status and recommended value
-                            self.printer.notify(attribute + recommendation)
+                            self.printer.notify('%s%s' % (attribute, recommendation))
 
                     # Else print config status and recommended value
                     else:
@@ -129,7 +129,7 @@ class Module(BaseModule):
 
         # Check EffectiveUserSettings.plist file is present!
         config_file = Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS9_AND_BELOW
-        if self.device._ios_version.split('\n')[2] >= 10:
+        if "10" in self.device._ios_version:
             config_file = Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS10
 
         cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=config_file)
@@ -138,14 +138,14 @@ class Module(BaseModule):
             config = self.device.remote_op.command_blocking(cmd)[0].strip()
         except:
             self.printer.error('No Configuration profiles applied!')
-            self.printer.Debug('Could not find %s' % config_file)
+            self.printer.debug('Could not find %s' % config_file)
             return
 
         # Pull Effective User Settings plist
         local_name = Utils.extract_filename_from_path(config_file)
         local_file = self.save_file(config_file, local_name)
 
-        if self.options['pull_only'] != True:
+        if self.options['pull_only'] is not True:
             # Comparing configuration with template
             self.printer.verbose('Assessing Configuration...')
             self.compare(local_file, self.options['template'])
