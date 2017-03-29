@@ -3,7 +3,6 @@ import paramiko
 from sshtunnel import SSHTunnelForwarder
 
 from app import App
-from installer import Installer
 from remote_operations import RemoteOperations
 from agent import NeedleAgent
 from ..framework.local_operations import LocalOperations
@@ -51,7 +50,6 @@ class Device(object):
         self._tools_local = tools
         # Init related objects
         self.app = App(self)
-        self.installer = Installer(self)
         self.local_op = LocalOperations()
         self.remote_op = RemoteOperations(self)
         self.printer = Printer()
@@ -226,7 +224,7 @@ class Device(object):
             self._portforward_usb_stop()
             self._portforward_agent_stop()
 
-    def setup(self, install_tools=True):
+    def setup(self):
         """Create temp folder, and check if all tools are available"""
         # Setup temp folder
         self.printer.debug("Creating temp folder: %s" % self.TEMP_FOLDER)
