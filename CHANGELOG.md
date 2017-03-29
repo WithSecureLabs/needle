@@ -6,7 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+
 #### Fixed
+- **[MODULE]** Compatibility of modules requiring app decryption (iOS 10)
+
 #### Removed
 
 
