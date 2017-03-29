@@ -34,7 +34,6 @@ class Framework(cmd.Cmd):
     _loaded_modules = {}
     _jobs = []
     _record = None
-    _device_ready = False
     _local_ready = False
     # Mode Flags
     _script = 0

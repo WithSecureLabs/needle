@@ -27,7 +27,7 @@ class Device(object):
     _frida_server = None
     _port_forward_ssh, _port_forward_agent = None, None
     # App specific
-    _applist, _device_ready, _ios_version = None, None, None
+    _applist, _ios_version = None, None
     # Reference to External Objects
     ssh, agent = None, None
     app, installer = None, None
@@ -234,13 +234,6 @@ class Device(object):
         # Detect OS version
         if not self._ios_version:
             self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
-        # Install tools
-        if install_tools:
-            if not self._device_ready:
-                self.printer.info("Configuring device...")
-                self._device_ready = self.installer.configure()
-        else:
-            self._device_ready = True
 
     def cleanup(self):
         """Remove temp folder from device."""
