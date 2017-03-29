@@ -56,9 +56,6 @@ class Constants(object):
     MODULES_DISABLED = {
         '10': [
             'binary/installation/install',
-            'binary/installation/pull_ipa',
-            'binary/reversing/class_dump',
-            'binary/reversing/strings',
             'storage/data/keychain_dump'
         ]
     }
@@ -148,7 +145,11 @@ class Constants(object):
 
             # TO REPLACE
             'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': '', 'LOCAL': None, 'SETUP': None},
-            'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': ['com.iphonecake.clutch2'], 'REPO': 'http://cydia.iphonecake.com/', 'LOCAL': None, 'SETUP': None},
+            'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
+                "curl -ksL \"http://cydia.iphonecake.com/Clutch2.0.4.deb\" - o /var/root/clutch.deb",
+                "dpkg -i /var/root/clutch.deb && rm -f /var/root/clutch.deb",
+                "killall -HUP SpringBoard"
+            ]},
             'CURL': {'COMMAND': 'curl', 'PACKAGES': ['curl'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP'), 'SETUP': None},
             'FSMON': {'COMMAND': 'fsmon', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'fsmon'), 'SETUP': None},
