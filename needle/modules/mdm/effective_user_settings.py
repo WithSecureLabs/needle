@@ -75,7 +75,7 @@ class Module(BaseModule):
                     if str(current[k][current[k].keys()[0]]) == 'True':
                         status = '[ENABLED]'
                     else:
-                        status = '[DISSABLED]'
+                        status = '[DISABLED]'
 
                 # Check for Config and Desired config setting mismatch
                 if v != current[k]:
