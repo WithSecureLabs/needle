@@ -231,7 +231,7 @@ class Device(object):
         self.remote_op.dir_create(self.TEMP_FOLDER)
         # Detect OS version
         if not self._ios_version:
-            self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
+            self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION).strip()
 
     def cleanup(self):
         """Remove temp folder from device."""
