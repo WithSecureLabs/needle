@@ -85,13 +85,10 @@ class LocalOperations(object):
     # ==================================================================================================================
     # COMMANDS
     # ==================================================================================================================
-    def command_subproc_start(self, cmd, piping=False):
+    def command_subproc_start(self, cmd):
         """Run a command in a subprocess and resume execution immediately."""
         self.printer.debug('[LOCAL CMD] Local Subprocess Command: %s' % cmd)
         DEVNULL = open(os.devnull, 'w')
-        if piping:
-            proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-            return proc
         proc = subprocess.Popen(cmd.split(), stdout=DEVNULL, stderr=subprocess.STDOUT)
         time.sleep(2)
         return proc
