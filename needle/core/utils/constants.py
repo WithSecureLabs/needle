@@ -99,6 +99,8 @@ class Constants(object):
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
     DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
     DEVICE_PATH_HOSTS        = '/etc/hosts'
+    DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS9_AND_BELOW = '/var/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist'
+    DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS10 = '/var/mobile/Library/UserConfigurationProfiles/EffectiveUserSettings.plist'
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
