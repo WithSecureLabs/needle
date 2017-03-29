@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[MODULE]** Created the `device` category
+- **[MODULE]** Dependency Installer	(`device/dependency_installer`)
 
 #### Fixed
 - **[MODULE]** Compatibility of modules requiring app decryption (iOS 10)
