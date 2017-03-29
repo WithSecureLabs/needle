@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Dependency Installer	(`device/dependency_installer`)
 
 #### Fixed
+- **[CORE]** Moved installation of dependencies to its own module (`device/dependency_installer`)
 - **[MODULE]** Compatibility of modules requiring app decryption (iOS 10)
 
 #### Removed

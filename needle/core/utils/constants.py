@@ -36,7 +36,6 @@ class Constants(object):
     GLOBAL_PASSWORD = 'alpine'
     GLOBAL_DEBUG = False
     GLOBAL_VERBOSE = True
-    GLOBAL_SETUP_DEVICE = False
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
     GLOBAL_SAVE_HISTORY = True

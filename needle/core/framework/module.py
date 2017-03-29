@@ -136,7 +136,7 @@ class BaseModule(Framework):
         # Check if we have an established connection, otherwise abort the run
         if self.connection_check() is None: return None
         # Setup device
-        self.device.setup(self._global_options['setup_device'])
+        self.device.setup()
         # Check if the module has been disabled for the current iOS version
         disabled_for_version = Constants.MODULES_DISABLED.get(self.device._ios_version)
         if disabled_for_version and self._modulename in disabled_for_version:
