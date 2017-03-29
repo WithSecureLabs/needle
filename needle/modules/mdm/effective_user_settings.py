@@ -1,28 +1,26 @@
 from core.framework.module import BaseModule
 from core.framework.framework import FrameworkException
-from core.device.device import Device
 from core.utils.utils import Utils
 from core.utils.constants import Constants
 
+
 class Module(BaseModule):
     meta = {
-        'name': 'MDM Assess Effective',
+        'name': 'MDM Effective User Settings',
         'author': 'Oliver Simonnet (@MWRLabs)',
-        'description':  'This module will extract and compare the configuration '\
+        'description':  'Extract and compare the configuration '\
                         'of the device against a supplied configuration file, and present a '\
                         'summary of any conflicts found between the two configurations along '\
-                        'with recomended changes.',
+                        'with recommended changes.',
         'options': (
-            ('template', True, True, 'Configuration template. [Plist]'),
+            ('template', "", False, 'Configuration template. [Plist]'),
             ('output', True, True,  'Full path of the output folder.'),
-            ('pull_only', False, False, 'Only save the configuration file')
+            ('pull_only', True, False, 'Only save the configuration file')
         ),
         'comments': [
-            'TEMPLATE: This is an EffectiveUserSettings.plist '\
-            'file specifying the desired configuration.',
-            'PULL_ONLY: Pulls the configuration from the device and '\
-            'stores it locally. Used if you only wish to obtain a '\
-            'copy of the configuration file and not perform an assessmen']
+            'TEMPLATE: an EffectiveUserSettings.plist file specifying the desired configuration.',
+            'PULL_ONLY: pull the configuration from the device and store it locally. Used if you only wish to obtain a '\
+            'copy of the configuration file and not perform an assessment']
     }
 
     # ==================================================================================================================
@@ -33,32 +31,31 @@ class Module(BaseModule):
         # Setting default output file
         self.options['output'] = self._global_options['output_folder']
 
+    def module_pre(self):
+        return BaseModule.module_pre(self, bypass_app=True)
 
-    # Pulls a file from the device and returns the local file name
     def save_file(self, remote_name, local_name):
+        """Pulls a file from the device and returns the local file name."""
         if not self.options['output']:
             return
-        temp_name = 'MDM_Assess_Device{}'.format(local_name)
+        temp_name = 'MDM_{}'.format(local_name)
         local_name = self.local_op.build_output_path_for_file(temp_name, self)
         self.device.pull(remote_name, local_name)
         return local_name
 
-
-    # Parse Plist configuration data into dict
     def structure_data(self, config_file):
+        """Parse Plist configuration data into dict."""
         try:
             config, merged = Utils.plist_read_from_file(config_file), {}
             for k in config.keys(): 
                 merged.update(config[k])
             return merged
         except:
-            # If not, print error and exit
             self.printer.error('Invalid file: %s' % config_file)
             raise FrameworkException('Invalid configuration file!')
 
-
-    # Compare two config files
     def compare(self, f_current, f_desired):
+        """Compare two config files."""
         current = self.structure_data(f_current)
         desired = self.structure_data(f_desired)
         alert_tracker = 0
@@ -120,34 +117,26 @@ class Module(BaseModule):
         self.printer.info(40*'-')
         print ''
 
-
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
     def module_run(self):
-        self.printer.verbose('Searching for Configuration file...')
+        self.printer.info('Searching for Configuration file...')
 
-        # Check EffectiveUserSettings.plist file is present!
-        config_file = Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS9_AND_BELOW
-        if "10" in self.device._ios_version:
-            config_file = Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS10
-
-        cmd = '{bin} {arg}'.format(bin=self.device.DEVICE_TOOLS['FIND'], arg=config_file)
-
-        try: 
-            config = self.device.remote_op.command_blocking(cmd)[0].strip()
-        except:
-            self.printer.error('No Configuration profiles applied!')
-            self.printer.debug('Could not find %s' % config_file)
-            return
+        # Check if the EffectiveUserSettings.plist file is present
+        config_file = Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS10 if "10" in self.device._ios_version else Constants.DEVICE_PATH_EFFECTIVE_USER_SETTINGS_IOS9_AND_BELOW
+        if not self.device.remote_op.file_exist(config_file):
+            raise FrameworkException('Could not find: %s' % config_file)
 
         # Pull Effective User Settings plist
         local_name = Utils.extract_filename_from_path(config_file)
         local_file = self.save_file(config_file, local_name)
 
-        if self.options['pull_only'] is not True:
+        if not self.options['pull_only']:
             # Comparing configuration with template
-            self.printer.verbose('Assessing Configuration...')
+            self.printer.info('Assessing Configuration...')
+            if not self.options['template']:
+                raise FrameworkException('Template not provided')
             self.compare(local_file, self.options['template'])
-        else:
-            self.printer.notify('Configuration Saved to: %s' % local_file)
+
+        self.printer.notify('Configuration Saved to: %s' % local_file)
