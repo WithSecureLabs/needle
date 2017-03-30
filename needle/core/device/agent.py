@@ -38,7 +38,7 @@ class AsyncClient(asyncore.dispatcher):
             ready = select.select([self], [], [], Constants.AGENT_TIMEOUT_READ)
             if ready[0]:
                 temp = self.recv(8192)
-                if Constants.AGENT_OUTPUT_END in temp:
+                if marker in temp:
                     data += temp[:temp.find(marker)]
                     break
                 data += temp
