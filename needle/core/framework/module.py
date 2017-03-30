@@ -270,10 +270,34 @@ class FridaModule(BaseModule):
 
 class FridaScript(FridaModule):
     """To be used for modules that just needs to execute a JS payload."""
+
+    def __init__(self, params):
+        FridaModule.__init__(self, params)
+        # Add option for launch mode
+        opt = ('spawn', True, True, 'If set to True, Frida will be used to spawn the app. '
+                                    'If set to False, the app will be launched and Frida will be attached to the running instance.')
+        self.register_option(*opt)
+
     def module_pre(self):
+        def launch_spawn():
+            # Launching the app
+            self.printer.info("Spawning the app...")
+            pid = device.spawn([self.APP_METADATA['bundle_id']])
+            # Attaching to the process
+            self.printer.info("Attaching to process: %s" % pid)
+            self.session = device.attach(pid)
+            device.resume(pid)
+        def launch_attach():
+            # Launching the app
+            self.printer.info("Launching the app...")
+            self.device.app.open(self.APP_METADATA['bundle_id'])
+            pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+            # Attaching to the process
+            self.printer.info("Attaching to process: %s" % pid)
+            self.session = device.attach(pid)
+
         # Run FridaModule setup function
         FridaModule.module_pre(self)
-
         # Get an handle to the device
         import frida
         if self.device.is_usb():
@@ -282,18 +306,12 @@ class FridaScript(FridaModule):
         else:
             self.printer.debug("Connected over Wi-Fi")
             device = frida.get_device_manager().enumerate_devices()[1]
-
-        # Launching the app
-        self.printer.info("Launching the app...")
-        pid = device.spawn([self.APP_METADATA['bundle_id']])
-
-        # Attaching to the process
-        self.printer.info("Attaching to process: %s" % pid)
-        self.session = device.attach(pid)
-        device.resume(pid)
-
-
-        # Preparing results
+        # Spawn/attach to the process
+        if self.options['spawn']:
+            launch_spawn()
+        else:
+           launch_attach()
+        # Prepare results
         self.results = []
         return 1
 

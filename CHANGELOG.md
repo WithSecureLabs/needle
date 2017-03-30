@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Frida Attach or Spawn: added option in Frida modules to either attach to or spawn a process
 - **[MODULE]** Created the `device` category
 - **[MODULE]** Dependency Installer	(`device/dependency_installer`)
 - **[MODULE]** MDM Effective User Settings (`mdm/effective_user_settings`) _[from @osimonnet]_
