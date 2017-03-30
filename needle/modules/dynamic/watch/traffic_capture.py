@@ -3,6 +3,7 @@ import threading
 import socket
 import select
 from core.framework.module import BackgroundModule
+from multiprocessing import Process
 
 
 class Module(BackgroundModule):
@@ -100,9 +101,12 @@ class Module(BackgroundModule):
             print('C-c: Port forwarding stopped.')
 
     def _forward_to_proxy(self):
-        self.tunnel = threading.Thread(target=self._forward_to_proxy_intermediate)
-        self.tunnel.setDaemon(False)
-        self.tunnel.start()
+        #self.tunnel = threading.Thread(target=self._forward_to_proxy_intermediate)
+        #self.tunnel.setDaemon(False)
+        #self.tunnel.start()
+
+        self.tunnel = Process(target=self._forward_to_proxy_intermediate)
+        self.tunnel.start()        
 
     # ==================================================================================================================
     # RUN
@@ -155,7 +159,8 @@ class Module(BackgroundModule):
 
         # Disabbling remote forwarding
         self.printer.info('Deactivating port forwarding...')
-        self.tunnel._stop()
+        #self.tunnel._stop()
+        self.tunnel.terminate()
         self.printer.notify('Portforwarding deactivated.')
 
         return
