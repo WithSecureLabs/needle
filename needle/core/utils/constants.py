@@ -47,6 +47,7 @@ class Constants(object):
     AGENT_WELCOME = "Welcome to Needle Agent"
     AGENT_VERSION_MARK = "VERSION: "
     AGENT_OUTPUT_END = " :OUTPUT_END:"
+    AGENT_TIMEOUT_READ = 5
     AGENT_CMD_STOP = "stop"
     AGENT_CMD_OS_VERSION = "os_version"
     AGENT_CMD_LIST_APPS = "list_apps"

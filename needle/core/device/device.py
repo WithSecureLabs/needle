@@ -155,6 +155,8 @@ class Device(object):
 
     def _connect_agent(self):
         self.agent.connect()
+        # Ensure the tunnel has been established (especially after auto-reconnecting)
+        self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
 
     def _disconnect_agent(self):
         self.agent.disconnect()

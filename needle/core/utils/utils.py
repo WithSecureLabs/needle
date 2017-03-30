@@ -175,11 +175,7 @@ class Retry(object):
     default_exceptions = (Exception)
 
     def __init__(self, tries=3, exceptions=None, delay=0):
-        """Decorator for retrying function if exception occurs
-        tries -- num tries
-        exceptions -- exceptions to catch
-        delay -- wait between retries
-        """
+        """Decorator for retrying function if exception occurs."""
         self.tries = tries
         if exceptions is None:
             exceptions = Retry.default_exceptions
@@ -187,11 +183,13 @@ class Retry(object):
         self.delay = delay
 
     def __call__(self, func):
-        def wrapper(device, *args, **kwargs):
+        def wrapper(obj, *args, **kwargs):
+            # Check who is calling: Device or NeedleAgent
+            device = obj._device if 'NeedleAgent' in type(obj).__name__ else obj
             exception = None
             for _ in range(self.tries):
                 try:
-                    return func(device, *args, **kwargs)
+                    return func(obj, *args, **kwargs)
                 except self.exceptions, e:
                     device.printer.error("SSH Session appears to have died!")
                     device.disconnect()
