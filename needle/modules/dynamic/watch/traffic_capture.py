@@ -23,26 +23,12 @@ class Module(BackgroundModule):
     def module_pre(self):
         return BackgroundModule.module_pre(self, bypass_app=True)
 
-    def _portforward_proxy_start(self):
-        """Setup port forward to enable communication with the proxy server running on the workstation"""
-        localhost = '127.0.0.1'
-        self._proxy_server = SSHTunnelForwarder(
-            (self.device._ip, int(self.device._port)),
-            ssh_username=self.device._username,
-            ssh_password=self.device._password,
-            local_bind_address=(localhost, 9999),
-            remote_bind_address=(localhost, 8080),
-        )
-        self._proxy_server.start()
-
-    def _portforward_proxy_stop(self):
-        """Stop local port forwarding"""
-        if self._proxy_server:
-            self._proxy_server.stop()
 
     # ==================================================================================================================
     # REMOTE PORT FORWARDING
     # ==================================================================================================================
+
+    #TODO: clean code
 
     def _handler(self, chan, host, port):
         sock = socket.socket()
@@ -119,8 +105,8 @@ class Module(BackgroundModule):
         self.local_temp_file = self.local_op.build_temp_path_for_file("needle-pfctl.rules", self)
         self.remote_temp_file = '/etc/needle-pfctl.rules'
 
-        self.local_op.write_file(self.local_temp_file, 'rdr on lo0 inet proto tcp from any to any port 80 -> 127.0.0.1 port 9999\n'
-                                 'pass out route-to (lo0 127.0.0.1) inet proto tcp from any to any port 80\n')
+        self.local_op.write_file(self.local_temp_file, 'rdr on lo0 inet proto tcp from any to any port {80,443} -> 127.0.0.1 port 9999\n'
+                                 'pass out route-to (lo0 127.0.0.1) inet proto tcp from any to any port {80,443}\n')
         
         self.device.remote_op.upload(
             self.local_temp_file, self.remote_temp_file, recursive=False)
