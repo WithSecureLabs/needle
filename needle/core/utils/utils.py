@@ -1,11 +1,13 @@
 import os
 import re
 import io
+import time
 import json
 import biplist
 import plistlib
 from pprint import pprint
 from datetime import datetime
+
 
 # ======================================================================================================================
 # GENERAL UTILS
@@ -164,3 +166,39 @@ class Utils(object):
     def plist_write_to_file(text, fp):
         """Write a plist to file."""
         Utils.dict_write_to_file(text, fp)
+
+
+# ======================================================================================================================
+# RETRY DECORATOR
+# ======================================================================================================================
+class Retry(object):
+    default_exceptions = (Exception)
+
+    def __init__(self, tries=3, exceptions=None, delay=0):
+        """Decorator for retrying function if exception occurs
+        tries -- num tries
+        exceptions -- exceptions to catch
+        delay -- wait between retries
+        """
+        self.tries = tries
+        if exceptions is None:
+            exceptions = Retry.default_exceptions
+        self.exceptions = exceptions
+        self.delay = delay
+
+    def __call__(self, func):
+        def wrapper(device, *args, **kwargs):
+            exception = None
+            for _ in range(self.tries):
+                try:
+                    return func(device, *args, **kwargs)
+                except self.exceptions, e:
+                    device.printer.error("SSH Session appears to have died!")
+                    device.disconnect()
+                    device.printer.warning("Reconnecting to device...")
+                    device.connect()
+                    device.printer.warning("Rerunning last command...")
+                    time.sleep(self.delay)
+                    exception = e
+            raise exception
+        return wrapper

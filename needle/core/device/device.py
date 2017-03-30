@@ -9,7 +9,7 @@ from ..framework.local_operations import LocalOperations
 from ..utils.constants import Constants
 from ..utils.menu import choose_from_list
 from ..utils.printer import Colors, Printer
-from ..utils.utils import Utils
+from ..utils.utils import Utils, Retry
 
 
 # ======================================================================================================================
@@ -99,6 +99,7 @@ class Device(object):
         if self.ssh:
             self.ssh.close()
 
+    @Retry()
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
         def hotfix_67():

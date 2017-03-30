@@ -3,6 +3,7 @@ import socket
 import asyncore
 
 from ..utils.constants import Constants
+from ..utils.utils import Retry
 
 
 # ======================================================================================================================
@@ -70,6 +71,7 @@ class NeedleAgent(object):
     def disconnect(self):
         self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
 
+    @Retry()
     def exec_command_agent(self, cmd):
         self._device.printer.debug("{} Executing command: {}".format(Constants.AGENT_TAG, cmd))
         self.client.handle_write(cmd)
