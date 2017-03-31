@@ -157,7 +157,7 @@ class Module(BackgroundModule):
         self.device.remote_op.command_blocking('pfctl -d', internal=False)
         self.printer.notify('Firewall rules deactivated.')
 
-        # Disabbling remote forwarding
+        # Disabling remote forwarding
         self.printer.info('Deactivating port forwarding...')
         self._portforward_proxy_stop()
         self.printer.notify('Portforwarding deactivated.')
