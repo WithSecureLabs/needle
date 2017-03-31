@@ -8,12 +8,14 @@ from multiprocessing import Process
 
 class Module(BackgroundModule):
     meta = {
-        'name': 'Title',
+        'name': 'Traffic Capture',
         'author': '@Andrea Amendola',
-        'description': 'Description',
+        'description': 'Redirect device traffic (port 80, 443) to a specific port on the workstation',
         'options': (
             ('port', '8080', True,
-             'port of the service that will handle the captured traffic'),
+             'Port of the service that will handle the captured traffic'),
+            ('device_port', '9999', True,
+             'Loopback port on the device used for remote forwarding'),
         ),
     }
 
@@ -57,11 +59,14 @@ class Module(BackgroundModule):
             chan = transport.accept(1000)
             if chan is None:
                 continue
-            
+            # Directing traffic captured from server_port to remote_port on the workstation
             self._handler(chan, remote_host, remote_port)
 
-    def _forward_to_proxy_intermediate(self):       
+    def _remote_portforward_start(self):       
 
+        localhost = "127.0.0.1"
+
+        # Create new ssh connection
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         
@@ -72,14 +77,19 @@ class Module(BackgroundModule):
         except Exception as e:
             self.printer.error('*** Failed to connect to %s:%d: %r' % (self.device._ip, self.device._port, e))            
 
-        self.printer.debug('Now forwarding remote port %d to %s:%d ...' % (9999, '127.0.0.1', 8080))
+        self.printer.debug('Now forwarding remote port %d to %s:%d ...' % (self.options['device_port'], localhost, self.options['port']))
 
-        self._reverse_forward_tunnel(9999, '127.0.0.1', int(self.options['port']), client.get_transport())        
+        # Activate remote forwarding
+        self._reverse_forward_tunnel(9999, localhost, int(self.options['port']), client.get_transport())        
 
-    def _forward_to_proxy(self):
+    def _portforward_proxy_start(self):
         
-        self.tunnel = Process(target=self._forward_to_proxy_intermediate)
-        self.tunnel.start()        
+        self.tunnel = Process(target=self._remote_portforward_start)
+        self.tunnel.start()  
+
+    def _portforward_proxy_stop(self):
+        
+        self.tunnel.terminate()      
 
     # ==================================================================================================================
     # RUN
@@ -103,7 +113,7 @@ class Module(BackgroundModule):
 
         # Running remote port forwarding
         self.printer.info('Activating port forwarding...')
-        self._forward_to_proxy()
+        self._portforward_proxy_start()
         self.printer.notify('Portforwarding activated.')  
         
 
@@ -111,8 +121,8 @@ class Module(BackgroundModule):
 
     def module_kill(self):
         # Deleting local files
-        self.printer.info('Deactivating firewall rules...')        
-        self.local_op.delete_temp_file(self.local_temp_file, self)
+        #self.printer.info('Deactivating firewall rules...')        
+        #self.local_op.delete_temp_file(self.local_temp_file, self)
         
         # Deleting remote files
         self.device.remote_op.file_delete(self.remote_temp_file)
@@ -123,8 +133,7 @@ class Module(BackgroundModule):
 
         # Disabbling remote forwarding
         self.printer.info('Deactivating port forwarding...')
-        #self.tunnel._stop()
-        self.tunnel.terminate()
+        self._portforward_proxy_stop
         self.printer.notify('Portforwarding deactivated.')
 
         return
