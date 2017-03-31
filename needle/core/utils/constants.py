@@ -74,6 +74,7 @@ class Constants(object):
     DEVICE_PATH_TRUST_STORE  = '/private/var/Keychains/TrustStore.sqlite3'
     DEVICE_PATH_FRIDA_CACHE  = '/Library/Caches/frida-*'
     DEVICE_PATH_HOSTS        = '/etc/hosts'
+    DEVICE_PATH_IFCTL_RULES  = '/etc/needle-pfctl.rules'
 
     # DEVICE TOOLS
     FRIDA_PORT = 27042
