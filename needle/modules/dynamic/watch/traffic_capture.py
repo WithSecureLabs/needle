@@ -87,7 +87,7 @@ class Module(BackgroundModule):
 
         # Create new ssh connection
         client = paramiko.SSHClient()
-        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
         self.printer.debug('Connecting to ssh host %s:%d ...' %
                            (self.device._ip, self.device._port))
