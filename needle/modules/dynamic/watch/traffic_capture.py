@@ -9,7 +9,7 @@ from multiprocessing import Process
 
 class Module(BackgroundModule):
     meta = {
-        'name': 'Netowrk Traffic Capture&Intercept',
+        'name': 'Force Proxy',
         'author': '@Andrea Amendola (@MWRLabs)',
         'description': 'Redirect device traffic to a specific port on the workstation, allowing to intercept it with a proxy. \
                         It is useful when applications are not respecting the system proxy. \
