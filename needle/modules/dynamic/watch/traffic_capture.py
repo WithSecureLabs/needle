@@ -123,18 +123,13 @@ class Module(BackgroundModule):
 
         # Uploading firewall rules
         self.printer.info('Activating firewall rules...')
-        self.local_temp_file = self.local_op.build_temp_path_for_file(
-            "needle-pfctl.rules", self)
         self.remote_temp_file = Constants.DEVICE_PATH_IFCTL_RULES
         localhost = "127.0.0.1"
 
         outbound_ports = self._parse_ports(self.options['outbound_ports'])
         firewall_rules = 'rdr on lo0 inet proto tcp from any to any port {} -> {} port {}\npass out route-to (lo0 {}) inet proto tcp from any to any port {}\n'.format(
             outbound_ports, localhost, self.options['device_port'], localhost, outbound_ports)
-        self.local_op.write_file(self.local_temp_file, firewall_rules)
-
-        self.device.remote_op.upload(
-            self.local_temp_file, self.remote_temp_file, recursive=False)
+        self.device.remote_op.write_file(self.remote_temp_file, firewall_rules)
 
         self.device.remote_op.command_blocking(
             'pfctl -e -f ' + Constants.DEVICE_PATH_IFCTL_RULES, internal=False)
@@ -148,7 +143,6 @@ class Module(BackgroundModule):
     def module_kill(self):
         # Deleting local files
         self.printer.info('Deactivating firewall rules...')
-        self.local_op.delete_temp_file(self.local_temp_file, self)
 
         # Deleting remote files
         self.device.remote_op.file_delete(self.remote_temp_file)
