@@ -80,11 +80,12 @@ class Device(object):
         """Open a new SSH connection using Paramiko."""
         try:
             self.printer.verbose("[SSH] Connecting ({}:{})...".format(self._ip, self._port))
-            self.ssh = paramiko.SSHClient()
-            self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh.connect(self._ip, port=self._port, username=self._username, password=self._password,
-                             allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(self._ip, port=self._port, username=self._username, password=self._password,
+                        allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
             self.printer.notify("[SSH] Connected ({}:{})".format(self._ip, self._port))
+            return ssh
         except paramiko.AuthenticationException as e:
             raise Exception('Authentication failed when connecting to %s. %s: %s' % (self._ip, type(e).__name__, e.message))
         except paramiko.SSHException as e:
@@ -215,7 +216,7 @@ class Device(object):
             self._portforward_agent_start()
         # Setup channels
         self._connect_agent()
-        self._connect_ssh()
+        self.ssh = self._connect_ssh()
 
     def disconnect(self):
         """Disconnect from the device (both SSH and AGENT)."""
