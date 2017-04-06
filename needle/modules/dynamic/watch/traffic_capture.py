@@ -110,7 +110,7 @@ class Module(BackgroundModule):
 
         # Uploading firewall rules
         self.printer.info('Activating firewall rules...')
-        self.remote_temp_file = Constants.DEVICE_PATH_IFCTL_RULES
+        self.remote_temp_file = self.device.remote_op.build_temp_path_for_file("needle-pfctl.rules")
         localhost = "127.0.0.1"
 
         outbound_ports = self._parse_ports(self.options['outbound_ports'])
@@ -118,8 +118,9 @@ class Module(BackgroundModule):
             outbound_ports, localhost, self.options['device_port'], localhost, outbound_ports)
         self.device.remote_op.write_file(self.remote_temp_file, firewall_rules)
 
-        self.device.remote_op.command_blocking(
-            'pfctl -e -f ' + Constants.DEVICE_PATH_IFCTL_RULES, internal=False)
+        cmd = 'pfctl -e -f {}'.format(self.remote_temp_file)   
+        self.printer.info(cmd)     
+        self.device.remote_op.command_blocking(cmd, internal=False)
         self.printer.notify('Firewall rules activated.')
 
         # Running remote port forwarding
