@@ -1,10 +1,9 @@
-import paramiko
 import socket
 import select
+import multiprocessing
 
 from core.framework.module import BackgroundModule
 from core.utils.constants import Constants
-from multiprocessing import Process
 
 
 class Module(BackgroundModule):
@@ -65,8 +64,10 @@ class Module(BackgroundModule):
         chan.close()
         sock.close()
 
-    def _reverse_forward_tunnel(self, server_port, remote_host, remote_port, transport):
+    def _reverse_forward_tunnel(self, server_port, remote_host, remote_port, transport, e):
         transport.request_port_forward('', server_port)
+        e.set()
+
         while True:
             chan = transport.accept(1000)
             if chan is None:
@@ -75,35 +76,27 @@ class Module(BackgroundModule):
             # workstation
             self._handler(chan, remote_host, remote_port)
 
-    def _remote_portforward_start(self):
+    def _remote_portforward_start(self, e):
 
-        localhost = "127.0.0.1"
+        localhost = "127.0.0.1"        
 
-        # Create new ssh connection
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-        self.printer.debug('Connecting to ssh host %s:%d ...' %
-                           (self.device._ip, self.device._port))
-        try:
-            client.connect(self.device._ip, self.device._port,
-                           username=self.device._username, password=self.device._password)
-        except Exception as e:
-            self.printer.error('*** Failed to connect to %s:%d: %r' %
-                               (self.device._ip, self.device._port, e))
-            return
+        client = self.device._connect_ssh()
 
         self.printer.debug('Now forwarding remote port %d to %s:%d ...' % (
             self.options['device_port'], localhost, self.options['proxy_port']))
 
         # Activate remote forwarding
         self._reverse_forward_tunnel(self.options['device_port'], localhost, int(
-            self.options['proxy_port']), client.get_transport())
+            self.options['proxy_port']), client.get_transport(), e)
+
 
     def _portforward_proxy_start(self):
 
-        self.tunnel = Process(target=self._remote_portforward_start)
+        e = multiprocessing.Event()
+       
+        self.tunnel = multiprocessing.Process(target=self._remote_portforward_start, args=(e,))
         self.tunnel.start()
+        e.wait()
 
     def _portforward_proxy_stop(self):
 
