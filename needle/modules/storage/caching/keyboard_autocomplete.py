@@ -31,7 +31,7 @@ class Module(BaseModule):
         self.printer.info("Running strings over keyboard autocomplete databases...")
 
         # Run Strings
-        cmd = '{bin} {dirs_str} -type f \( -iname "dynamic-text.dat" -o' \
+        cmd = '{bin} {dirs_str} -type f \( -iname "*dynamic-text.dat" -o' \
               ' -iname "dynamic.dat" -o -iname "lexicon.dat" \) ' \
               '-exec {strings} {{}} \;'.format(bin=self.device.DEVICE_TOOLS['FIND'],
                                                dirs_str="/var/mobile/Library/Keyboard/",

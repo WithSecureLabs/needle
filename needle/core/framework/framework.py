@@ -34,7 +34,6 @@ class Framework(cmd.Cmd):
     _loaded_modules = {}
     _jobs = []
     _record = None
-    _device_ready = False
     _local_ready = False
     # Mode Flags
     _script = 0
@@ -384,13 +383,8 @@ class Framework(cmd.Cmd):
             self.do_kill(i)
         # Stop Frida
         if self.device and self.device._frida_server:
-            self.printer.verbose("Stopping port forwarding for Frida")
             self.device._portforward_frida_stop()
             self.local_op.dir_delete(os.path.join(self.path_app, '__handlers__'))
-        # Stop Debug Server
-        if self.device and self.device._debug_server:
-            self.printer.verbose("Stopping port forwarding for LLDB")
-            self.device._portforward_debug_stop()
         # Cleanup temp folders
         try:
             # Cleanup local temp folder
@@ -603,22 +597,22 @@ class Framework(cmd.Cmd):
         """Parse device options from the _global_options and return them."""
         IP = self._global_options['ip']
         PORT = self._global_options['port']
+        AGENT_PORT = self._global_options['agent_port']
         USERNAME = self._global_options['username']
         PASSWORD = self._global_options[Constants.PASSWORD_CLEAR]
         PUB_KEY_AUTH = self._global_options['pub_key_auth']
-        return IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
+        return IP, PORT, AGENT_PORT, USERNAME, PASSWORD, PUB_KEY_AUTH
 
     def _spawn_device(self):
         """Instantiate a new Device object, and open a connection."""
-        IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH = self._parse_device_options()
-        self.device = Framework.device = Device(IP, PORT, USERNAME, PASSWORD, PUB_KEY_AUTH, self.TOOLS_LOCAL)
+        IP, PORT, AGENT_PORT, USERNAME, PASSWORD, PUB_KEY_AUTH = self._parse_device_options()
+        self.device = Framework.device = Device(IP, PORT, AGENT_PORT, USERNAME, PASSWORD, PUB_KEY_AUTH, self.TOOLS_LOCAL)
 
     def _connection_new(self):
         """Try to instantiate a new connection with the device."""
         try:
             self._spawn_device()
             self.device.connect()
-            self.printer.notify("Connected to: %s" % self._global_options['ip'])
         except Exception as e:
             self.printer.error("Problem establishing connection: %s - %s " % (type(e).__name__, e.message))
             self.print_exception()

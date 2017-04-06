@@ -6,6 +6,59 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Frida Attach or Spawn: added option in Frida modules to either attach to or spawn a process
+- **[MODULE]** Created the `device` category
+- **[MODULE]** Dependency Installer	(`device/dependency_installer`)
+- **[MODULE]** MDM Effective User Settings (`mdm/effective_user_settings`) _[from @osimonnet]_
+- **[MODULE]** Force Proxy
+
+#### Fixed
+- **[CORE]** Moved installation of dependencies to its own module (`device/dependency_installer`)
+- **[CORE]** Frida support for 32bit devices
+- **[CORE]** Automatic reconnection if SSH/Agent connection drops (`Retry` decorator)
+- **[MODULE]** Compatibility of modules requiring app decryption (iOS 10)
+
+#### Removed
+- **[CORE]** `SETUP_DEVICE` global option, in favour of `device/dependency_installer`
+
+
+
+## [1.0.2] - 2017-03-21
+#### Fixed
+- **[AGENT]** Improved communication with the Agent
+- **[AGENT]** Replaced `telnetlib` with `asyncore`
+
+
+
+## [1.0.1] - 2017-03-15
+#### Fixed
+- **[AGENT]** Improved communication with the Agent
+
+
+
+## [1.0.0] - 2017-03-10
+#### Added
+- **[AGENT]** Released Needle Agent
+- **[CORE]** iOS 10 Support
+- **[CORE]** Overhaul of the Core
+- **[CORE]** Possibility to disable modules if running incompatible version of iOS
+- **[MODULE]** Simple CLI Client (`various/agent_client`)
+- **[MODULE]** Frida Jailbreak Detection Bypass (`dynamic/detection/script_jailbreak-detection-bypass.py`) _[from @HenryHoggard]_
+- **[MODULE]** Frida Touch Id Bypass (`hooking/frida/script_touch-id-bypass`) _[from @HenryHoggard]_
+- **[SUPPORT]** Updated documentation
+
+#### Fixed
+- **[MODULE]** Fix `storage/data/keychain_dump_frida` ACL Parsing _[from @bernard-wagner]_
+- **[MODULE]** Frida modules spawn app with Frida instead of UIOpen _[from @HenryHoggard]_
+- **[MODULE]** Frida enumerate methods performance enhancement _[from @HenryHoggard]_
+
+#### Removed
+- **[CORE]** Dependencies superseded by the Needle Agent
+
+
+
+## [0.2.0] - 2017-02-16
+#### Added
 - **[CORE]** Preliminary support for iOS10
 - **[CORE]** Support for persisting command history across sessions
 - **[CORE]** Improved metadata parsing for extensions
@@ -22,6 +75,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Provisioning profile: Inspect the provisioning profile of the application (`binary/provisioning_profile`)
 
 #### Fixed
+- **[CORE]** Modified the organization of modules into packages
 - **[CORE]** App metadata: creation of binary path from MobileInstallation.plist
 - **[CORE]** Plist wrapper using biplist
 - **[CORE]** Multiple plist parsing issues _[from @tghosth]_
