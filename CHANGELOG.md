@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[MODULE]** Created the `device` category
 - **[MODULE]** Dependency Installer	(`device/dependency_installer`)
 - **[MODULE]** MDM Effective User Settings (`mdm/effective_user_settings`) _[from @osimonnet]_
+- **[MODULE]** Force Proxy
 
 #### Fixed
 - **[CORE]** Moved installation of dependencies to its own module (`device/dependency_installer`)
