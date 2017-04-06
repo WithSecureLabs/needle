@@ -275,7 +275,9 @@ class FridaScript(FridaModule):
         FridaModule.__init__(self, params)
         # Add option for launch mode
         opt = ('spawn', True, True, 'If set to True, Frida will be used to spawn the app. '
-                                    'If set to False, the app will be launched and Frida will be attached to the running instance.')
+                                    'If set to False, the app will be launched and Frida will be attached to the running instance')
+        self.register_option(*opt)
+        opt = ('resume', True, True, 'If set to True, Frida will resume the application process after spawning it (recommended)')
         self.register_option(*opt)
 
     def module_pre(self):
@@ -286,7 +288,9 @@ class FridaScript(FridaModule):
             # Attaching to the process
             self.printer.info("Attaching to process: %s" % pid)
             self.session = device.attach(pid)
-            device.resume(pid)
+            if self.options['resume']:
+                self.printer.verbose("Resuming the app's process...")
+                device.resume(pid)
         def launch_attach():
             # Launching the app
             self.printer.info("Launching the app...")

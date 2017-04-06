@@ -11,7 +11,7 @@ class Module(BaseModule):
             ('dump_interfaces', False, True, 'Set to True to dump each interface in its own file'),
             ('output', True, False, 'Full path of the output file, or to the folder where to save the interfaces'),
         ),
-        'comments': ['This might not work on 64bit binaries. In such cases, "cycript" or "hooking/frida/script_enum-all-methods" are recommended',
+        'comments': ['This might not work on 64bit binaries. In such cases, "cycript" or "binary/reversing/class_dump_frida_enum-all-methods" are recommended',
                      ]
     }
 
