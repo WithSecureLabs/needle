@@ -33,13 +33,7 @@ class Module(BackgroundModule):
         return BackgroundModule.module_pre(self, bypass_app=True)
 
     def _parse_ports(self, ports):
-        ports_list = ports.split(",")
-
-        ports_string = "{"
-        for port in ports_list:
-            ports_string += str(int(port)) + ","
-        ports_string = ports_string[:-1]
-        ports_string += "}"
+        ports_string = "{%s}" % ports.rstrip(',')
 
         return ports_string
 
