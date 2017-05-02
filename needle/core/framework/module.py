@@ -25,6 +25,7 @@ class BaseModule(Framework):
         if 'options' in self.meta:
             for option in self.meta['options']:
                 self.register_option(*option)
+        self.meta['path'] = os.path.join('modules', self._modulename) + '.py'
         self._reload = 0
 
     # ==================================================================================================================
@@ -59,7 +60,6 @@ class BaseModule(Framework):
             self.printer.info('Show source not available for this module.')
 
     def show_info(self):
-        self.meta['path'] = os.path.join('modules', self._modulename) + '.py'
         print('')
         # Meta info
         for item in ['name', 'path', 'author', 'version']:
