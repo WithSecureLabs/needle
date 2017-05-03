@@ -1,5 +1,4 @@
 import os
-import urllib2
 from ..utils.constants import Constants
 from ..utils.utils import Utils
 
@@ -75,7 +74,7 @@ class App(object):
             'bundle_id': bundle_id,
             'data_directory': data_directory,
             'bundle_directory': bundle_directory,
-            'binary_directory': urllib2.unquote(binary_directory),
+            'binary_directory': binary_directory,
             'app_version': app_version,
             'sdk_version': sdk_version,
             'entitlements': entitlements,
