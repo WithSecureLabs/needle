@@ -39,6 +39,7 @@ class Constants(object):
     GLOBAL_OUTPUT_FOLDER = os.path.join(FOLDER_HOME, 'output')
     GLOBAL_PUB_KEY_AUTH = True
     GLOBAL_SAVE_HISTORY = True
+    GLOBAL_SKIP_OUTPUT_FOLDER_CHECK = False
     PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 

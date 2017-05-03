@@ -180,14 +180,15 @@ class LocalOperations(object):
             self.printer.debug("Creating local output folder: {}".format(output))
             os.makedirs(output)
         elif os.listdir(output):
-            # Folder exist, and is not empty
-            self.printer.warning("Attention! The folder chosen to store local output is not empty: {}".format(output))
-            self.printer.warning("Do you want to back it up first?")
-            self.printer.warning("Y: the content will be archived in a different location, then the folder will be emptied")
-            self.printer.warning("N: no action will be taken (destination files might be overwritten in case of filename clash)")
-            choice = raw_input("[y/n]: ").strip()
-            if choice.lower() == 'y':
-                self.output_folder_backup(module)
+            if not module._global_options['skip_output_folder_check']:
+                # Folder exist, and is not empty
+                self.printer.warning("Attention! The folder chosen to store local output is not empty: {}".format(output))
+                self.printer.warning("Do you want to back it up first?")
+                self.printer.warning("Y: the content will be archived in a different location, then the folder will be emptied")
+                self.printer.warning("N: no action will be taken (destination files might be overwritten in case of filename clash)")
+                choice = raw_input("[y/n]: ").strip()
+                if choice.lower() == 'y':
+                    self.output_folder_backup(module)
 
     def output_folder_backup(self, module):
         """Backup the local output folder"""
