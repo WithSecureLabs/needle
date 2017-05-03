@@ -58,6 +58,8 @@ class CLI(Framework):
         self.register_option('app', '', False, 'Bundle ID of the target application (e.g., com.example.app). Leave empty to launch wizard')
         self.register_option('output_folder', Constants.GLOBAL_OUTPUT_FOLDER, True, 'Full path of the output folder, where to store the output of the modules')
         self.register_option('save_history', Constants.GLOBAL_SAVE_HISTORY, True, 'Persists command history across sessions')
+        self.register_option('skip_output_folder_check', Constants.GLOBAL_SKIP_OUTPUT_FOLDER_CHECK, False, 'Skip the check that ensures the output folder does not already contain other files. '
+                                                                                                           'It will automatically overwrite any file')
 
     def _init_global_vars(self):
         # Setup Printer
