@@ -71,7 +71,7 @@ class CLI(Framework):
         self.local_op = Framework.local_op = LocalOperations()
         self.device = Framework.device = None
         self.APP_METADATA = Framework.APP_METADATA = None
-        self.ISSUE_LIST = Framework.ISSUE_LIST = IssueList()
+        self.ISSUE_LIST = Framework.ISSUE_LIST = IssueList(self)
 
     def _init_home(self):
         # Folders to initialize
