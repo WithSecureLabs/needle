@@ -7,7 +7,7 @@ import re
 from ..utils.printer import Colors, Printer
 from ..utils.constants import Constants
 from framework import Framework, FrameworkException
-from issues import IssueList
+from issues import IssueManager
 from local_operations import LocalOperations
 
 # Versioning
@@ -71,7 +71,7 @@ class CLI(Framework):
         self.local_op = Framework.local_op = LocalOperations()
         self.device = Framework.device = None
         self.APP_METADATA = Framework.APP_METADATA = None
-        self.ISSUE_LIST = Framework.ISSUE_LIST = IssueList(self)
+        self.ISSUE_LIST = Framework.ISSUE_MANAGER = IssueManager(self)
 
     def _init_home(self):
         # Folders to initialize
