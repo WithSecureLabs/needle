@@ -159,6 +159,7 @@ class Constants(object):
             'CURL': {'COMMAND': 'curl', 'PACKAGES': ['curl'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP'), 'SETUP': None},
             'FSMON': {'COMMAND': 'fsmon', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'fsmon'), 'SETUP': None},
+            'IPAINSTALLER': {'COMMAND': 'ipainstaller', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'KEYCHAIN_DUMP': {'COMMAND': 'keychain_dump', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'keychain_dump'), 'SETUP': None},
             'ONDEVICECONSOLE': {'COMMAND': 'ondeviceconsole', 'PACKAGES': ['com.eswick.ondeviceconsole'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'OPEN': {'COMMAND': 'open', 'PACKAGES': ['com.conradkramer.open'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
