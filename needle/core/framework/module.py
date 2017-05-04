@@ -203,6 +203,16 @@ class BaseModule(Framework):
         else:
             raise FrameworkException('The Editing program specified ("{}") is not supported.'.format(self.options['program']))
 
+    def add_issue(self, name, content, confidence, outfile):
+        """Wrapper for ISSUE_MANAGER.issue_add, which automatically fills the 'app' and 'module' fields."""
+        self.ISSUE_MANAGER.issue_add(self.APP_METADATA['bundle_id'],
+                                     self.meta['path'],
+                                     name,
+                                     content,
+                                     self.ISSUE_MANAGER.CONFIDENCE_LEVELS[confidence],
+                                     outfile)
+
+
 # ======================================================================================================================
 # OTHER TYPES OF MODULES
 # ======================================================================================================================
