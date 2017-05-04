@@ -78,3 +78,4 @@ class Module(BaseModule):
 
         # Pull files & show image
         self.show_image(sc)
+        self.add_issue('Background Screenshot Found', sc, 'HIGH', self.options['output'])

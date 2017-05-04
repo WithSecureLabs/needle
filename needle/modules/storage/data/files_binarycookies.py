@@ -59,6 +59,9 @@ class Module(BaseModule):
             self.printer.error("No Binary Cookies files found")
             return
 
+        # Save list
+        self.add_issue('Binary Cookies files detected', out, 'INVESTIGATE', None)
+
         # Add data protection class
         self.printer.info("Retrieving data protection classes...")
         retrieved_files = self.device.app.get_dataprotection(out)
