@@ -75,8 +75,6 @@ class Printer(object):
 
     def error(self, msg):
         """Formats and presents errors."""
-        if not re.search('[.,;!?]$', msg):
-            msg += '.'
         msg = msg[:1].upper() + msg[1:]
         msg = '%s[!] %s%s' % (Colors.R, Utils.to_unicode(msg), Colors.N)
         print(msg)
