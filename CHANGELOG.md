@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 #### Added
 - **[CORE]** Frida Attach or Spawn: added option in Frida modules to either attach to or spawn a process
-- **[CORE]** New global option: skip_output_folder_check. It allows to skip the check that ensures the output folder does not already contain other files
+- **[CORE]** New global option: `skip_output_folder_check`. It allows to skip the check that ensures the output folder does not already contain other files
 - **[MODULE]** Created the `device` category
 - **[MODULE]** Dependency Installer	(`device/dependency_installer`)
 - **[MODULE]** MDM Effective User Settings (`mdm/effective_user_settings`) _[from @osimonnet]_
