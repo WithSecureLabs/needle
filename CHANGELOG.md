@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Moved installation of dependencies to its own module (`device/dependency_installer`)
 - **[CORE]** Frida support for 32bit devices
 - **[CORE]** Automatic reconnection if SSH/Agent connection drops (`Retry` decorator)
+- **[CORE]** Re-introduce support for `ipainstaller` (iOS<10)
 - **[MODULE]** Compatibility of modules requiring app decryption (iOS 10)
 
 #### Removed
