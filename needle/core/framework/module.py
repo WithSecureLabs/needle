@@ -205,12 +205,14 @@ class BaseModule(Framework):
 
     def add_issue(self, name, content, confidence, outfile):
         """Wrapper for ISSUE_MANAGER.issue_add, which automatically fills the 'app' and 'module' fields."""
-        self.ISSUE_MANAGER.issue_add(self.APP_METADATA['bundle_id'],
-                                     self.meta['path'],
-                                     name,
-                                     content,
-                                     self.ISSUE_MANAGER.CONFIDENCE_LEVELS[confidence],
-                                     outfile)
+        # Check type of content
+        if content is None:
+            content = 'See the content of the linked file'
+        if type(content) is list:
+            content = '\n'.join(x.strip() for x in content)
+        # Add issue
+        self.ISSUE_MANAGER.issue_add(self.APP_METADATA['bundle_id'], self.meta['path'],
+                                     name, content, self.ISSUE_MANAGER.CONFIDENCE_LEVELS[confidence], outfile)
 
 
 # ======================================================================================================================
