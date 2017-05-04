@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Issue Auto-Detection: modules will now automatically detect and keep track of issues in the target app. 
+All the issues are going to be stored in the `issues.db` SQLite database, contained in the chosen output directory.
+Every issue will hold the following attributes: `app`, `module`, `name`, `content`, `confidence level` ('HIGH', 'MEDIUM', 'INVESTIGATE', 'INFORMATIONAL'), `outfile`
+- **[CORE]** New commands: `issues` (list all the issues identified), `add_issue` (manually add an issue to the collection)
+
 - **[CORE]** Frida Attach or Spawn: added option in Frida modules to either attach to or spawn a process
 - **[CORE]** New global option: `skip_output_folder_check`. It allows to skip the check that ensures the output folder does not already contain other files
 - **[MODULE]** Created the `device` category
