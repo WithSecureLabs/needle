@@ -24,6 +24,7 @@ class Constants(object):
     FOLDER_TEMP = os.path.join(FOLDER_HOME, 'tmp')
     FOLDER_BACKUP = os.path.join(FOLDER_HOME, 'backup')
     FILE_HISTORY = os.path.join(FOLDER_HOME, 'needle_history')
+    FILE_DB = 'issues.db'
 
     # ==================================================================================================================
     # GLOBALS & AGENT
