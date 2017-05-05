@@ -57,6 +57,9 @@ class Module(BaseModule):
             self.printer.error("No Plist files found")
             return
 
+        # Save list
+        self.add_issue('Plist files detected', out, 'INVESTIGATE', None)
+
         # Add data protection class
         self.printer.info("Retrieving data protection classes...")
         retrieved_files = self.device.app.get_dataprotection(out)

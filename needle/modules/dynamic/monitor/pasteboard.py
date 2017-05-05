@@ -43,13 +43,15 @@ class Module(BackgroundModule):
     def module_kill(self):
         """Code to be run when the user choose to kill the job. Useful for closing running tasks and exporting results"""
         # Kill running process
+        self.printer.info('Stopping Pasteboard monitor...')
         self.device.remote_op.command_background_stop(self.PID)
 
         # Pull output file
-        self.printer.info("Retrieving output file...")
+        self.printer.verbose("Retrieving output file...")
         outfile = self.options['output']
         self.device.pull(self.fname, outfile)
 
         # Show output
         self.local_op.cat_file(outfile)
         self.printer.info("A copy of the output has been saved at the following location: %s" % outfile)
+        self.add_issue('Content of OS Pasteboard', None, 'INVESTIGATE', outfile)

@@ -101,6 +101,9 @@ class Module(BaseModule):
             self.printer.error("No SQL files found")
             return
 
+        # Save list
+        self.add_issue('SQL files detected', out, 'INVESTIGATE', None)
+
         # Add data protection class
         self.printer.info("Retrieving data protection classes...")
         retrieved_files = self.device.app.get_dataprotection(out)

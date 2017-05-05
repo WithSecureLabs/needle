@@ -25,6 +25,7 @@ class BaseModule(Framework):
         if 'options' in self.meta:
             for option in self.meta['options']:
                 self.register_option(*option)
+        self.meta['path'] = os.path.join('modules', self._modulename) + '.py'
         self._reload = 0
 
     # ==================================================================================================================
@@ -59,7 +60,6 @@ class BaseModule(Framework):
             self.printer.info('Show source not available for this module.')
 
     def show_info(self):
-        self.meta['path'] = os.path.join('modules', self._modulename) + '.py'
         print('')
         # Meta info
         for item in ['name', 'path', 'author', 'version']:
@@ -202,6 +202,18 @@ class BaseModule(Framework):
              self.editor = self.TOOLS_LOCAL[self.options['program']]
         else:
             raise FrameworkException('The Editing program specified ("{}") is not supported.'.format(self.options['program']))
+
+    def add_issue(self, name, content, confidence, outfile):
+        """Wrapper for ISSUE_MANAGER.issue_add, which automatically fills the 'app' and 'module' fields."""
+        # Check type of content
+        if content is None:
+            content = 'See the content of the linked file'
+        if type(content) is list:
+            content = '\n'.join(x.strip() for x in content)
+        # Add issue
+        self.ISSUE_MANAGER.issue_add(self.APP_METADATA['bundle_id'], self.meta['path'],
+                                     name, content, self.ISSUE_MANAGER.CONFIDENCE_LEVELS[confidence], outfile)
+
 
 # ======================================================================================================================
 # OTHER TYPES OF MODULES

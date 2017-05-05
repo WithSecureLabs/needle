@@ -72,6 +72,8 @@ class Module(BaseModule):
             # Print to console
             self.printer.notify("The following strings have been found: ")
             self.print_cmd_output(out, outfile)
+            self.add_issue('Strings identified', None, 'INVESTIGATE', outfile)
+
             # Analysis
             if self.options['analyze']:
                 self.analyze_strings(out)

@@ -50,3 +50,5 @@ class Module(BaseModule):
         if path_local:
             self.printer.verbose('Retrieving output...')
             self.device.pull(path_remote, path_local)
+            self.add_issue('Syslog', None, 'INVESTIGATE', path_local)
+

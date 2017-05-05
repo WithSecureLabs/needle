@@ -70,3 +70,4 @@ class Module(BaseModule):
                     self.printer.notify('\t{:>20}: {}{:<30}{}'.format(name, Colors.G, 'OK', Colors.N))
                 else:
                     self.printer.error('\t{:>20}: {}{:<30}{}'.format(name, Colors.R, 'NO', Colors.N))
+                    self.add_issue('Compilation check', '{}: NO'.format(name), 'HIGH', None)

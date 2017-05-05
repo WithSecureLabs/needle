@@ -87,16 +87,20 @@ class Module(BaseModule):
             # Diff
             diff = difflib.unified_diff(content_orig, content_new)
             # Extract new lines
+            crashes = []
             if diff:
                 self.printer.notify('New crashes identified (probable indicator of jailbreak detection):')
                 for dd in diff:
                     dline = dd.strip()
                     if dline.startswith('+') and not dline.endswith('+'):
                         self.printer.notify(dline)
+                        crashes.append(dline)
                         if 'KERN_INVALID_ADDRESS' in dline:
                             arxan = True
+            self.add_issue('Jailbreak Detection (crash identified)', crashes[0], 'INVESTIGATE', None)
         if arxan:
             self.printer.notify('Arxan Detected!')
+            self.add_issue('Jailbreak Detection (vendor identified)', 'Arxan Detected', 'HIGH', None)
 
     # ==================================================================================================================
     # RUN

@@ -42,3 +42,4 @@ class Module(BaseModule):
         if out:
             self.printer.notify("The following content has been found:")
             self.print_cmd_output(out, self.options['output'])
+            self.add_issue('Content of Keyboard Autocomplete', None, 'INVESTIGATE', self.options['output'])

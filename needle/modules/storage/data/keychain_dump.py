@@ -77,7 +77,8 @@ class Module(BaseModule):
         # Print result
         if expected:
             self.printer.notify("The following content has been dumped (and matches the filter):")
-            loal_out = self.local_op.build_output_path_for_file('keychain_output', self)
-            self.print_cmd_output(expected, loal_out)
+            local_out = self.local_op.build_output_path_for_file('keychain_output', self)
+            self.print_cmd_output(expected, local_out)
+            self.add_issue('Keychain items detected ({})'.format(len(expected)), None, 'INVESTIGATE', local_out)
         else:
             self.printer.warning('No content found. Try to relax the filter (if applied) and ensure the screen is unlocked before dumping the keychain')
