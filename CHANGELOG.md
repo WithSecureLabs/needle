@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+#### Fixed
+#### Removed
+
+
+
+## [1.1.0] - 2017-05-05
+#### Added
 - **[CORE]** Issue Auto-Detection: modules will now automatically detect and keep track of issues in the target app. 
 All the issues are going to be stored in the `issues.db` SQLite database, contained in the chosen output directory.
 Every issue will hold the following attributes: `app`, `module`, `name`, `content`, `confidence level` ('HIGH', 'MEDIUM', 'INVESTIGATE', 'INFORMATIONAL'), `outfile`
