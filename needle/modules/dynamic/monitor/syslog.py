@@ -55,3 +55,4 @@ class Module(BackgroundModule):
         # Show output
         self.local_op.cat_file(self.path_local)
         self.printer.info("A copy of the output has been saved at the following location: %s" % self.path_local)
+        self.add_issue('Syslog', None, 'INVESTIGATE', self.path_local)

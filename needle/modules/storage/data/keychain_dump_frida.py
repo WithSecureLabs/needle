@@ -160,3 +160,5 @@ if (ObjC.available) {
     def module_post(self):
         self.printer.info("Keychain Items:")
         self.print_cmd_output()
+        self.add_issue('Keychain items detected ({})'.format(len(self.results)), None, 'INVESTIGATE', self.options['output'])
+

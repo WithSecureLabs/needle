@@ -33,11 +33,13 @@ class Module(BaseModule):
             for k, v in ats.items():
                 if "NSAllowsArbitraryLoads" in k and v:
                     self.printer.error('{}{:<40}: {:<20}'.format(tab_sub, k, v))
+                    self.add_issue('ATS Disabled', '{}: {}'.format(k, v), 'HIGH', None)
                 elif "NSExceptionDomains" in k:
                     self.printer.notify('{}NSExceptionDomains'.format(tab_sub))
                     vals = v.items()
                     for x, y in vals:
                         self.printer.notify('{}{}{:<40}: {:<20}'.format(tab_sub, tab_sub, x, y))
+                        self.add_issue('ATS disabled for some domains', '{}: {}'.format(x, y), 'HIGH', None)
                 else:
                     self.printer.notify('{}{:<40}: {:<20}'.format(tab_sub, k, v))
         else:
@@ -49,6 +51,7 @@ class Module(BaseModule):
             for k, v in ents.items():
                 if "get-task-allow" in k and v:
                     self.printer.error('\t\t{:<40}: {:<20}'.format(k, v))
+                    self.add_issue('Debug allowed', '{}: {}'.format(k, v), 'HIGH', None)
                 else:
                     self.printer.notify('\t\t {:<40}: {:<20}'.format(k, v))
         else:

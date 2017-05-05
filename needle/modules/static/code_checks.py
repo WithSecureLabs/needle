@@ -156,6 +156,7 @@ class Module(StaticModule):
         self.findings[category] = map(run_check, list_of_checks)
 
     def print_findings(self):
+        outfile = self.options['output'] if self.options['output'] else None
         file_output = []
         for category in self.findings:
             results = [item for sublist in self.findings[category] for item in sublist]
@@ -167,9 +168,9 @@ class Module(StaticModule):
                 for r in results:
                     file_output.append('\t[{:<80}] line {:<5} -> {:<30}'.format(r['name'], r['linenum'], r['line']))
                     print('\t{}[{:<80}]{} line {:<5}{} -> {:<30}'.format(Colors.B, r['name'], Colors.O, r['linenum'], Colors.N, r['line']))
+                self.add_issue('Static code analysis: {}'.format(category), '{} results'.format(len(results)), 'INVESTIGATE', outfile)
 
         # Save to file
-        outfile = self.options['output'] if self.options['output'] else None
         self.print_cmd_output(file_output, outfile, silent=True)
 
     # ==================================================================================================================

@@ -65,6 +65,7 @@ if (ObjC.available) {
 
     def module_post(self):
         self.printer.info("Files to be included in iCloud Backup:")
-        temp = [key["path"] for key in self.results if key["result"] == "0"]
-        self.results = temp
+        self.results = [key["path"] for key in self.results if key["result"] == "0"]
         self.print_cmd_output()
+        # Add issues
+        self.add_issue('Files included into the iCloud Backup', self.results, 'MEDIUM', self.options['output'])

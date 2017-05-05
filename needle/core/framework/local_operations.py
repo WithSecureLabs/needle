@@ -173,21 +173,25 @@ class LocalOperations(object):
             fp.write(body)
 
     def output_folder_setup(self, module):
-        """Setup local output folder: create it if it doesn't exist. Oterhwise prompt the user and ask to back it up."""
+        """Setup local output folder: create it if it doesn't exist. Otherwise prompt the user and ask to back it up."""
         output = module._global_options['output_folder']
+        # Create Folders
         if not os.path.exists(output):
             # Folder does not exist, create it
             self.printer.debug("Creating local output folder: {}".format(output))
             os.makedirs(output)
         elif os.listdir(output):
-            # Folder exist, and is not empty
-            self.printer.warning("Attention! The folder chosen to store local output is not empty: {}".format(output))
-            self.printer.warning("Do you want to back it up first?")
-            self.printer.warning("Y: the content will be archived in a different location, then the folder will be emptied")
-            self.printer.warning("N: no action will be taken (destination files might be overwritten in case of filename clash)")
-            choice = raw_input("[y/n]: ").strip()
-            if choice.lower() == 'y':
-                self.output_folder_backup(module)
+            if not module._global_options['skip_output_folder_check']:
+                # Folder exist, and is not empty
+                self.printer.warning("Attention! The folder chosen to store local output is not empty: {}".format(output))
+                self.printer.warning("Do you want to back it up first?")
+                self.printer.warning("Y: the content will be archived in a different location, then the folder will be emptied")
+                self.printer.warning("N: no action will be taken (destination files might be overwritten in case of filename clash)")
+                choice = raw_input("[y/n]: ").strip()
+                if choice.lower() == 'y':
+                    self.output_folder_backup(module)
+        # Setup vulnerability database
+        module.ISSUE_MANAGER.db_setup(output)
 
     def output_folder_backup(self, module):
         """Backup the local output folder"""
@@ -200,8 +204,7 @@ class LocalOperations(object):
         self.dir_copy(folder_active, folder_backup)
         self.printer.debug("Deleting: {}".format(folder_active))
         self.dir_delete(folder_active)
-        self.printer.debug("Recreating: {}".format(folder_active))
-        self.dir_create(folder_active)
+        self.output_folder_setup(module)
 
     # ==================================================================================================================
     # NETWORK

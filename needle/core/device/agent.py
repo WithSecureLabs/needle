@@ -1,8 +1,10 @@
 from __future__ import print_function
+import select
 import socket
 import asyncore
 
 from ..utils.constants import Constants
+from ..utils.utils import Retry
 
 
 # ======================================================================================================================
@@ -28,16 +30,18 @@ class AsyncClient(asyncore.dispatcher):
     def handle_close(self):
         self.close()
 
-    def handle_read(self):
+    def handle_read(self, marker=Constants.AGENT_OUTPUT_END):
         """Read output from socket."""
         self.setblocking(True)
         data = ""
         while True:
-            temp = self.recv(8192)
-            if Constants.AGENT_OUTPUT_END in temp:
-                data += temp[:temp.find(Constants.AGENT_OUTPUT_END)]
-                break
-            data += temp
+            ready = select.select([self], [], [], Constants.AGENT_TIMEOUT_READ)
+            if ready[0]:
+                temp = self.recv(8192)
+                if marker in temp:
+                    data += temp[:temp.find(marker)]
+                    break
+                data += temp
         self.setblocking(False)
         return data
 
@@ -70,6 +74,7 @@ class NeedleAgent(object):
     def disconnect(self):
         self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
 
+    @Retry()
     def exec_command_agent(self, cmd):
         self._device.printer.debug("{} Executing command: {}".format(Constants.AGENT_TAG, cmd))
         self.client.handle_write(cmd)

@@ -3,14 +3,13 @@ import paramiko
 from sshtunnel import SSHTunnelForwarder
 
 from app import App
-from installer import Installer
 from remote_operations import RemoteOperations
 from agent import NeedleAgent
 from ..framework.local_operations import LocalOperations
 from ..utils.constants import Constants
 from ..utils.menu import choose_from_list
 from ..utils.printer import Colors, Printer
-from ..utils.utils import Utils
+from ..utils.utils import Utils, Retry
 
 
 # ======================================================================================================================
@@ -27,7 +26,7 @@ class Device(object):
     _frida_server = None
     _port_forward_ssh, _port_forward_agent = None, None
     # App specific
-    _applist, _device_ready, _ios_version = None, None, None
+    _applist, _ios_version = None, None
     # Reference to External Objects
     ssh, agent = None, None
     app, installer = None, None
@@ -51,7 +50,6 @@ class Device(object):
         self._tools_local = tools
         # Init related objects
         self.app = App(self)
-        self.installer = Installer(self)
         self.local_op = LocalOperations()
         self.remote_op = RemoteOperations(self)
         self.printer = Printer()
@@ -82,11 +80,12 @@ class Device(object):
         """Open a new SSH connection using Paramiko."""
         try:
             self.printer.verbose("[SSH] Connecting ({}:{})...".format(self._ip, self._port))
-            self.ssh = paramiko.SSHClient()
-            self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh.connect(self._ip, port=self._port, username=self._username, password=self._password,
-                             allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(self._ip, port=self._port, username=self._username, password=self._password,
+                        allow_agent=self._pub_key_auth, look_for_keys=self._pub_key_auth)
             self.printer.notify("[SSH] Connected ({}:{})".format(self._ip, self._port))
+            return ssh
         except paramiko.AuthenticationException as e:
             raise Exception('Authentication failed when connecting to %s. %s: %s' % (self._ip, type(e).__name__, e.message))
         except paramiko.SSHException as e:
@@ -101,6 +100,7 @@ class Device(object):
         if self.ssh:
             self.ssh.close()
 
+    @Retry()
     def _exec_command_ssh(self, cmd, internal):
         """Execute a shell command on the device, then parse/print output."""
         def hotfix_67():
@@ -156,6 +156,8 @@ class Device(object):
 
     def _connect_agent(self):
         self.agent.connect()
+        # Ensure the tunnel has been established (especially after auto-reconnecting)
+        self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
 
     def _disconnect_agent(self):
         self.agent.disconnect()
@@ -214,7 +216,7 @@ class Device(object):
             self._portforward_agent_start()
         # Setup channels
         self._connect_agent()
-        self._connect_ssh()
+        self.ssh = self._connect_ssh()
 
     def disconnect(self):
         """Disconnect from the device (both SSH and AGENT)."""
@@ -226,21 +228,14 @@ class Device(object):
             self._portforward_usb_stop()
             self._portforward_agent_stop()
 
-    def setup(self, install_tools=True):
+    def setup(self):
         """Create temp folder, and check if all tools are available"""
         # Setup temp folder
         self.printer.debug("Creating temp folder: %s" % self.TEMP_FOLDER)
         self.remote_op.dir_create(self.TEMP_FOLDER)
         # Detect OS version
         if not self._ios_version:
-            self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION)
-        # Install tools
-        if install_tools:
-            if not self._device_ready:
-                self.printer.info("Configuring device...")
-                self._device_ready = self.installer.configure()
-        else:
-            self._device_ready = True
+            self._ios_version = self.agent.exec_command_agent(Constants.AGENT_CMD_OS_VERSION).strip()
 
     def cleanup(self):
         """Remove temp folder from device."""

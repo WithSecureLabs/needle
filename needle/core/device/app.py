@@ -206,7 +206,7 @@ class App(object):
             if 'Clutch2: Permission denied' in out[0]:
                 msg = 'marked as executable (using chmod +x /usr/bin/Clutch* from a device shell)'
             elif 'Clutch2: command not found' in out[0]:
-                msg = 'installed on the device (by running again with SETUP_DEVICE=True)'
+                msg = 'installed on the device (by running again: device/dependency_installer)'
 
             if msg:
                 self._device.printer.error('Clutch2 could not be run successfully so the binary could not be decrypted')

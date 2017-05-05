@@ -70,5 +70,6 @@ class Module(BaseModule):
 
         if strings:
             self.print_cmd_output(strings, self.options['output'])
+            self.add_issue('Strings found in heap dump', None, 'INVESTIGATE', self.options['out'])
         else:
             self.printer.warning("No strings found. The app might employ anti-debugging techniques.")
