@@ -6,7 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Version checking, to ensure the latest version of Needle is being used
 - **[MODULE]** Frida Script: hook all methods of the specified class (`hooking/frida/script_hook-all-methods-of-class`)
+- **[MODULE]** Frida Script: hook a particular method of a specific class (`hooking/frida/script_hook-method-of-class`)
 
 #### Fixed
 - **[CORE]** Search PID for apps with a space in their name
