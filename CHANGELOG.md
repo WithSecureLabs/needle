@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
-- **[MODULE]** Frida Script: hook all methods of the specified class (`hooking/frida/script_hook-methods-of-class`)
+- **[MODULE]** Frida Script: hook all methods of the specified class (`hooking/frida/script_hook-all-methods-of-class`)
 
 #### Fixed
 - **[CORE]** Search PID for apps with a space in their name
