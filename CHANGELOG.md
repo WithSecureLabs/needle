@@ -6,7 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+
 #### Fixed
+- **[CORE]** Search PID for apps with a space in their name
+
 #### Removed
 
 

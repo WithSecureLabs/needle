@@ -31,7 +31,7 @@ class Module(BaseModule):
         # Launch the app
         self.printer.info("Launching the app...")
         self.device.app.open(self.APP_METADATA['bundle_id'])
-        pid = self.device.app.search_pid(self.APP_METADATA['name'])
+        pid = self.device.app.search_pid(self.APP_METADATA['binary_name'])
 
         # Create temp files/folders
         dir_dumps = self.device.remote_op.build_temp_path_for_file("gdb_dumps")
