@@ -28,7 +28,7 @@ def launch_ui(args):
             readline.parse_and_bind('tab: complete')
             readline.set_completer_delims(re.sub('[/-]', '', readline.get_completer_delims()))
     # Instantiate the UI object
-    x = cli.CLI()
+    x = cli.CLI(cli.Mode.CONSOLE)
     # check for and run version check
     if args.check:
         if not x.version_check(): return
