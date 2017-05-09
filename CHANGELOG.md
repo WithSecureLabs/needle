@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Fixed
 - **[CORE]** Search PID for apps with a space in their name
+- **[CORE]** Remove infinite loop from `Retry` decorator, which attempts to restore a connection with the device if it fails
 
 #### Removed
 
