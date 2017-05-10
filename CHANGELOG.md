@@ -6,6 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Version checking, to ensure the latest version of Needle is being used
+- **[MODULE]** Frida Script: hook all methods of the specified class (`hooking/frida/script_hook-all-methods-of-class`)
+- **[MODULE]** Frida Script: hook a particular method of a specific class (`hooking/frida/script_hook-method-of-class`)
+
+#### Fixed
+- **[CORE]** Search PID for apps with a space in their name
+- **[CORE]** Remove infinite loop from `Retry` decorator, which attempts to restore a connection with the device if it fails
+
+#### Removed
+
+
+
+## [1.1.0] - 2017-05-05
+#### Added
 - **[CORE]** Issue Auto-Detection: modules will now automatically detect and keep track of issues in the target app. 
 All the issues are going to be stored in the `issues.db` SQLite database, contained in the chosen output directory.
 Every issue will hold the following attributes: `app`, `module`, `name`, `content`, `confidence level` ('HIGH', 'MEDIUM', 'INVESTIGATE', 'INFORMATIONAL'), `outfile`

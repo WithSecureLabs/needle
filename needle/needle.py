@@ -28,7 +28,10 @@ def launch_ui(args):
             readline.parse_and_bind('tab: complete')
             readline.set_completer_delims(re.sub('[/-]', '', readline.get_completer_delims()))
     # Instantiate the UI object
-    x = cli.CLI()
+    x = cli.CLI(cli.Mode.CONSOLE)
+    # check for and run version check
+    if args.check:
+        if not x.version_check(): return
     # Check for and run script session
     if args.script_file:
         x.do_resource(args.script_file)
@@ -46,6 +49,7 @@ def main():
     description = '%%(prog)s - %s %s' % (cli.__author__, cli.__email__)
     parser = argparse.ArgumentParser(description=description, version=Constants.VERSION)
     parser.add_argument('-r', help='load commands from a resource file', metavar='filename', dest='script_file', action='store')
+    parser.add_argument('--no-check', help='disable version check', dest='check', default=True, action='store_false')
     args = parser.parse_args()
     launch_ui(args)
 

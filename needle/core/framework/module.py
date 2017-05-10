@@ -307,7 +307,7 @@ class FridaScript(FridaModule):
             # Launching the app
             self.printer.info("Launching the app...")
             self.device.app.open(self.APP_METADATA['bundle_id'])
-            pid = int(self.device.app.search_pid(self.APP_METADATA['name']))
+            pid = int(self.device.app.search_pid(self.APP_METADATA['binary_name']))
             # Attaching to the process
             self.printer.info("Attaching to process: %s" % pid)
             self.session = device.attach(pid)
