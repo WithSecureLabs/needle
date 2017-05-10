@@ -3,6 +3,7 @@ import os
 import sys
 import imp
 import re
+import urllib2
 
 from ..utils.printer import Colors, Printer
 from ..utils.constants import Constants
@@ -97,6 +98,22 @@ class CLI(Framework):
         print('{msg:^{lgh}}'.format(msg='%s[%s]%s' % (Colors.B, __author__, Colors.N),
                                     lgh=banner_len+8+8))
         print('')
+
+    def version_check(self):
+        try:
+            pattern = "'(\d+\.\d+\.\d+[^']*)'"
+            remote = re.search(pattern, urllib2.urlopen(Constants.VERSION_CHECK).read()).group(1)
+            local = Constants.VERSION
+            if local != remote:
+                self.printer.error('Your version of {} does not match the latest release.'.format(Constants.NAME))
+                self.printer.error('Please update or use the \'--no-check\' switch to continue using the old version.')
+                self.printer.error('Local version: {}'.format(local))
+                self.printer.error('Remote version: {}'.format(remote))
+                return False
+            else:
+                return True
+        except:
+            return True
 
     # ==================================================================================================================
     # LOAD METHODS

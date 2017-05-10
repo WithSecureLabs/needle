@@ -174,10 +174,10 @@ class App(object):
         cmd = '{open} {app}'.format(open=self._device.DEVICE_TOOLS['OPEN'], app=bundle_id)
         self._device.remote_op.command_blocking(cmd, internal=True)
 
-    def search_pid(self, appname):
+    def search_pid(self, binary_name):
         """Retrieve the PID of the app's process."""
         self._device.printer.verbose('Retrieving the PID...')
-        cmd = "ps ax | grep -i '{appname}'".format(appname=appname)
+        cmd = "ps ax | grep -i '{binary_name}'".format(binary_name=binary_name)
         out = self._device.remote_op.command_blocking(cmd)
         try:
             process_list = filter(lambda x: '/var/mobile' in x, out)

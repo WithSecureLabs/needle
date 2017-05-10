@@ -12,7 +12,8 @@ class Constants(object):
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
     EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
-    VERSION = '1.0.2'
+    VERSION = '1.1.0'
+    VERSION_CHECK = 'https://raw.githubusercontent.com/mwrlabs/needle/master/needle/core/utils/constants.py'
 
     # Name variables
     NAME = 'Needle'
