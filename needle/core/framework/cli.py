@@ -7,7 +7,7 @@ import urllib2
 
 from ..utils.printer import Colors, Printer
 from ..utils.constants import Constants
-from framework import Framework, FrameworkException
+from framework import Framework, FrameworkException, Mode
 from issues import IssueManager
 from local_operations import LocalOperations
 
@@ -16,15 +16,17 @@ __author__ = Constants.AUTHOR
 __email__ = Constants.EMAIL
 __website__ = Constants.WEBSITE
 
+
 # ======================================================================================================================
 # CLI
 # ======================================================================================================================
 class CLI(Framework):
     """Main instance of Framework, and entry point of the program."""
 
-    def __init__(self):
-        Framework.__init__(self, 'cli')
+    def __init__(self, mode):
+        Framework.__init__(self, 'base')
         self._name = Constants.NAME
+        self._mode = mode
         self._prompt_template = '{color_main}{main}{color_module}[{module}]{color_reset} > '
         self._base_prompt = self._prompt_template.format(color_main=Colors.C, main='',
                                                          color_module=Colors.O, module=self._name, color_reset=Colors.N)
@@ -40,9 +42,10 @@ class CLI(Framework):
         self._init_global_options()
         self._init_global_vars()
         self._init_home()
-        self.show_banner()
         self.do_reload(None)
         self._history_load()
+        if self._mode == Mode.CONSOLE:
+            self.show_banner()
 
     # ==================================================================================================================
     # INIT METHODS
@@ -81,9 +84,7 @@ class CLI(Framework):
         self.path_home_backup = Framework.path_home_backup = Constants.FOLDER_BACKUP
         init_folders = [self.path_home, self.path_home_temp, self.path_home_backup]
         # Initialize folders: home, temp, backup
-        for f in init_folders:
-            if not os.path.exists(f):
-                os.makedirs(f)
+        map(lambda x: os.makedirs(x), filter(lambda x: not os.path.exists(x), init_folders))
 
     def show_banner(self):
         banner='''
@@ -193,6 +194,9 @@ class CLI(Framework):
         while True:
             y = self._loaded_modules[mod_dispname]
             mod_loadpath = os.path.abspath(sys.modules[y.__module__].__file__)
+            # return the loaded module if in command line mode
+            if self._mode == Mode.CLI:
+                return y
             # begin a command loop
             y.prompt = self._prompt_template.format(color_main=Colors.C, main=self.prompt[:-3],
                                                     color_module=Colors.O, module=mod_dispname.split('/')[-1], color_reset=Colors.N)
@@ -207,9 +211,7 @@ class CLI(Framework):
                 # reload the module in memory
                 is_loaded = self._load_module(os.path.dirname(mod_loadpath), os.path.basename(mod_loadpath))
                 if is_loaded:
-                    # reload the module in the framework
                     continue
-                # shuffle category counts?
             break
     do_use = do_load
 
