@@ -35,7 +35,7 @@ def launch_cli(args):
     # ==================================================================================================================
     # Run given global commands
     for command in args.global_commands:
-        printer.alert('GLOBAL COMMAND => %s' % (command))
+        printer.notify('GLOBAL COMMAND => {}'.format(command))
         x.onecmd(command)
     # Set given global options
     for option in args.goptions:
@@ -80,7 +80,7 @@ def main():
     parser.add_argument('-g', help='set a global option (can be used more than once)', metavar='name=value', dest='goptions', default=[], action='append')
     parser.add_argument('-M', help='show modules', dest='show_modules', default=False, action='store_true')
     parser.add_argument('-C', help='runs a command at the global context', metavar='command', dest='global_commands', default=[], action='append')
-    parser.add_argument('-m', help='specify the modules/options. Example: -m binary/info/metadata -m device/agent_client#COMMAND=OS_VERSION', metavar='modules', dest='modules', default=[], action='append')
+    parser.add_argument('-m', help='specify the modules/options (can be used more than once). Example: -m binary/info/metadata -m device/agent_client#COMMAND=OS_VERSION', metavar='modules', dest='modules', default=[], action='append')
     parser.add_argument('--no-check', help='disable version check', dest='check', default=True, action='store_false')
     args = parser.parse_args()
     launch_cli(args)

@@ -39,13 +39,12 @@ class CLI(Framework):
 
         # Init framework
         self.options = self._global_options
+        self.show_banner()
         self._init_global_options()
         self._init_global_vars()
         self._init_home()
         self.do_reload(None)
         self._history_load()
-        if self._mode == Mode.CONSOLE:
-            self.show_banner()
 
     # ==================================================================================================================
     # INIT METHODS
