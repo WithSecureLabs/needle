@@ -86,8 +86,12 @@ class App(object):
 
     def __parse_plist_info(self, plist):
         # Parse the Info.plist file
+        bundle_displayname = self.__extract_field(plist, 'CFBundleDisplayName')
         bundle_exe = self.__extract_field(plist, 'CFBundleExecutable')
+        bundle_id = self.__extract_field(plist, 'CFBundleIdentifier')
         bundle_package_type = self.__extract_field(plist, 'CFBundlePackageType')
+        bundle_version = "{} ({})".format(self.__extract_field(plist, 'CFBundleVersion'),
+                                          self.__extract_field(plist, 'CFBundleShortVersionString'))
         platform_version = self.__extract_field(plist, 'DTPlatformVersion')
         ats_settings = self.__extract_field(plist, 'NSAppTransportSecurity')
         try:
@@ -96,9 +100,12 @@ class App(object):
             url_handlers = None
         # Pack into a dict
         metadata = {
-            'platform_version': platform_version,
+            'bundle_displayname': bundle_displayname,
             'bundle_exe': bundle_exe,
+            'bundle_id': bundle_id,
             'bundle_package_type': bundle_package_type,
+            'bundle_version': bundle_version,
+            'platform_version': platform_version,
             'url_handlers': url_handlers,
             'ats_settings': ats_settings,
         }
