@@ -60,9 +60,6 @@ class Constants(object):
         '10': [
             'binary/installation/install',
             'binary/installation/pull_ipa',
-            'binary/reversing/class_dump',
-            'binary/reversing/strings',
-            'storage/data/keychain_dump'
         ]
     }
 
@@ -129,7 +126,7 @@ class Constants(object):
             'WHICH': {'COMMAND': 'which', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'LIPO': {'COMMAND': 'lipo', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'PLUTIL': {'COMMAND': 'plutil', 'PACKAGES': ['com.ericasadun.utilities'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
-            'UNZIP':  {'COMMAND': 'unzip', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
+            'UNZIP':  {'COMMAND': 'unzip', 'PACKAGES': ['unzip'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'STRINGS': {'COMMAND': 'strings', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
 
             # TOOLKITS
@@ -151,7 +148,7 @@ class Constants(object):
             'THEOS_NIC': {'COMMAND': '%sbin/nic.pl' % THEOS_FOLDER, 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
 
             # TO REPLACE
-            'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': '', 'LOCAL': None, 'SETUP': None},
+            'CLASS-DUMP': {'COMMAND': 'class-dump', 'PACKAGES': ['pcre', 'net.limneos.classdump-dyld', 'class-dump'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "curl -ksL \"http://cydia.iphonecake.com/Clutch2.0.4.deb\" -o /var/root/clutch.deb",
                 "dpkg -i /var/root/clutch.deb && rm -f /var/root/clutch.deb",
