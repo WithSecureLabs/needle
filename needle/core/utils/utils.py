@@ -193,11 +193,13 @@ class Retry(object):
                     return func(obj, *args, **kwargs)
                 except self.exceptions, e:
                     self.actual_tries += 1
-                    device.printer.error("SSH Session appears to have died!")
+                    exception = e
+                    device.printer.error(exception)
                     device.disconnect()
-                    device.printer.warning("Reconnecting to device...")
+                    device.printer.warning("Resetting connection to device...")
                     device.connect()
                     device.printer.warning("Rerunning last command...")
                     time.sleep(self.delay)
-            raise Exception("The session with the device died and it was not possible to restore it ({} attempts failed)".format(self.tries))
+            self.actual_tries = 0
+            raise Exception("An error occurred and it was not possible to restore it ({} attempts failed)".format(self.tries))
         return wrapper

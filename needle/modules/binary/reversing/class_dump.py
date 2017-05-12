@@ -64,6 +64,6 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         # Decrypt the binary and unzip the IPA
-        self.fname_binary = self.device.app.decrypt(self.APP_METADATA)
+        self.fname_binary = self.device.app.decrypt(self.APP_METADATA, thin=True)
         # Perform class dump
         self.class_dump()
