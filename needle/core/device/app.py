@@ -190,7 +190,7 @@ class App(object):
         except Exception as e:
             raise Exception("PID not found")
 
-    def decrypt(self, app_metadata):
+    def decrypt(self, app_metadata, thin=False):
         """Decrypt the binary and unzip the IPA. Returns the full path of the decrypted binary"""
         # Run Clutch
         self._device.printer.info("Decrypting the binary...")
@@ -230,22 +230,26 @@ class App(object):
 
         # Unzip IPA and get binary path
         fname_binary = self.unpack_ipa(app_metadata, fname_decrypted)
-        return fname_binary
 
         # Thin the binary
-        #fname_thinned = self.thin_binary(fname_binary)
-        #return fname_thinned
+        if thin:
+            return self.thin_binary(app_metadata, fname_binary)
+        return fname_binary
 
-    def thin_binary(self, fname_binary, arch=Constants.PREFERRED_ARCH):
+    def thin_binary(self, app_metadata, fname_binary, arch=Constants.PREFERRED_ARCH):
         self._device.printer.info("Thinning the binary...")
-        fname_thinned = self._device.remote_op.build_temp_path_for_file('thinned')
-        cmd = '{bin} -thin {arch} -output {output} {binary}'.format(bin=self._device.DEVICE_TOOLS['LIPO'],
+        if arch in app_metadata['architectures']:
+            fname_thinned = self._device.remote_op.build_temp_path_for_file('thinned')
+            cmd = '{bin} -thin {arch} -output {output} {binary}'.format(bin=self._device.DEVICE_TOOLS['LIPO'],
                                                                     arch=arch,
                                                                     output=fname_thinned,
                                                                     binary=fname_binary)
-        self._device.remote_op.command_blocking(cmd)
-        self._device.printer.debug("Thinned IPA stored at: %s" % fname_thinned)
-        return fname_thinned
+            self._device.remote_op.command_blocking(cmd)
+            self._device.printer.debug("Thinned IPA stored at: %s" % fname_thinned)
+            return fname_thinned
+        else:
+            self._device.printer.warning('Binary does not include the requested architecture ({}). Skipping...'.format(arch))
+            return fname_binary
 
     # ==================================================================================================================
     # UNPACK AN IPA FILE
