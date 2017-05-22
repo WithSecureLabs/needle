@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+#### Fixed
+#### Removed
+
+
+
+## [1.2.0] - 2017-05-22
+#### Added
 - **[CORE]** Non-interactive mode: new command line interface (`python needle-cli.py`) which allows to completely script Needle 
 - **[CORE]** Version checking, to ensure the latest version of Needle is being used
 - **[CORE]** Add support for binary thinning
@@ -17,8 +24,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Remove infinite loop from `Retry` decorator, which attempts to restore a connection with the device if it fails
 - **[CORE]** Metadata parsing for app extensions
 - **[CORE]** Re-added support on iOS for: `storage/data/keychain_dump`, `binary/reversing/strings`, `binary/reversing/class_dump`
-
-#### Removed
 
 
 
