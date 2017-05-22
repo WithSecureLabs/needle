@@ -181,22 +181,25 @@ class Retry(object):
             exceptions = Retry.default_exceptions
         self.exceptions = exceptions
         self.delay = delay
+        self.actual_tries = 0
 
     def __call__(self, func):
         def wrapper(obj, *args, **kwargs):
             # Check who is calling: Device or NeedleAgent
             device = obj._device if 'NeedleAgent' in type(obj).__name__ else obj
             exception = None
-            for _ in range(self.tries):
+            while self.actual_tries < self.tries:
                 try:
                     return func(obj, *args, **kwargs)
                 except self.exceptions, e:
-                    device.printer.error("SSH Session appears to have died!")
+                    self.actual_tries += 1
+                    exception = e
+                    device.printer.error(exception)
                     device.disconnect()
-                    device.printer.warning("Reconnecting to device...")
+                    device.printer.warning("Resetting connection to device...")
                     device.connect()
                     device.printer.warning("Rerunning last command...")
                     time.sleep(self.delay)
-                    exception = e
-            raise exception
+            self.actual_tries = 0
+            raise Exception("An error occurred and it was not possible to restore it ({} attempts failed)".format(self.tries))
         return wrapper

@@ -81,5 +81,5 @@ class NeedleAgent(object):
         return self.read_result()
 
     def read_result(self):
-        self._device.printer.debug("{} Parsing result".format(Constants.AGENT_TAG))
+        self._device.printer.debug("{} Parsing result (are you sure the agent is in the foreground?)".format(Constants.AGENT_TAG))
         return self.client.handle_read()

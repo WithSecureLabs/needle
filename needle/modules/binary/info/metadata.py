@@ -102,12 +102,9 @@ class Module(BaseModule):
                 self.printer.notify('\t\t{:<40}: {:<20}'.format('Bundle Display Name', app_extension['bundle_displayname']))
                 self.printer.notify('\t\t{:<40}: {:<20}'.format('Bundle Executable', app_extension['bundle_exe']))
                 self.printer.notify('\t\t{:<40}: {:<20}'.format('Bundle ID', app_extension['bundle_id']))
+                self.printer.notify('\t\t{:<40}: {:<20}'.format('Bundle Version', app_extension['bundle_version']))
                 self.printer.notify('\t\t{:<40}: {:<20}'.format('Bundle Package Type', app_extension['bundle_package_type']))
-                self.printer.notify('\t\t{:<40}: {:<20}'.format('App Version', app_extension['app_version']))
                 self.printer.notify('\t\t{:<40}: {:<20}'.format('Platform Version', app_extension['platform_version']))
-                self.printer.notify('\t\t{:<40}: {:<20}'.format('SDK Version', app_extension['sdk_version']))
-                self.printer.notify('\t\t{:<40}: {:<20}'.format('Minimum OS', app_extension['minimum_os']))
-
                 self._print_url_handlers(app_extension['url_handlers'], ident=2)
                 self._print_ats(self.APP_METADATA['ats_settings'], ident=2)
 

@@ -18,7 +18,7 @@ class Module(BaseModule):
         self.printer.info("Launching the app...")
         self.device.app.open(self.APP_METADATA['bundle_id'])
         # Search for PID
-        pid = self.device.app.search_pid(self.APP_METADATA['name'])
+        pid = self.device.app.search_pid(self.APP_METADATA['binary_name'])
 
         # Prepare hook
         fname = "hook.cy"
