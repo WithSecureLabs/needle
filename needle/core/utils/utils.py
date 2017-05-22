@@ -26,7 +26,6 @@ class Utils(object):
             # Find the accents/backquotes that do not have a backslash
             # in front of them and escape them.
             path = re.sub('(?<!\\\\)`', '\`', path)
-        print "Returning path: {}".format(pipes.quote(path))
         return pipes.quote(path)
 
     @staticmethod
