@@ -17,11 +17,16 @@ class Utils(object):
     # PATH UTILS
     # ==================================================================================================================
     @staticmethod
-    def escape_path(path):
+    def escape_path(path, escape_accent=False):
         """Escape the given path."""
         import pipes
         path = path.strip()          # strip
         path = path.strip(''''"''')  # strip occasional single/double quotes from both sides
+        if escape_accent:
+            # Find the accents/backquotes that do not have a backslash
+            # in front of them and escape them.
+            path = re.sub('(?<!\\\\)`', '\`', path)
+        print "Returning path: {}".format(pipes.quote(path))
         return pipes.quote(path)
 
     @staticmethod
@@ -195,6 +200,13 @@ class Retry(object):
                     self.actual_tries += 1
                     exception = e
                     device.printer.error(exception)
+                    if str(e).find('`') > -1:
+                        # Attempt to escape the command args[0] in order to escape the accent.
+                        device.printer.debug("Attempting retry with the accents/backquotes escaped.")
+                        if len(args) > 0:
+                            print "Args: {}".format(args)
+                            args = [Utils.escape_path(i) if idx == 0 else i
+                                    for idx, i in enumerate(args)]
                     device.disconnect()
                     device.printer.warning("Resetting connection to device...")
                     device.connect()
