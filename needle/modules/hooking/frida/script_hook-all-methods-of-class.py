@@ -38,7 +38,7 @@ if(ObjC.available) {
     def __init__(self, params):
         FridaScript.__init__(self, params)
         # Setting default output file
-        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_hook_methods_of_class.txt", self)
+        self.options['output'] = self.local_op.build_output_path_for_file("frida_script_hook_all_methods_of_class.txt", self)
 
     # ==================================================================================================================
     # RUN
@@ -57,6 +57,3 @@ if(ObjC.available) {
             script.load()
         except Exception as e:
             self.printer.warning("Script terminated abruptly")
-
-    def module_post(self):
-        pass#self.print_cmd_output()
