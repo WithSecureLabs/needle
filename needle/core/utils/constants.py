@@ -136,7 +136,7 @@ class Constants(object):
             # TOOLS
             'CYCRIPT': {'COMMAND': 'cycript', 'PACKAGES': ['cycript'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FRIDA': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
-            'FRIDA32bit': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server32'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
+            'FRIDA32BIT': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server32'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
             'GDB': {'COMMAND': 'gdb', 'PACKAGES': ['gdb'], 'REPO': 'http://cydia.radare.org/', 'LOCAL': None, 'SETUP': None},
             'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "ln -s /usr/local/bin/perl /usr/bin/perl",
