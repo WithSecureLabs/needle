@@ -6,7 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+
 #### Fixed
+- **[MODULE]** Case sensitivity issues in `device/dependency_installer` _[from @tghosth]_
+
 #### Removed
 
 
