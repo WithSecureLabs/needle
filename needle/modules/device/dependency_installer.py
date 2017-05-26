@@ -173,8 +173,8 @@ class Module(BaseModule):
             to_install = [k.upper() for k, v in self.options.iteritems()]
         else:
             to_install = [k.upper() for k, v in self.options.iteritems() if v]
-        if 'all' in to_install:
-            to_install.remove('all')
+        if 'ALL' in to_install:
+            to_install.remove('ALL')
         self.printer.info('The following tools are going to be installed: {}'.format(to_install))
 
         # Configure tools
