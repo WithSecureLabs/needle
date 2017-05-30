@@ -42,6 +42,7 @@ class Constants(object):
     GLOBAL_PUB_KEY_AUTH = True
     GLOBAL_SAVE_HISTORY = True
     GLOBAL_SKIP_OUTPUT_FOLDER_CHECK = False
+    GLOBAL_HIDE_SYSTEM_APPS = False
     PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 

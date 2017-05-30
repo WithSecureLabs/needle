@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Support for System Applications
+- **[CORE]** Global variable `HIDE_SYSTEM_APPS`: if set to `True`, only 3rd party apps will be shown
+- **[MODULE]** `SignerIdentity` included in `binary/info/metadata`
 
 #### Fixed
 - **[MODULE]** Case sensitivity issues in `device/dependency_installer` _[from @tghosth]_

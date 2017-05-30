@@ -8,6 +8,7 @@ class Module(BaseModule):
         'author': '@LanciniMarco (@MWRLabs)',
         'description': 'Provide a list of the bundle IDs of all the apps installed on the device',
         'options': (
+            ('hide_system_apps', False, True, 'If set to True, only 3rd party apps will be shown'),
         ),
     }
 
@@ -22,6 +23,6 @@ class Module(BaseModule):
     # ==================================================================================================================
     def module_run(self):
         self.printer.info('Looking for apps...')
-        self.device._list_apps()
+        self.device._list_apps(self.options['hide_system_apps'])
         self.printer.notify('Apps found:')
         choose_from_list(self.device._applist.keys(), choose=False)

@@ -14,8 +14,6 @@ class App(object):
     def get_metadata(self, app_name):
         """Retrieve metadata of the target app."""
         self._app = app_name
-        if self._device._applist is None:
-            self._device._list_apps()
         return self._retrieve_metadata()
 
     def _retrieve_metadata(self):
@@ -54,6 +52,7 @@ class App(object):
 
         # Parse the JSON
         name             = self.__extract_field(agent_info, 'DisplayName').encode('ascii','replace')
+        bundle_type      = self.__extract_field(agent_info, 'BundleType')
         bundle_id        = self.__extract_field(agent_info, 'BundleIdentifier')
         data_directory   = self.__extract_field(agent_info, 'DataContainer', path=True)
         bundle_directory = self.__extract_field(agent_info, 'BundleContainer', path=True)
@@ -63,11 +62,13 @@ class App(object):
         entitlements     = self.__extract_field(agent_info, 'Entitlements')
         minimum_os       = self.__extract_field(agent_info, 'MinimumOS')
         team_id          = self.__extract_field(agent_info, 'TeamID')
+        signer_identity  = self.__extract_field(agent_info, 'SignerIdentity')
         uuid = bundle_directory.rsplit('/', 1)[-1]
 
         # Pack into a dict
         metadata = {
             'name': name,
+            'bundle_type': bundle_type,
             'bundle_id': bundle_id,
             'data_directory': data_directory,
             'bundle_directory': bundle_directory,
@@ -77,6 +78,7 @@ class App(object):
             'entitlements': entitlements,
             'minimum_os': minimum_os,
             'team_id': team_id,
+            'signer_identity': signer_identity,
             'uuid': uuid
         }
         return metadata
