@@ -142,7 +142,7 @@ class Utils(object):
         Utils.dict_print(text)
 
     @staticmethod
-    def plist_read_from_file(path):
+    def plist_read_from_file(path, use_plistlib=False):
         """Recursively read a plist from a file."""
         def decode_nested_plist(inner_plist):
             """This method is designed to allow recursively decoding a plist file."""
@@ -152,7 +152,10 @@ class Utils(object):
                         inner_plist[k] = Utils.plist_read_from_string(v)
             return inner_plist
         try:
-            plist = biplist.readPlist(path)
+            if use_plistlib:
+                plist = plistlib.readPlist(path)
+            else:
+                plist = biplist.readPlist(path)
             return decode_nested_plist(plist)
         except (biplist.InvalidPlistException, biplist.NotBinaryPlistException), e:
             raise Exception("Failed to parse plist file: {}".format(e))

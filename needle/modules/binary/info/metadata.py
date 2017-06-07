@@ -6,7 +6,7 @@ class Module(BaseModule):
         'name': 'App Metadata',
         'author': '@LanciniMarco (@MWRLabs)',
         'description': "Display the app's metadata: UUID, app name/version, bundle name/ID, bundle/data/binary directory, "
-                       "binary path/name, entitlements, URL handlers, architectures, platform/SDK/OS version, ATS settings,"
+                       "binary path/name, signer identity, entitlements, URL handlers, architectures, platform/SDK/OS version, ATS settings,"
                        "app extensions",
         'options': (
         ),
@@ -66,8 +66,10 @@ class Module(BaseModule):
         self.printer.notify('{:<20}: {:<30}'.format('Binary Name', self.APP_METADATA['binary_name']))
         self.printer.notify('{:<20}: {:<30}'.format('Bundle Executable', self.APP_METADATA['bundle_exe']))
         self.printer.notify('{:<20}: {:<30}'.format('Bundle ID', self.APP_METADATA['bundle_id']))
+        self.printer.notify('{:<20}: {:<30}'.format('Bundle Type', self.APP_METADATA['bundle_type']))
         self.printer.notify('{:<20}: {:<30}'.format('UUID', self.APP_METADATA['uuid']))
         self.printer.notify('{:<20}: {:<30}'.format('Team ID', self.APP_METADATA['team_id']))
+        self.printer.notify('{:<20}: {:<30}'.format('Signer Identity', self.APP_METADATA['signer_identity']))
 
         # Paths
         self.printer.notify('{:<20}: {:<30}'.format('Bundle Directory', self.APP_METADATA['bundle_directory']))

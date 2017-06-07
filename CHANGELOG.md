@@ -6,7 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+- **[CORE]** Support for System Applications
+- **[CORE]** Global variable `HIDE_SYSTEM_APPS`: if set to `True`, only 3rd party apps will be shown
+- **[MODULE]** `SignerIdentity` included in `binary/info/metadata`
+- **[MODULE]** `binary/info/provisioning_profile` automatically parses the embedded certificate looking for distribution profiles
+- **[MODULE]** `hooking/frida/script_anti-hooking-check` automatically detects if the app prevents hooking
+
 #### Fixed
+- **[MODULE]** Case sensitivity issues in `device/dependency_installer` _[from @tghosth]_
+
 #### Removed
 
 
