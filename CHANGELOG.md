@@ -21,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Fixed
 - **[MODULE]** Case sensitivity issues in `device/dependency_installer` _[from @tghosth]_
-
+- PR179
 
 
 ## [1.2.0] - 2017-05-22
