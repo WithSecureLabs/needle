@@ -11,6 +11,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## Unreleased
+#### Fixed
+- **[CORE]** Asyncore problems _[from @floyd-fuh]_
+
+#### Removed
+- **[CORE]** Asyncore, replaced by regular sockets _[from @floyd-fuh]_
+
+
+
 ## [1.3.0] - 2017-06-07
 #### Added
 - **[CORE]** Support for System Applications
