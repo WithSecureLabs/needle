@@ -1,9 +1,10 @@
 from __future__ import print_function
-import socket
 from socket import error as socketerror
+import socket
 
 from ..utils.constants import Constants
 from ..utils.utils import Retry
+
 
 # ======================================================================================================================
 # ASYNC CLIENT
@@ -12,12 +13,9 @@ class AsyncClient():
     def __init__(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.socket.connect( (host, port) )
+            self.socket.connect((host, port))
         except socketerror as se:
-            if se != errno.ECONNREFUSED:
-                raise se
-            #TODO FIXME:
-            print("Connection refused...")
+            raise se
 
     def close(self):
         self.socket.close()
