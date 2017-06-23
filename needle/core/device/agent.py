@@ -1,9 +1,10 @@
 from __future__ import print_function
-import socket
 from socket import error as socketerror
+import socket
 
 from ..utils.constants import Constants
 from ..utils.utils import Retry
+
 
 # ======================================================================================================================
 # ASYNC CLIENT
@@ -12,15 +13,13 @@ class AsyncClient():
     def __init__(self, host, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.socket.connect( (host, port) )
+            self.socket.connect((host, port))
         except socketerror as se:
-            if se != errno.ECONNREFUSED:
-                raise se
-            #TODO FIXME:
-            print("Connection refused...")
+            raise se
 
     def close(self):
-        self.socket.close()
+        if self.socket:
+            self.socket.close()
     
     def send_to_device(self, cmd, marker=Constants.AGENT_OUTPUT_END):
         self.socket.send(cmd + '\r\n')
@@ -55,8 +54,9 @@ class NeedleAgent(object):
         self._device.printer.notify("{} Successfully connected to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
 
     def disconnect(self):
-        self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
-        self.client.close()
+        if self.client:
+            self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
+            self.client.close()
 
     @Retry()
     def exec_command_agent(self, cmd):
