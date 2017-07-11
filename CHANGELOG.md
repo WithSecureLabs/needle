@@ -11,6 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## Unreleased
+#### Added
+
+#### Fixed
+- **[MODULE]** Keychain extraction of data not encodable in UTF8 _[from @federicodotta]_
+
+#### Removed
+
+
+
 ## [1.3.1] - 2017-06-22
 #### Fixed
 - **[CORE]** Asyncore problems _[from @floyd-fuh]_
