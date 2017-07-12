@@ -116,7 +116,7 @@ class Module(BaseModule):
         for tool in Constants.DEVICE_SETUP['PREREQUISITES']:
             if not self.__is_tool_available(tool):
                 self.device.printer.error('Prerequisite Not Found: %s ' % tool)
-                raise Exception('Please install the requirements listed in the README file')
+                raise Exception('Please install the requirements listed in the project WIKI')
 
     def _refresh_package_list(self):
         """Refresh the list of installed packages."""
@@ -173,8 +173,8 @@ class Module(BaseModule):
             to_install = [k.upper() for k, v in self.options.iteritems()]
         else:
             to_install = [k.upper() for k, v in self.options.iteritems() if v]
-        if 'all' in to_install:
-            to_install.remove('all')
+        if 'ALL' in to_install:
+            to_install.remove('ALL')
         self.printer.info('The following tools are going to be installed: {}'.format(to_install))
 
         # Configure tools

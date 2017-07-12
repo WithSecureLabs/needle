@@ -36,10 +36,24 @@ if(ObjC.available) {
 }
     '''
 
+    msg = None
+
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
+    def module_pre(self):
+        """Automatically detect if the app prevents hooking."""
+        try:
+            FridaScript.module_pre()
+        except Exception as e:
+            self.msg = e
+            self.module_run()
+
     def module_run(self):
+        # If error has been detected, log issue and exit
+        if self.msg:
+            self.add_issue('Anti-Hooking Check', 'It was not possible to attach frida: {}'.format(self.msg), 'INVESTIGATE', None)
+            return
         # Run the payload
         try:
             self.printer.info("Parsing payload")

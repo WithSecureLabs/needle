@@ -64,6 +64,7 @@ class CLI(Framework):
         self.register_option('save_history', Constants.GLOBAL_SAVE_HISTORY, True, 'Persists command history across sessions')
         self.register_option('skip_output_folder_check', Constants.GLOBAL_SKIP_OUTPUT_FOLDER_CHECK, False, 'Skip the check that ensures the output folder does not already contain other files. '
                                                                                                            'It will automatically overwrite any file')
+        self.register_option('hide_system_apps', Constants.GLOBAL_HIDE_SYSTEM_APPS, True, 'If set to True, only 3rd party apps will be shown')
 
     def _init_global_vars(self):
         # Setup Printer

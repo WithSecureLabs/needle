@@ -20,7 +20,7 @@ See the [Installation Guide](https://github.com/mwrlabs/needle/wiki/Installation
 
 #### Supported Platforms
 
-* _Workstation_: Needle has been successfully tested on both Kali and OSX
+* _Workstation_: Needle has been successfully tested on both Kali and macOS
 * _Device_: iOS 8, 9, and 10 are currently supported 
 
 
@@ -35,5 +35,7 @@ Needle is released under a 3-clause BSD License. See the `LICENSE` file for full
 
 
 # Contact
+
+For news and updates, follow [@mwrneedle](https://twitter.com/mwrneedle) on Twitter and the _[MWR Mobile Tools](http://mobiletools.mwrinfosecurity.com/needle/blog)_ blog.
 
 Feel free to submit issues or ping us on Twitter - [@mwrneedle](https://twitter.com/mwrneedle), [@lancinimarco](https://twitter.com/lancinimarco)

@@ -22,6 +22,11 @@ DEBUG => True
 
 ## Environment
 
+#### Needle Version
+
+- Framework (on your machine): 
+- Agent (on your device):
+
 #### Workstation Operating System
 
 #### Python Version
