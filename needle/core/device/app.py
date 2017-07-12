@@ -22,7 +22,7 @@ class App(object):
         metadata_agent = self.__parse_from_agent()
 
         # Content of the app's local Info.plist
-        plist_info_path = Utils.escape_path('%s/Info.plist' % metadata_agent['binary_directory'])
+        plist_info_path = Utils.escape_path('%s/Info.plist' % metadata_agent['binary_directory'], escape_accent=True)
         plist_info = self._device.remote_op.parse_plist(plist_info_path)
         metadata_info = self.__parse_plist_info(plist_info)
 
@@ -54,9 +54,9 @@ class App(object):
         name             = self.__extract_field(agent_info, 'DisplayName').encode('ascii','replace')
         bundle_type      = self.__extract_field(agent_info, 'BundleType')
         bundle_id        = self.__extract_field(agent_info, 'BundleIdentifier')
-        data_directory   = self.__extract_field(agent_info, 'DataContainer', path=True)
-        bundle_directory = self.__extract_field(agent_info, 'BundleContainer', path=True)
-        binary_directory = self.__extract_field(agent_info, 'BundleURL', path=True)
+        data_directory   = self.__extract_field(agent_info, 'DataContainer', path=True, urldecode=True)
+        bundle_directory = self.__extract_field(agent_info, 'BundleContainer', path=True, urldecode=True)
+        binary_directory = self.__extract_field(agent_info, 'BundleURL', path=True, urldecode=True)
         app_version      = self.__extract_field(agent_info, 'BundleVersion')
         sdk_version      = self.__extract_field(agent_info, 'SDKVersion')
         entitlements     = self.__extract_field(agent_info, 'Entitlements')
@@ -120,10 +120,17 @@ class App(object):
         res = msg.rsplit(': ')[-1].split(' ')
         return res
 
-    def __extract_field(self, data, field, path=False):
+    def __extract_field(self, data, field, path=False, urldecode=False):
         """Extract the specified entry from the plist file. Returns empty string if not present."""
         try:
             temp = data[field]
+            if urldecode:
+                try:
+                    from urllib.parse import unquote
+                except ImportError:
+                    # Python 2.x
+                    from urllib import unquote
+                temp = unquote(temp)
             if path:
                 prefix = 'file://'
                 if temp.startswith(prefix):
