@@ -57,6 +57,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Remove infinite loop from `Retry` decorator, which attempts to restore a connection with the device if it fails
 - **[CORE]** Metadata parsing for app extensions
 - **[CORE]** Re-added support on iOS for: `storage/data/keychain_dump`, `binary/reversing/strings`, `binary/reversing/class_dump`
+- **[CORE]** Use unquote to convert spaces. Fixes Issue #15  _[from @ccsplit]_
 
 
 
