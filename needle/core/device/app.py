@@ -134,7 +134,7 @@ class App(object):
             if path:
                 prefix = 'file://'
                 if temp.startswith(prefix):
-                    temp = temp[len(prefix):]
+                    temp = Utils.escape_path(temp[len(prefix):])
             return temp
         except:
             return ""
