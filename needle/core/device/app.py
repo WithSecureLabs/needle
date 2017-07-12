@@ -186,7 +186,7 @@ class App(object):
         cmd = "ps ax | grep -i '{binary_name}'".format(binary_name=binary_name)
         out = self._device.remote_op.command_blocking(cmd)
         try:
-            process_list = filter(lambda x: '/var/mobile' in x, out)
+            process_list = filter(lambda x: 'grep' not in x, out)
             if not process_list:
                 process_list = filter(lambda x: '/var/containers' in x, out)
             process = process_list[0].strip()
