@@ -10,13 +10,14 @@ class Constants(object):
     # ==================================================================================================================
     # AUTHOR
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
-    EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
+    EMAIL = 'marco.lancini@mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
-    VERSION = '1.1.0'
+    VERSION = '1.3.1'
     VERSION_CHECK = 'https://raw.githubusercontent.com/mwrlabs/needle/master/needle/core/utils/constants.py'
 
     # Name variables
     NAME = 'Needle'
+    DESCRIPTION = 'The iOS Security Testing Framework'
     NAME_FOLDER = '.needle'
     NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)
 
@@ -42,6 +43,7 @@ class Constants(object):
     GLOBAL_PUB_KEY_AUTH = True
     GLOBAL_SAVE_HISTORY = True
     GLOBAL_SKIP_OUTPUT_FOLDER_CHECK = False
+    GLOBAL_HIDE_SYSTEM_APPS = False
     PASSWORD_CLEAR = 'password_clear'
     PASSWORD_MASK = '********'
 
@@ -136,7 +138,7 @@ class Constants(object):
             # TOOLS
             'CYCRIPT': {'COMMAND': 'cycript', 'PACKAGES': ['cycript'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'FRIDA': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
-            'FRIDA32bit': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server32'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
+            'FRIDA32BIT': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server32'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
             'GDB': {'COMMAND': 'gdb', 'PACKAGES': ['gdb'], 'REPO': 'http://cydia.radare.org/', 'LOCAL': None, 'SETUP': None},
             'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "ln -s /usr/local/bin/perl /usr/bin/perl",

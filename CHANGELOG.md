@@ -6,6 +6,45 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 #### Added
+#### Fixed
+#### Removed
+
+
+
+## Unreleased
+#### Added
+
+#### Fixed
+- **[MODULE]** Keychain extraction of data not encodable in UTF8 _[from @federicodotta]_
+
+#### Removed
+
+
+
+## [1.3.1] - 2017-06-22
+#### Fixed
+- **[CORE]** Asyncore problems _[from @floyd-fuh]_
+
+#### Removed
+- **[CORE]** Asyncore, replaced by regular sockets _[from @floyd-fuh]_
+
+
+
+## [1.3.0] - 2017-06-07
+#### Added
+- **[CORE]** Support for System Applications
+- **[CORE]** Global variable `HIDE_SYSTEM_APPS`: if set to `True`, only 3rd party apps will be shown
+- **[MODULE]** `SignerIdentity` included in `binary/info/metadata`
+- **[MODULE]** `binary/info/provisioning_profile` automatically parses the embedded certificate looking for distribution profiles
+- **[MODULE]** `hooking/frida/script_anti-hooking-check` automatically detects if the app prevents hooking
+
+#### Fixed
+- **[MODULE]** Case sensitivity issues in `device/dependency_installer` _[from @tghosth]_
+
+
+
+## [1.2.0] - 2017-05-22
+#### Added
 - **[CORE]** Non-interactive mode: new command line interface (`python needle-cli.py`) which allows to completely script Needle 
 - **[CORE]** Version checking, to ensure the latest version of Needle is being used
 - **[CORE]** Add support for binary thinning
@@ -18,8 +57,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - **[CORE]** Metadata parsing for app extensions
 - **[CORE]** Re-added support on iOS for: `storage/data/keychain_dump`, `binary/reversing/strings`, `binary/reversing/class_dump`
 - **[CORE]** Use unquote to convert spaces. Fixes Issue #15  _[from @ccsplit]_
-
-#### Removed
 
 
 

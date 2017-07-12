@@ -1,7 +1,6 @@
 from __future__ import print_function
-import select
+from socket import error as socketerror
 import socket
-import asyncore
 
 from ..utils.constants import Constants
 from ..utils.utils import Retry
@@ -10,46 +9,29 @@ from ..utils.utils import Retry
 # ======================================================================================================================
 # ASYNC CLIENT
 # ======================================================================================================================
-class AsyncClient(asyncore.dispatcher):
+class AsyncClient():
     def __init__(self, host, port):
-        asyncore.dispatcher.__init__(self)
-        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect((host, port))
-        self.buffer = ''
-        self.read = False
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            self.socket.connect((host, port))
+        except socketerror as se:
+            raise se
 
-    def readable(self):
-        return True
-
-    def writable(self):
-        return (len(self.buffer) > 0)
-
-    def handle_connect(self):
-        pass
-
-    def handle_close(self):
-        self.close()
-
-    def handle_read(self, marker=Constants.AGENT_OUTPUT_END):
-        """Read output from socket."""
-        self.setblocking(True)
+    def close(self):
+        if self.socket:
+            self.socket.close()
+    
+    def send_to_device(self, cmd, marker=Constants.AGENT_OUTPUT_END):
+        self.socket.send(cmd + '\r\n')
         data = ""
         while True:
-            ready = select.select([self], [], [], Constants.AGENT_TIMEOUT_READ)
-            if ready[0]:
-                temp = self.recv(8192)
+            temp = self.socket.recv(8192)
+            if temp:
                 if marker in temp:
                     data += temp[:temp.find(marker)]
                     break
                 data += temp
-        self.setblocking(False)
-        return data
-
-    def handle_write(self, cmd):
-        """Write command to socket."""
-        self.buffer = cmd
-        sent = self.send(self.buffer + '\r\n')
-        self.buffer = self.buffer[sent:]
+        return data    
 
 
 # ======================================================================================================================
@@ -72,14 +54,11 @@ class NeedleAgent(object):
         self._device.printer.notify("{} Successfully connected to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
 
     def disconnect(self):
-        self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
+        if self.client:
+            self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
+            self.client.close()
 
     @Retry()
     def exec_command_agent(self, cmd):
         self._device.printer.debug("{} Executing command: {}".format(Constants.AGENT_TAG, cmd))
-        self.client.handle_write(cmd)
-        return self.read_result()
-
-    def read_result(self):
-        self._device.printer.debug("{} Parsing result (are you sure the agent is in the foreground?)".format(Constants.AGENT_TAG))
-        return self.client.handle_read()
+        return self.client.send_to_device(cmd)

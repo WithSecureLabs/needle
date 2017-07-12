@@ -54,7 +54,7 @@ class IssueManager(object):
     def db_setup(self, folder):
         """Calculate the DB full pathname and create all the tables needed."""
         self._db = Utils.path_join(folder, Constants.FILE_DB)
-        self.printer.debug("Setting up issue's database...")
+        self.printer.debug("Setting up issues database...")
         self._db_query('CREATE TABLE IF NOT EXISTS {} ({} TEXT)'.format(self.DB_TABLE_ISSUES, ' TEXT, '.join(Issue.FIELD_LIST)))
 
     def _db_get_tables(self):
@@ -134,6 +134,11 @@ class IssueManager(object):
         """Prompt the user to insert all the info needed to add an issue."""
         args = [print_question('Please insert {}: '.format(el)) for el in Issue.FIELD_LIST]
         self.issue_add(*args)
+
+    def issue_load(self):
+        """Load issues from db."""
+        pass
+
 
     def issue_print(self):
         """Print all the issues to screen."""

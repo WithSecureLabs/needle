@@ -677,6 +677,7 @@ class Framework(cmd.Cmd):
         # Target app not selected, launch wizard
         if not app:
             self.printer.info('Target app not selected. Launching wizard...')
+            self.device._list_apps(self._global_options['hide_system_apps'])
             app = self.device.select_target_app()
             self._global_options['app'] = app
             if app is None:
@@ -687,5 +688,7 @@ class Framework(cmd.Cmd):
         if not self.APP_METADATA or self.APP_METADATA['bundle_id'] != app:
             # Metadata not yet fetched, retrieve it
             self.printer.info("Retrieving app's metadata...")
+            if self.device._applist is None:
+                self.device._list_apps(self._global_options['hide_system_apps'])
             self.APP_METADATA = Framework.APP_METADATA = self.device.app.get_metadata(app)
         return app

@@ -187,15 +187,15 @@ class Device(object):
     # ==================================================================================================================
     # UTILS - OS
     # ==================================================================================================================
-    def _list_apps(self):
+    def _list_apps(self, hide_system_apps=False):
         """Retrieve all the 3rd party apps installed on the device."""
         agent_list = self.agent.exec_command_agent(Constants.AGENT_CMD_LIST_APPS)
         self._applist = Utils.string_to_json(agent_list)
+        if hide_system_apps:
+            self._applist = {k: v for k, v in self._applist.iteritems() if v["BundleType"] == "User"}
 
     def select_target_app(self):
-        """List all 3rd party apps installed and let the user choose which one to target."""
-        # List all 3rd party apps
-        self._list_apps()
+        """List all apps installed and let the user choose which one to target."""
         # Show menu to user
         self.printer.notify('Apps found:')
         app_name = choose_from_list(self._applist.keys())
