@@ -286,7 +286,7 @@ class FridaScript(FridaModule):
     def __init__(self, params):
         FridaModule.__init__(self, params)
         # Add option for launch mode
-        opt = ('spawn', True, True, 'If set to True, Frida will be used to spawn the app. '
+        opt = ('spawn', False, True, 'If set to True, Frida will be used to spawn the app. '
                                     'If set to False, the app will be launched and Frida will be attached to the running instance')
         self.register_option(*opt)
         opt = ('resume', True, True, 'If set to True, Frida will resume the application process after spawning it (recommended)')
