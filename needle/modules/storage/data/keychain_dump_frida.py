@@ -167,7 +167,9 @@ if (ObjC.available) {
             self.printer.warning(e)
 
     def module_post(self):
-        self.printer.info("Keychain Items:")
-        self.print_cmd_output()
-        self.add_issue('Keychain items detected ({})'.format(len(self.results)), None, 'INVESTIGATE', self.options['output'])
-
+        if self.results:
+            self.printer.info("Keychain Items:")
+            self.print_cmd_output()
+            self.add_issue('Keychain items detected ({})'.format(len(self.results)), None, 'INVESTIGATE', self.options['output'])
+        else:
+            self.printer.warning("No items found.")
