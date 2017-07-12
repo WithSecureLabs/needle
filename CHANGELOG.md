@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Fixed
 - **[MODULE]** Keychain extraction of data not encodable in UTF8 _[from @federicodotta]_
+- **[MODULE]** Improved jailbreak detection bypass (`dynamic/detection/script_jailbreak-detection-bypass.py`)
 
 #### Removed
 
