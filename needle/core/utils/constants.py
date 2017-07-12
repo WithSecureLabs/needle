@@ -10,13 +10,14 @@ class Constants(object):
     # ==================================================================================================================
     # AUTHOR
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
-    EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
+    EMAIL = 'marco.lancini@mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
     VERSION = '1.3.1'
     VERSION_CHECK = 'https://raw.githubusercontent.com/mwrlabs/needle/master/needle/core/utils/constants.py'
 
     # Name variables
     NAME = 'Needle'
+    DESCRIPTION = 'The iOS Security Testing Framework'
     NAME_FOLDER = '.needle'
     NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)
 
