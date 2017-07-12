@@ -50,6 +50,7 @@ class Constants(object):
     # AGENT CONSTANTS
     AGENT_TAG = "[AGENT]"
     AGENT_WELCOME = "Welcome to Needle Agent"
+    AGENT_BUNDLE_ID = "mwr.needle.agent"
     AGENT_VERSION_MARK = "VERSION: "
     AGENT_OUTPUT_END = " :OUTPUT_END:"
     AGENT_TIMEOUT_READ = 5
