@@ -124,7 +124,7 @@ if (ObjC.available) {
         for (var i = 0; i < result.count(); i++){
             var entry = result.objectAtIndex_(i);
             send(JSON.stringify({
-              Data: bytesToHex(Memory.readByteArray(entry.objectForKey_("v_Data").bytes(),entry.objectForKey_("v_Data").length())) + 
+              Data: bytesToHex(Memory.readByteArray(entry.objectForKey_("v_Data").bytes(),entry.objectForKey_("v_Data").length())) +
                     ( ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()) ? " (UTF8 String: '" + ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()).valueOf() + "')": "" ),
               EntitlementGroup: entry.objectForKey_("agrp").valueOf(),
               Protection: constants[entry.objectForKey_("pdmn")].valueOf(),
