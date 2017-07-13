@@ -62,17 +62,6 @@ if (ObjC.available) {
         return SSLSetSessionOption(context, option, value);
     }, 'int', ['pointer', 'int', 'bool']));
 
-    // iOS 10
-    var tls_helper_create_peer_trust = new NativeFunction(
-        Module.findExportByName(null, "tls_helper_create_peer_trust"),
-        'int',
-        ['pointer', 'bool', 'pointer']
-    );
-
-    Interceptor.replace(tls_helper_create_peer_trust, new NativeCallback(function(hdsk, server, trustRef) {
-        return noErr;
-    }, 'int', ['pointer', 'bool', 'pointer']));
-
 
     //
     // OLD WAY
