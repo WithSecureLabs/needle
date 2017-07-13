@@ -12,34 +12,44 @@ class Module(FridaScript):
     }
 
     JS = '''\
-var funcs = [];
-var paths= [
-    "/pguntether",
-    "/usr/sbin/frida-server",
-    "/usr/bin/cycript",
-    "/bin/su",
-    "/Applications/Cydia.app",
-    "/Applications/RockApp.app",
-    "/Applications/Icy.app",
-    "/usr/sbin/sshd",
-    "/usr/bin/sshd",
-    "/usr/libexec/sftp-server",
-    "/Applications/WinterBoard.app",
-    "/Applications/SBSettings.app",
-    "/Applications/MxTube.app",
-    "/Applications/IntelliScreen.app",
-    "/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
-    "/Library/MobileSubstrate/MobileSubstrate.dylib",
-    "/Applications/FakeCarrier.app",
-    "/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
-    "/Applications/blackra1n.app",
-    "/private/var/stash",
-    "/private/var/mobile/Library/SBSettings/Themes",
-    "/System/Library/LaunchDaemons/com.ikey.bbot.plist",
-    "/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
-    "/private/var/tmp/cydia.log",
-    "/private/var/lib/cydia",
-    "/var/mobile/Media/.evasi0n7_installed"];
+var funcs=[];
+var paths=[
+        "/Applications/blackra1n.app",
+        "/Applications/Cydia.app",
+        "/Applications/FakeCarrier.app",
+        "/Applications/Icy.app",
+        "/Applications/IntelliScreen.app",
+        "/Applications/MxTube.app",
+        "/Applications/RockApp.app",
+        "/Applications/SBSetttings.app",
+        "/Applications/WinterBoard.app",
+        "/bin/bash",
+        "/bin/sh",
+        "/bin/su",
+        "/etc/apt",
+        "/etc/ssh/sshd_config",
+        "/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
+        "/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
+        "/Library/MobileSubstrate/MobileSubstrate.dylib",
+        "/pguntether",
+        "/private/var/lib/cydia",
+        "/private/var/mobile/Library/SBSettings/Themes",
+        "/private/var/stash",
+        "/private/var/tmp/cydia.log",
+        "/System/Library/LaunchDaemons/com.ikey.bbot.plist",
+        "/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
+        "/usr/bin/cycript",
+        "/usr/bin/ssh",
+        "/usr/bin/sshd",
+        "/usr/libexec/sftp-server",
+        "/usr/libexec/ssh-keysign",
+        "/usr/sbin/frida-server",
+        "/usr/sbin/sshd",
+        "/var/cache/apt",
+        "/var/lib/cydia",
+        "/var/log/syslog",
+        "/var/mobile/Media/.evasi0n7_installed",
+        "/var/tmp/cydia.log"];
 
 var libs = [
     "CYListenServer",
@@ -52,6 +62,21 @@ var libs = [
     "CYObjectiveC",
     "frida_agent_main"];
 
+Interceptor.attach(ObjC.classes.NSFileManager["- fileExistsAtPath:"].implementation, {
+    onEnter: function (args) {
+        this.path_to_hide = false;
+        this.path = ObjC.Object(args[2]).toString();
+        if (paths.indexOf(this.path) >= 0) {
+            this.path_to_hide = true;
+            send("Hooking fileExistsAtPath to return false");
+        }
+    },
+    onLeave: function (retval) {
+        if (this.path_to_hide) {
+            retval.replace(0x0);
+        }
+    }
+});
 
 var resolver = new ApiResolver('objc');
 resolver.enumerateMatches('*[* is*ailbroken]', {
@@ -64,7 +89,7 @@ resolver.enumerateMatches('*[* is*ailbroken]', {
                 send("Hooking: " + func  +" to return false");
             },
             onLeave: function (retval) {
-                retval.replace(0);
+                retval.replace(0x0);
             }
         });
     },
@@ -124,6 +149,12 @@ Interceptor.attach(f, {
     },
 });
 
+var f = Module.findExportByName("libSystem.B.dylib","fork");
+Interceptor.attach(f, {
+    onLeave: function (retval) {
+        retval.replace(0x0);
+    },
+});
 '''
 
     # ==================================================================================================================

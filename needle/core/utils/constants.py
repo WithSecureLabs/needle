@@ -10,13 +10,14 @@ class Constants(object):
     # ==================================================================================================================
     # AUTHOR
     AUTHOR = 'MWR InfoSecurity (@MWRLabs) - Marco Lancini (@LanciniMarco)'
-    EMAIL = 'marco.lancini[at]mwrinfosecurity.com'
+    EMAIL = 'marco.lancini@mwrinfosecurity.com'
     WEBSITE = 'mwr.to/needle'
     VERSION = '1.3.1'
     VERSION_CHECK = 'https://raw.githubusercontent.com/mwrlabs/needle/master/needle/core/utils/constants.py'
 
     # Name variables
     NAME = 'Needle'
+    DESCRIPTION = 'The iOS Security Testing Framework'
     NAME_FOLDER = '.needle'
     NAME_CLI = '%s[needle]%s > ' % (Colors.C, Colors.N)
 
@@ -49,6 +50,7 @@ class Constants(object):
     # AGENT CONSTANTS
     AGENT_TAG = "[AGENT]"
     AGENT_WELCOME = "Welcome to Needle Agent"
+    AGENT_BUNDLE_ID = "mwr.needle.agent"
     AGENT_VERSION_MARK = "VERSION: "
     AGENT_OUTPUT_END = " :OUTPUT_END:"
     AGENT_TIMEOUT_READ = 5
@@ -61,6 +63,8 @@ class Constants(object):
         '10': [
             'binary/installation/install',
             'binary/installation/pull_ipa',
+            'binary/reversing/class_dump',
+            'binary/reversing/strings'
         ]
     }
 

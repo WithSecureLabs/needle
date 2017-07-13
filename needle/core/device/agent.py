@@ -18,7 +18,8 @@ class AsyncClient():
             raise se
 
     def close(self):
-        self.socket.close()
+        if self.socket:
+            self.socket.close()
     
     def send_to_device(self, cmd, marker=Constants.AGENT_OUTPUT_END):
         self.socket.send(cmd + '\r\n')
@@ -53,8 +54,9 @@ class NeedleAgent(object):
         self._device.printer.notify("{} Successfully connected to agent ({}:{})...".format(Constants.AGENT_TAG, self._ip, self._port))
 
     def disconnect(self):
-        self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
-        self.client.close()
+        if self.client:
+            self._device.printer.verbose("{} Disconnecting from agent...".format(Constants.AGENT_TAG))
+            self.client.close()
 
     @Retry()
     def exec_command_agent(self, cmd):
