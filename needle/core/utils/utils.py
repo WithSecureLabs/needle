@@ -202,13 +202,6 @@ class Retry(object):
                     self.actual_tries += 1
                     exception = e
                     device.printer.error(exception)
-                    if str(e).find('`') > -1:
-                        # Attempt to escape the command args[0] in order to escape the accent.
-                        device.printer.debug("Attempting retry with the accents/backquotes escaped.")
-                        if len(args) > 0:
-                            print "Args: {}".format(args)
-                            args = [Utils.escape_path(i) if idx == 0 else i
-                                    for idx, i in enumerate(args)]
                     device.disconnect()
                     device.printer.warning("Resetting connection to device...")
                     device.connect()

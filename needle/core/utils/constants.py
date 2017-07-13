@@ -63,6 +63,8 @@ class Constants(object):
         '10': [
             'binary/installation/install',
             'binary/installation/pull_ipa',
+            'binary/reversing/class_dump',
+            'binary/reversing/strings'
         ]
     }
 

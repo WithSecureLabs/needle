@@ -60,8 +60,5 @@ class NeedleAgent(object):
 
     @Retry()
     def exec_command_agent(self, cmd):
-        # Currently the agent needs to be in the foreground in order to being able to receive commands
-        if self._device.ssh:
-            self._device.app.open(Constants.AGENT_BUNDLE_ID)
         self._device.printer.debug("{} Executing command: {}".format(Constants.AGENT_TAG, cmd))
         return self.client.send_to_device(cmd)
