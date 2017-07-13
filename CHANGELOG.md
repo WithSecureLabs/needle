@@ -12,15 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## Unreleased
-#### Added
-
 #### Fixed
 - **[CORE]** Search PID for System Apps
-- **[CORE]** Automatically spawn Agent when sending a command
 - **[MODULE]** Keychain extraction of data not encodable in UTF8 _[from @federicodotta]_
 - **[MODULE]** Improved jailbreak detection bypass (`dynamic/detection/script_jailbreak-detection-bypass.py`)
-
-#### Removed
+- **[MODULE]** Improved certificate pinning bypass (`comms/proxy/pinning_bypass_frida`)
 
 
 
