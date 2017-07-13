@@ -14,6 +14,14 @@ class Module(FridaScript):
     JS = '''\
 if (ObjC.available) {
 
+    function bytesToHex(bytes) {
+      for (var hex = [], i = 0; i < bytes.length; i++) {
+        hex.push((bytes[i] >>> 4).toString(16));
+        hex.push((bytes[i] & 0xF).toString(16));
+      }
+      return hex.join("");
+    }
+
     function StringFromNSStringUTF8(nsstring){
       var bytearray = nsstring.dataUsingEncoding_(4);
       return Memory.readUtf8String(bytearray.bytes(),bytearray.length());
@@ -116,15 +124,16 @@ if (ObjC.available) {
         for (var i = 0; i < result.count(); i++){
             var entry = result.objectAtIndex_(i);
             send(JSON.stringify({
-                Data: ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()).valueOf(),
-                EntitlementGroup: entry.objectForKey_("agrp").valueOf(),
-                Protection: constants[entry.objectForKey_("pdmn")].valueOf(),
-                AccessControls: decodeACL(entry),
-                CreationTime: entry.objectForKey_("cdat").valueOf(),
-                Account: entry.objectForKey_("acct").valueOf(),
-                Service: entry.objectForKey_("svce").valueOf(),
-                ModifiedTime: entry.objectForKey_("mdat").valueOf(),
-                kSecClass: constants[secItemClasses[secItemClassIter]]
+              Data: bytesToHex(Memory.readByteArray(entry.objectForKey_("v_Data").bytes(),entry.objectForKey_("v_Data").length())) +
+                    ( ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()) ? " (UTF8 String: '" + ObjC.classes.NSString.stringWithUTF8String_(entry.objectForKey_("v_Data").bytes()).valueOf() + "')": "" ),
+              EntitlementGroup: entry.objectForKey_("agrp").valueOf(),
+              Protection: constants[entry.objectForKey_("pdmn")].valueOf(),
+              AccessControls: decodeACL(entry),
+              CreationTime: entry.objectForKey_("cdat").valueOf(),
+              Account: ( entry.objectForKey_("acct") ? entry.objectForKey_("acct").valueOf() : "null"),
+              Service: ( entry.objectForKey_("svce") ? entry.objectForKey_("svce").valueOf() : "null"),
+              ModifiedTime: entry.objectForKey_("mdat").valueOf(),
+              kSecClass: constants[secItemClasses[secItemClassIter]]
             }));
           }
         }
@@ -158,7 +167,9 @@ if (ObjC.available) {
             self.printer.warning(e)
 
     def module_post(self):
-        self.printer.info("Keychain Items:")
-        self.print_cmd_output()
-        self.add_issue('Keychain items detected ({})'.format(len(self.results)), None, 'INVESTIGATE', self.options['output'])
-
+        if self.results:
+            self.printer.info("Keychain Items:")
+            self.print_cmd_output()
+            self.add_issue('Keychain items detected ({})'.format(len(self.results)), None, 'INVESTIGATE', self.options['output'])
+        else:
+            self.printer.warning("No items found.")

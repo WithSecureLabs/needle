@@ -17,11 +17,15 @@ class Utils(object):
     # PATH UTILS
     # ==================================================================================================================
     @staticmethod
-    def escape_path(path):
+    def escape_path(path, escape_accent=False):
         """Escape the given path."""
         import pipes
         path = path.strip()          # strip
         path = path.strip(''''"''')  # strip occasional single/double quotes from both sides
+        if escape_accent:
+            # Find the accents/backquotes that do not have a backslash
+            # in front of them and escape them.
+            path = re.sub('(?<!\\\\)`', '\`', path)
         return pipes.quote(path)
 
     @staticmethod

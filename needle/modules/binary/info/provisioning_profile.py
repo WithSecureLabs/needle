@@ -23,6 +23,7 @@ class Module(BaseModule):
         self.options['output'] = self.local_op.build_output_path_for_file("provisioning_profile", self)
 
     def _parse_certificate(self, data):
+        self.printer.verbose("Parsing the certificate...")
         # Read the plist file
         pl = Utils.plist_read_from_file(data, use_plistlib=True)
         # Extract the Data field of the certificate and store it locally
