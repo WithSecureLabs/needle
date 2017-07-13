@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
-## Unreleased
+## [1.3.2] - 2017-07-13
 #### Fixed
 - **[CORE]** Search PID for System Apps
 - **[MODULE]** Keychain extraction of data not encodable in UTF8 _[from @federicodotta]_
