@@ -244,6 +244,9 @@ class App(object):
 
     def thin_binary(self, app_metadata, fname_binary, arch=Constants.PREFERRED_ARCH):
         self._device.printer.info("Thinning the binary...")
+        if not len(app_metadata['architectures']) > 1:
+            self._device.printer.warning('Binary is already thinned. Skipping...')
+            return fname_binary
         if arch in app_metadata['architectures']:
             fname_thinned = self._device.remote_op.build_temp_path_for_file('thinned')
             cmd = '{bin} -thin {arch} -output {output} {binary}'.format(bin=self._device.DEVICE_TOOLS['LIPO'],
