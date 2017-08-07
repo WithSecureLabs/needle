@@ -1,6 +1,7 @@
 ![Needle](https://labs.mwrinfosecurity.com/assets/needle-logo-blue.jpg)
 
 [![Black Hat Arsenal](https://www.toolswatch.org/badges/arsenal/2016.svg)](https://www.blackhat.com/us-16/arsenal.html#needle)
+[![Black Hat Arsenal](https://rawgit.com/toolswatch/badges/master/arsenal/2017.svg)](https://www.blackhat.com/us-17/arsenal.html#needle)
 
 _Needle_ is an open source, modular framework to streamline the process of conducting security assessments of iOS apps.
 
