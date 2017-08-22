@@ -62,17 +62,6 @@ if (ObjC.available) {
         return SSLSetSessionOption(context, option, value);
     }, 'int', ['pointer', 'int', 'bool']));
 
-    // iOS 10
-    var tls_helper_create_peer_trust = new NativeFunction(
-        Module.findExportByName(null, "tls_helper_create_peer_trust"),
-        'int',
-        ['pointer', 'bool', 'pointer']
-    );
-
-    Interceptor.replace(tls_helper_create_peer_trust, new NativeCallback(function(hdsk, server, trustRef) {
-        return noErr;
-    }, 'int', ['pointer', 'bool', 'pointer']));
-
 
     //
     // OLD WAY
@@ -97,6 +86,20 @@ if (ObjC.available) {
         result = kSecTrustResultProceed;
         return ret;
     }, 'int', ['pointer', 'pointer']));
+
+    // tls_helper_create_peer_trust for iOS 10
+    // Ref: https://github.com/nabla-c0d3/ssl-kill-switch2/blob/e9a30a3e749fd0b490cba4c63461116da2c3e586/SSLKillSwitch/SSLKillSwitch.m#L113-L122
+    // Ref: https://nabla-c0d3.github.io/blog/2017/02/05/ios10-ssl-kill-switch/
+    var tls_helper_create_peer_trust = new NativeFunction(
+        Module.findExportByName('libcoretls_cfhelpers.dylib', 'tls_helper_create_peer_trust'),
+        'int', ['void', 'bool', 'pointer']
+    );
+
+    Interceptor.replace(tls_helper_create_peer_trust, new NativeCallback(function (hdsk, server, SecTrustRef) {
+
+        send("Replacing tls_helper_create_peer_trust (iOS 10 support)");
+        return 0 // errSecSuccess;
+    }, 'int', ['void', 'bool', 'pointer']));
 
     //
     // COMMON FRAMEWORKS

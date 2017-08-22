@@ -62,22 +62,6 @@ var libs = [
     "CYObjectiveC",
     "frida_agent_main"];
 
-Interceptor.attach(ObjC.classes.NSFileManager["- fileExistsAtPath:"].implementation, {
-    onEnter: function (args) {
-        this.path_to_hide = false;
-        this.path = ObjC.Object(args[2]).toString();
-        if (paths.indexOf(this.path) >= 0) {
-            this.path_to_hide = true;
-            send("Hooking fileExistsAtPath to return false");
-        }
-    },
-    onLeave: function (retval) {
-        if (this.path_to_hide) {
-            retval.replace(0x0);
-        }
-    }
-});
-
 var resolver = new ApiResolver('objc');
 resolver.enumerateMatches('*[* is*ailbroken]', {
     onMatch: function (match) {
