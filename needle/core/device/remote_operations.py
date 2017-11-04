@@ -98,7 +98,7 @@ class RemoteOperations(object):
     def command_interactive(self, cmd):
         """Run a command which requires an interactive shell."""
         self._device.printer.debug("[REMOTE CMD] Remote Interactive Command: %s" % cmd)
-        cmd = 'sshpass -p "{password}" ssh {hostverification} -p {port} -t {username}@{ip} "{cmd}"'.format(password=self._device._password,
+        cmd = 'sshpass -p \'{password}\' ssh {hostverification} -p {port} -t {username}@{ip} "{cmd}"'.format(password=self._device._password,
                                                                                                            hostverification=Constants.DISABLE_HOST_VERIFICATION,
                                                                                                            port=self._device._port,
                                                                                                            username=self._device._username,
@@ -111,7 +111,7 @@ class RemoteOperations(object):
     def command_interactive_tty(self, cmd):
         """Run a command in a full TTY shell."""
         self._device.printer.debug("[REMOTE CMD] Remote Interactive TTY Command: %s" % cmd)
-        cmd = 'sshpass -p "{password}" ssh {hostverification} -p {port} -t {username}@{ip} "{cmd}"'.format(password=self._device._password,
+        cmd = 'sshpass -p \'{password}\' ssh {hostverification} -p {port} -t {username}@{ip} "{cmd}"'.format(password=self._device._password,
                                                                                                            hostverification=Constants.DISABLE_HOST_VERIFICATION,
                                                                                                            port=self._device._port,
                                                                                                            username=self._device._username,
@@ -164,7 +164,7 @@ class RemoteOperations(object):
         src, dst = Utils.escape_path_scp(src), Utils.escape_path(dst)
         self._device.printer.debug("Downloading: %s -> %s" % (src, dst))
 
-        cmd = 'sshpass -p "{password}" scp {hostverification} -P {port}'.format(password=self._device._password,
+        cmd = 'sshpass -p \'{password}\' scp {hostverification} -P {port}'.format(password=self._device._password,
                                                                                 hostverification=Constants.DISABLE_HOST_VERIFICATION,
                                                                                 port=self._device._port)
         if recursive: cmd += ' -r'
@@ -179,7 +179,7 @@ class RemoteOperations(object):
         src, dst = Utils.escape_path_scp(src), Utils.escape_path_scp(dst)
         self._device.printer.debug("Uploading: %s -> %s" % (src, dst))
 
-        cmd = 'sshpass -p "{password}" scp {hostverification} -P {port}'.format(password=self._device._password,
+        cmd = 'sshpass -p \'{password}\' scp {hostverification} -P {port}'.format(password=self._device._password,
                                                                                 hostverification=Constants.DISABLE_HOST_VERIFICATION,
                                                                                 port=self._device._port)
         if recursive: cmd += ' -r'
