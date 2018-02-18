@@ -16,7 +16,7 @@ if(ObjC.available) {
     for(var className in ObjC.classes) {
         if(ObjC.classes.hasOwnProperty(className)) {
             send("Class: " + className);
-            var methods = eval('ObjC.classes.'+className+'.$methods');
+            var methods = eval('ObjC.classes[className].$ownMethods');
             for (var i = 0; i < methods.length; i++) {
                 send(JSON.stringify({class:className.toString(), method:methods[i].toString()}));
             }
