@@ -41,13 +41,13 @@ if(ObjC.available) {
     # ==================================================================================================================
     # RUN
     # ==================================================================================================================
-    def module_pre(self):
+    '''def module_pre(self):
         """Automatically detect if the app prevents hooking."""
         try:
             FridaScript.module_pre()
         except Exception as e:
             self.msg = e
-            self.module_run()
+            self.module_run()'''
 
     def module_run(self):
         # If error has been detected, log issue and exit
