@@ -30,13 +30,15 @@ if(ObjC.available) {
                 //console.log("\t[-] Value2: "+(ObjC.Object(args[2])).toString());
                 //console.log(args[2]);
           }
-          /**onLeave: function(retval) {
+    });
+    Interceptor.attach(hook.implementation, {
+          onLeave: function(retval) {
                 console.log("[*] Class Name: " + className);
                 console.log("[*] Method Name: " + methodName);
                 console.log("\t[-] Type of return value: " + typeof retval);
                 //console.log(retval.toString());
                 console.log("\t[-] Return Value: " + retval);
-          }**/
+          }
     });
 } else {
     console.log("Objective-C Runtime is not available!");
