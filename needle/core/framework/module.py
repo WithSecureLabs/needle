@@ -308,7 +308,8 @@ class FridaScript(FridaModule):
             self.printer.info("Launching the app...")
             self.device.app.open(self.APP_METADATA['bundle_id'])
             binaryPath = self.APP_METADATA['binary_path'].replace("/private","")
-            pid = int(self.device.app.search_pid(binaryPath))
+            binaryPath = binaryPath.replace("'","")
+            pid = self.device.app.search_pid(binaryPath)
             # Attaching to the process
             self.printer.info("Attaching to process: %s" % pid)
             self.session = device.attach(pid)
