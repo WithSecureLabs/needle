@@ -157,6 +157,7 @@ class Constants(object):
             'CLUTCH': {'COMMAND': 'Clutch2', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
                 "curl -ksL \"http://cydia.iphonecake.com/Clutch2.0.4.deb\" -o /var/root/clutch.deb",
                 "dpkg -i /var/root/clutch.deb && rm -f /var/root/clutch.deb",
+                "chmod +x /usr/bin/Clutch2",
                 "killall -HUP SpringBoard"
             ]},
             'CURL': {'COMMAND': 'curl', 'PACKAGES': ['curl'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
