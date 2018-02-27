@@ -144,11 +144,13 @@ class Constants(object):
             'FRIDA32BIT': {'COMMAND': 'frida', 'PACKAGES': ['re.frida.server32'], 'REPO': 'https://build.frida.re/', 'LOCAL': None, 'SETUP': None},
             'GDB': {'COMMAND': 'gdb', 'PACKAGES': ['gdb'], 'REPO': 'http://cydia.radare.org/', 'LOCAL': None, 'SETUP': None},
             'THEOS': {'COMMAND': 'theos', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': [
-                "ln -s /usr/local/bin/perl /usr/bin/perl",
-                "GIT_SSL_NO_VERIFY=true git clone --recursive https://github.com/theos/theos.git %s" % THEOS_FOLDER,
-                "mkdir -p %ssdks" % THEOS_FOLDER,
-                "curl -ksL \"https://sdks.website/dl/iPhoneOS8.1.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
-                "curl -ksL \"https://sdks.website/dl/iPhoneOS9.3.sdk.tbz2\" | tar -xj -C %ssdks" % THEOS_FOLDER,
+                "ln -sf /usr/local/bin/perl /usr/bin/perl",
+                "rm -rf %s" % THEOS_FOLDER,
+                "GIT_SSL_NO_VERIFY=true git clone --quiet git://github.com/theos/theos.git %s" % THEOS_FOLDER,
+                "cd %s && git submodule init --quiet" % THEOS_FOLDER,
+                "sed -i -- 's/https/git/g' %s.git/config" % THEOS_FOLDER,
+                "cd %s && git submodule update --quiet" % THEOS_FOLDER,
+                "rm -rf %ssdks && git clone --quiet git://github.com/theos/sdks.git %ssdks" %(THEOS_FOLDER, THEOS_FOLDER)
             ]},
             'THEOS_NIC': {'COMMAND': '%sbin/nic.pl' % THEOS_FOLDER, 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
 
