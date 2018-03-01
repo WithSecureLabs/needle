@@ -14,7 +14,8 @@ class Module(FridaScript):
 
     JS = '''\
 if(ObjC.available) {
-    var methods = ObjC.classes.%s.$methods;
+    var className = '%s';
+    var methods = eval('ObjC.classes[className].$ownMethods');
     for (var i = 0; i < methods.length; i++) {
         send(JSON.stringify({class:'%s', method:methods[i].toString()}));
     }
