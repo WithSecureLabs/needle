@@ -18,18 +18,20 @@ if(ObjC.available) {
     var className = "%s";
     var methodName = "%s";
 
-    var hook = eval('ObjC.classes.' + className + '["' + methodName + '"]');
+    var hook = eval('ObjC.classes[className][methodName]');
     Interceptor.attach(hook.implementation, {
           onEnter: function(args) {
                 // args[0] is self
                 // args[1] is selector (SEL "sendMessageWithText:")
                 // args[2] holds the first function argument, an NSString
-                console.log("[*] Detected call to: " + className + " -> " + funcName);
+                console.log("[*] Detected call to: " + className + " -> " + methodName);
                 //For viewing and manipulating arguments
                 //console.log("\t[-] Value1: "+ObjC.Object(args[2]));
                 //console.log("\t[-] Value2: "+(ObjC.Object(args[2])).toString());
                 //console.log(args[2]);
           }
+    });
+    Interceptor.attach(hook.implementation, {
           onLeave: function(retval) {
                 console.log("[*] Class Name: " + className);
                 console.log("[*] Method Name: " + methodName);
