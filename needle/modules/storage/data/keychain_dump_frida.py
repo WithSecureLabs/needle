@@ -44,7 +44,7 @@ if (ObjC.available) {
                   case "dacl":
                     return "Default ACL";
                   case "osgn":
-                    finalDecodedValue += "PrivateKeyUsage "
+                    finalDecodedValue += "PrivateKeyUsage ";
                   case "od":
                       var constraints = accessControlItem;
                       var constraitEnumerator = constraints.keyEnumerator();
@@ -52,16 +52,16 @@ if (ObjC.available) {
                       while ((constraintItemKey = constraitEnumerator.nextObject()) !== null){
                           switch (StringFromNSStringUTF8(constraintItemKey)) {
                             case "cpo":
-                              finalDecodedValue += " UserPresence "
+                              finalDecodedValue += " UserPresence ";
                               break;
                             case "cup":
-                              finalDecodedValue += " DevicePasscode "
+                              finalDecodedValue += " DevicePasscode ";
                               break;
                             case "pkofn":
-                              finalDecodedValue += (constraints.objectForKey_("pkofn") == 1 ? " Or " : " And ")
+                              finalDecodedValue += (constraints.objectForKey_("pkofn") == 1 ? " Or " : " And ");
                               break;
                             case "cbio":
-                              finalDecodedValue += ((constraints.objectForKey_("cbio").count()) == 1 ? " TouchIDAny " : " TouchIDCurrentSet ")
+                              finalDecodedValue += ((constraints.objectForKey_("cbio").count()) == 1 ? " TouchIDAny " : " TouchIDCurrentSet ");
                               break;
                             default:
                               break;
@@ -69,7 +69,7 @@ if (ObjC.available) {
                       }
                       break;
                   case "prp":
-                    finalDecodedValue += "ApplicationPassword"
+                    finalDecodedValue += "ApplicationPassword";
                     break;
                   default:
                     break;
@@ -78,7 +78,7 @@ if (ObjC.available) {
         }
       }
       return finalDecodedValue;
-  }
+  };
 
   var constants = {
     "ck":"kSecAttrAccessibleAfterFirstUnlock",
@@ -101,7 +101,7 @@ if (ObjC.available) {
     "idnt":"kSecClassIdentity",
     "inet":"kSecClassInternetPassword",
     "keys":"kSecClassKey",
-  }
+  };
 
   var SecItemCopyMatching = new NativeFunction(ptr(Module.findExportByName("Security","SecItemCopyMatching")),'pointer',['pointer','pointer']);
   var NSJSONSerialization = ObjC.classes.NSJSONSerialization;
@@ -140,7 +140,7 @@ if (ObjC.available) {
     }
 } else {
     console.log("Objective-C Runtime is not available!");
-}
+};
 '''
 
     # ==================================================================================================================
