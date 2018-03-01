@@ -72,7 +72,7 @@ class App(object):
             'bundle_id': bundle_id,
             'data_directory': data_directory,
             'bundle_directory': bundle_directory,
-            'binary_directory': binary_directory,
+            'binary_directory': binary_directory.strip(''''"'''),
             'app_version': app_version,
             'sdk_version': sdk_version,
             'entitlements': entitlements,
