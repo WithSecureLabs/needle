@@ -162,7 +162,6 @@ class Constants(object):
             ]},
             'CURL': {'COMMAND': 'curl', 'PACKAGES': ['curl'], 'REPO': None, 'LOCAL': None, 'SETUP': None},
             'EDITIMAGE': {'COMMAND': 'editimage', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'editimage'), 'SETUP': None},
-
             'FILEDP': {'COMMAND': 'FileDP', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'FileDP'), 'SETUP': None},
             'FSMON': {'COMMAND': 'fsmon', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'fsmon'), 'SETUP': None},
             'IPAINSTALLER': {'COMMAND': 'ipainstaller', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
