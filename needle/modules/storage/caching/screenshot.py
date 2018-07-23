@@ -28,6 +28,12 @@ class Module(BaseModule):
         if self.options['pull']:
             self.printer.notify('Retrieving screenshots and saving them in: %s' % self.options['output'])
             for s in sc:
+                if s.endswith(".ktx"):
+                    temp_name = Utils.extract_filename_from_path(s)
+                    png_image = temp_name.replace(".ktx",".png")
+                    png_path = "/tmp/" + png_image
+                    self.device.remote_op.command_blocking("/usr/bin/editimage -i {ktx_image} -o {png_path}".format(ktx_image=s,png_path=png_path))
+                    s = png_path
                 # Pull file
                 temp_name = Utils.extract_filename_from_path(s)
                 temp_file = os.path.join(self.options['output'], temp_name)
