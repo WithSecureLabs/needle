@@ -51,7 +51,7 @@ class Module(BaseModule):
                         data_protection = self.device.app.get_dataprotection([match.group(1)])
                         choose_from_list_data_protection(data_protection, choose=False)
                     else:
-                        self.printer.info(match.group(1)[:100])
+                        self.printer.info(match.group(1))
                 else:
                     self.printer.notify(string)
 
