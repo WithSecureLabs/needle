@@ -18,7 +18,9 @@ class Module(BaseModule):
         self.printer.info("Launching the app...")
         self.device.app.open(self.APP_METADATA['bundle_id'])
         # Search for PID
-        pid = self.device.app.search_pid(self.APP_METADATA['binary_name'])
+        binaryPath = self.APP_METADATA['binary_path'].replace("/private","")
+        binaryPath = binaryPath.replace("'","")
+        pid = self.device.app.search_pid(binaryPath)
         # Launch Cycript shell
         self.printer.info("Spawning a Cycript shell...")
         cmd = "{bin} -p {app}".format(bin=self.device.DEVICE_TOOLS['CYCRIPT'], app=pid)
