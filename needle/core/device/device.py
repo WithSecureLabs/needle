@@ -244,7 +244,7 @@ class Device(object):
 
     def shell(self):
         """Spawn a system shell on the device."""
-        cmd = 'sshpass -p "{password}" ssh {hostverification} -p {port} {username}@{ip}'.format(password=self._password,
+        cmd = 'sshpass -p \'{password}\' ssh {hostverification} -p {port} {username}@{ip}'.format(password=self._password,
                                                                                                 hostverification=Constants.DISABLE_HOST_VERIFICATION,
                                                                                                 port=self._port,
                                                                                                 username=self._username,
