@@ -15,12 +15,12 @@ class Module(FridaScript):
     JS = '''\
 if(ObjC.available) {
     var className = "%s";
-    var methods = eval('ObjC.classes.' + className + '.$methods');
+    var methods = eval('ObjC.classes[className].$ownMethods');
     console.log("[*] Hooking methods");
     for (var i = 0; i < methods.length; i++)
     {
         var funcName = methods[i];
-        var hook = eval('ObjC.classes.' + className + '["'+funcName+'"]');
+        var hook = eval('ObjC.classes[className][funcName]');
         Interceptor.attach(hook.implementation, {
             onEnter: function(args) {
                 console.log("[*] Detected call to: " + className.toString() + " -> " + funcName.toString());
