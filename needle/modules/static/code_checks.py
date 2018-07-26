@@ -168,7 +168,7 @@ class Module(StaticModule):
                 for r in results:
                     file_output.append('\t[{:<80}] line {:<5} -> {:<30}'.format(r['name'], r['linenum'], r['line']))
                     print('\t{}[{:<80}]{} line {:<5}{} -> {:<30}'.format(Colors.B, r['name'], Colors.O, r['linenum'], Colors.N, r['line']))
-                self.add_issue('Static code analysis: {}'.format(category), '{} results'.format(len(results)), 'INVESTIGATE', outfile)
+                #self.add_issue('Static code analysis: {}'.format(category), '{} results'.format(len(results)), 'INVESTIGATE', outfile)
 
         # Save to file
         self.print_cmd_output(file_output, outfile, silent=True)
