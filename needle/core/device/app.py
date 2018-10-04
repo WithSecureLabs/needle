@@ -135,7 +135,7 @@ class App(object):
                 prefix = 'file://'
                 if temp.startswith(prefix):
                     temp = Utils.escape_path(temp[len(prefix):])
-            return temp
+            return temp.replace('\'','')
         except:
             return ""
 
