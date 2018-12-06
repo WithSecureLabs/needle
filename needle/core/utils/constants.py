@@ -175,6 +175,7 @@ class Constants(object):
             'PBWATCHER': {'COMMAND': 'pbwatcher', 'PACKAGES': None, 'REPO': None, 'LOCAL': os.path.join(PATH_DEVICETOOLS, 'pbwatcher'), 'SETUP': None},
             'PERL': {'COMMAND': 'perl', 'PACKAGES': ['org.coolstar.perl'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
             'IOSTOOLCHAIN': {'COMMAND': 'perl', 'PACKAGES': ['org.coolstar.iostoolchain'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-sftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
+            'SCP': {'COMMAND': 'scp', 'PACKAGES': ['org.coolstar.scp-sftp-dropbear'], 'REPO': 'https://coolstar.org/publicrepo/', 'LOCAL': None, 'SETUP': None},
             'UIOPEN': {'COMMAND': 'uiopen', 'PACKAGES': None, 'REPO': None, 'LOCAL': None, 'SETUP': None},
         }
     }
