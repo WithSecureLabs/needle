@@ -125,7 +125,10 @@ class Device(object):
             if err:
                 # Show error and abort run
                 err_str = ''.join(err)
-                raise Exception(err_str)
+                if "No sandbox user '_apt' on the system" in err_str:
+                    self.printer.info('NOTE: apt-get received the following error, but this will be ignored: %s' % err_str)
+                else:
+                    raise Exception(err_str)
         else:
             # Display output
             if out: map(lambda x: print('\t%s' % x, end=''), out)
