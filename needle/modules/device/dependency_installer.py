@@ -47,7 +47,7 @@ class Module(BaseModule):
 
     def __apt_add_repo(self, repo):
         """Add the specified repo to cydia.list."""
-        if all(x in str(self._cydialist) for x in Constants.REPOS):
+        if any(x in str(self._cydialist) for x in Constants.REPOS):
             self.device.printer.debug('Repo already in cydia.list: %s' % repo)
             return
         try:
