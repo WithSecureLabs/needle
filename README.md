@@ -5,20 +5,20 @@
 
 _Needle_ is an open source, modular framework to streamline the process of conducting security assessments of iOS apps.
 
-NOTE: This tool has been decomissioned and is no longer maintained. We are leaving the original project up for archival purposes.
+**NOTE: This tool has been decomissioned and is no longer maintained. We are leaving the original project up for archival purposes.**
 
-Needle was originally made to work with iOS 9 and iOS 10. Since then, Frida was released and became the defacto tool to use with mobile security assessments. Some common Frida mobile security scripts were later implemented within Needle, as some of these scripts worked better or addressed some issues that were present in Needle's custom tooling.
+**Needle was originally made to work with iOS 9 and iOS 10. Since then, Frida was released and became the defacto tool to use with mobile security assessments. Some common Frida mobile security scripts were later implemented within Needle, as some of these scripts worked better or addressed some issues that were present in Needle's custom tooling.**
 
-With the release of iOS 11 came additional security protections that were good for the consumer, but bad for Needle. These enhancements essentially broke Needle's functionality, and thus F-Secure were faced with two options:
+**With the release of iOS 11 came additional security protections that were good for the consumer, but bad for Needle. These enhancements essentially broke Needle's functionality, and thus F-Secure were faced with two options:**
 
-* Re-write Needle from the ground up, potentially using Frida as a base
-* Recommend another well estalbished tool that would contain the same functionality as Needle
+* **Re-write Needle from the ground up, potentially using Frida as a base**
+* **Recommend another well estalbished tool that would contain the same functionality as Needle**
 
-F-Secure chose the latter option, as some of our consultants had already started using and contributing to another tool when Needle's fate was being discussed. The third party tool is called Objection and can be found here:
+**F-Secure chose the latter option, as some of our consultants had already started using and contributing to another tool when Needle's fate was being discussed. The third party tool is called Objection and can be found here:**
 
-https://github.com/sensepost/objection
+**https://github.com/sensepost/objection**
 
-Needle can still be used on devices running iOS 10 and below. If the device is running iOS 11 or above, F-Secure recommends that you use Objection instead.
+**Needle can still be used on devices running iOS 10 and below. If the device is running iOS 11 or above, F-Secure recommends that you use Objection instead.**
 
 # Description
 
