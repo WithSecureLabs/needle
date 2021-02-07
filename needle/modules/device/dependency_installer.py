@@ -61,7 +61,7 @@ class Module(BaseModule):
 
     def __apt_install(self, package):
         """Install the given package using apt-get."""
-        cmd = '{apt} install -y --force-yes {package}'.format(apt=Constants.DEVICE_TOOLS['APT-GET'], package=package)
+        cmd = '{apt} install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages {package}'.format(apt=Constants.DEVICE_TOOLS['APT-GET'], package=package)
         self.device.remote_op.command_blocking(cmd, internal=True)
 
     def __install_package(self, toolname, tool):
